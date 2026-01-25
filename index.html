@@ -376,32 +376,10 @@
 
         <!-- Écran Moi -->
         <div id="moi-screen" style="display: none;">
-          <!-- Sous-onglets pour Moi -->
-          <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-            <button id="sous-tab-mes-achats" style="flex: 1; background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; padding: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">📦 Mes Achats</button>
-            <button id="sous-tab-gerer-boutique" style="flex: 1; background: #f0f0f0; color: #333; padding: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; display: none;">⚙️ Gérer Boutique</button>
-          </div>
-
-          <!-- Mes Achats -->
-          <div id="mes-achats-content">
-            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
-              <h3 style="margin-bottom: 15px; color: #e74c3c;">📦 Mes Achats</h3>
-              <div id="liste-mes-achats" style="max-height: 400px; overflow-y: auto;">
-                <!-- Les achats s'afficheront ici -->
-              </div>
-            </div>
-          </div>
-
-          <!-- Gérer Boutique (visible seulement pour gestionnaires) -->
-          <div id="gerer-boutique-content" style="display: none;">
-            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
-              <h3 style="margin-bottom: 15px; color: #e74c3c;">⚙️ Gérer la Boutique</h3>
-              
-              <button id="btn-ajouter-objet" style="width: 100%; background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); margin-bottom: 20px;">➕ Ajouter un Objet</button>
-              
-              <div id="liste-objets-gestion">
-                <!-- Liste des objets à gérer -->
-              </div>
+          <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+            <h3 style="margin-bottom: 15px; color: #e74c3c;">📦 Mes Achats</h3>
+            <div id="liste-mes-achats" style="max-height: 400px; overflow-y: auto;">
+              <!-- Les achats s'afficheront ici -->
             </div>
           </div>
         </div>
