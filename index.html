@@ -25,14 +25,15 @@
       #app {
         width: 100%;
         max-width: 500px;
-        padding: 20px;
+        padding: 0;
       }
       .container {
         background: white;
-        border-radius: 15px;
-        padding: 40px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        border-radius: 0;
+        padding: 20px;
+        box-shadow: none;
         text-align: center;
+        min-height: 100vh;
       }
       h1 {
         color: #333;
@@ -339,32 +340,32 @@
           <h2 style="text-align: center; margin-bottom: 20px;">🛍️ Notre Boutique</h2>
           
           <!-- Item principal en haut -->
-          <div id="item-principal" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; min-height: 150px; display: flex; flex-direction: column; justify-content: center;">
-            <h3 style="margin: 10px 0;">🎁 Item Principal</h3>
-            <p style="margin: 5px 0;">Description de l'item</p>
-            <p style="font-size: 20px; font-weight: bold; margin: 10px 0;">💰 100 pts</p>
-            <button style="background: white; color: #e74c3c; margin-top: 10px;">Acheter</button>
+          <div id="item-principal" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; min-height: 200px; display: flex; flex-direction: column; justify-content: center;">
+            <div style="background: rgba(255,255,255,0.2); width: 150px; height: 150px; border-radius: 10px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 60px;">📸</div>
+            <h3 style="margin: 10px 0; font-size: 20px;">Item Principal</h3>
+            <p style="font-size: 24px; font-weight: bold; margin: 10px 0;">💰 100 pts</p>
+            <button style="background: white; color: #e74c3c; margin-top: 10px; width: 60%; margin-left: auto; margin-right: auto;">Acheter</button>
           </div>
 
           <!-- 3 items plus petits côte à côte -->
           <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-            <div style="flex: 1; background: #f0f0f0; padding: 15px; border-radius: 8px; text-align: center; border: 2px solid #e74c3c;">
-              <h4 style="margin: 10px 0;">🎉 Item 1</h4>
-              <p style="font-size: 12px; margin: 5px 0;">Description</p>
-              <p style="font-weight: bold; color: #e74c3c; margin: 10px 0;">50 pts</p>
-              <button style="font-size: 12px; padding: 8px;">Acheter</button>
+            <div style="flex: 1; background: #f0f0f0; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #e74c3c;">
+              <div style="background: #ddd; width: 100%; height: 80px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px;">📸</div>
+              <h4 style="margin: 8px 0; font-size: 14px;">Item 1</h4>
+              <p style="font-weight: bold; color: #e74c3c; margin: 5px 0; font-size: 16px;">50 pts</p>
+              <button style="font-size: 12px; padding: 8px; margin: 5px 0 0 0; width: 100%;">Acheter</button>
             </div>
-            <div style="flex: 1; background: #f0f0f0; padding: 15px; border-radius: 8px; text-align: center; border: 2px solid #e74c3c;">
-              <h4 style="margin: 10px 0;">🎉 Item 2</h4>
-              <p style="font-size: 12px; margin: 5px 0;">Description</p>
-              <p style="font-weight: bold; color: #e74c3c; margin: 10px 0;">50 pts</p>
-              <button style="font-size: 12px; padding: 8px;">Acheter</button>
+            <div style="flex: 1; background: #f0f0f0; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #e74c3c;">
+              <div style="background: #ddd; width: 100%; height: 80px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px;">📸</div>
+              <h4 style="margin: 8px 0; font-size: 14px;">Item 2</h4>
+              <p style="font-weight: bold; color: #e74c3c; margin: 5px 0; font-size: 16px;">50 pts</p>
+              <button style="font-size: 12px; padding: 8px; margin: 5px 0 0 0; width: 100%;">Acheter</button>
             </div>
-            <div style="flex: 1; background: #f0f0f0; padding: 15px; border-radius: 8px; text-align: center; border: 2px solid #e74c3c;">
-              <h4 style="margin: 10px 0;">🎉 Item 3</h4>
-              <p style="font-size: 12px; margin: 5px 0;">Description</p>
-              <p style="font-weight: bold; color: #e74c3c; margin: 10px 0;">50 pts</p>
-              <button style="font-size: 12px; padding: 8px;">Acheter</button>
+            <div style="flex: 1; background: #f0f0f0; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #e74c3c;">
+              <div style="background: #ddd; width: 100%; height: 80px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px;">📸</div>
+              <h4 style="margin: 8px 0; font-size: 14px;">Item 3</h4>
+              <p style="font-weight: bold; color: #e74c3c; margin: 5px 0; font-size: 16px;">50 pts</p>
+              <button style="font-size: 12px; padding: 8px; margin: 5px 0 0 0; width: 100%;">Acheter</button>
             </div>
           </div>
         </div>
