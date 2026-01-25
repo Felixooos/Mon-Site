@@ -564,6 +564,8 @@ async function chargerObjetsBoutique() {
   const itemPrincipal = document.querySelector('#item-principal')
   if (principal) {
     let html = ''
+    const estEpuise = principal.quantite <= 0
+    
     // Ajouter bouton 3 points si gestionnaire
     if (jeSuisBoutiqueManager) {
       html += `<button class="btn-menu-3pts" data-objet-id="${principal.id}" data-objet-type="principal" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">⋮</button>`
@@ -572,12 +574,15 @@ async function chargerObjetsBoutique() {
       <div style="background: rgba(255,255,255,0.2); width: 150px; height: 150px; border-radius: 10px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 60px; background-image: url('${principal.image_url || ''}'); background-size: cover; background-position: center;">${!principal.image_url ? '📸' : ''}</div>
       <h3 style="margin: 10px 0; font-size: 20px;">${principal.nom}</h3>
       <p style="font-size: 24px; font-weight: bold; margin: 10px 0;">💰 ${principal.prix} pts</p>
-      <button class="btn-acheter" data-id="${principal.id}" data-nom="${principal.nom}" data-prix="${principal.prix}" style="background: white; color: #e74c3c; margin-top: 10px; width: 60%; margin-left: auto; margin-right: auto;">Acheter</button>
+      <p style="font-size: 14px; margin: 5px 0; color: ${estEpuise ? '#e74c3c' : '#2ecc71'};">${estEpuise ? '❌ Épuisé' : `✅ ${principal.quantite} disponible(s)`}</p>
+      <button class="btn-acheter" data-id="${principal.id}" data-nom="${principal.nom}" data-prix="${principal.prix}" style="background: ${estEpuise ? '#999' : 'white'}; color: #e74c3c; margin-top: 10px; width: 60%; margin-left: auto; margin-right: auto; cursor: ${estEpuise ? 'not-allowed' : 'pointer'};" ${estEpuise ? 'disabled' : ''}>Acheter</button>
     `
     itemPrincipal.innerHTML = html
     itemPrincipal.dataset.objetId = principal.id
     itemPrincipal.dataset.objetNom = principal.nom
     itemPrincipal.dataset.objetPrix = principal.prix
+    itemPrincipal.dataset.objetImage = principal.image_url || ''
+    itemPrincipal.dataset.objetQuantite = principal.quantite
     itemPrincipal.dataset.objetImage = principal.image_url || ''
   } else {
     const html = `
@@ -602,6 +607,8 @@ async function chargerObjetsBoutique() {
     if (petit) {
       divItem.style.cssText = 'flex: 1; background: #f0f0f0; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #e74c3c; position: relative;'
       let html = ''
+      const estEpuise = petit.quantite <= 0
+      
       // Ajouter bouton 3 points si gestionnaire
       if (jeSuisBoutiqueManager) {
         html += `<button class="btn-menu-3pts" data-objet-id="${petit.id}" data-objet-type="petit" style="position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">⋮</button>`
@@ -610,13 +617,15 @@ async function chargerObjetsBoutique() {
         <div style="background: #ddd; width: 100%; height: 80px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; background-image: url('${petit.image_url || ''}'); background-size: cover; background-position: center;">${!petit.image_url ? '📸' : ''}</div>
         <h4 style="margin: 8px 0; font-size: 14px;">${petit.nom}</h4>
         <p style="font-weight: bold; color: #e74c3c; margin: 5px 0; font-size: 16px;">${petit.prix} pts</p>
-        <button class="btn-acheter" data-id="${petit.id}" data-nom="${petit.nom}" data-prix="${petit.prix}" style="font-size: 12px; padding: 8px; margin: 5px 0 0 0; width: 100%;">Acheter</button>
+        <p style="font-size: 11px; margin: 3px 0; color: ${estEpuise ? '#e74c3c' : '#2ecc71'};">${estEpuise ? '❌ Épuisé' : `✅ ${petit.quantite} dispo`}</p>
+        <button class="btn-acheter" data-id="${petit.id}" data-nom="${petit.nom}" data-prix="${petit.prix}" style="font-size: 12px; padding: 8px; margin: 5px 0 0 0; width: 100%; background: ${estEpuise ? '#ddd' : '#e74c3c'}; cursor: ${estEpuise ? 'not-allowed' : 'pointer'};" ${estEpuise ? 'disabled' : ''}>Acheter</button>
       `
       divItem.innerHTML = html
       divItem.dataset.objetId = petit.id
       divItem.dataset.objetNom = petit.nom
       divItem.dataset.objetPrix = petit.prix
       divItem.dataset.objetImage = petit.image_url || ''
+      divItem.dataset.objetQuantite = petit.quantite
     } else {
       divItem.style.cssText = `flex: 1; background: #f0f0f0; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #ddd; cursor: ${jeSuisBoutiqueManager ? 'pointer' : 'default'};`
       divItem.innerHTML = `
@@ -653,8 +662,9 @@ async function chargerObjetsBoutique() {
       const nom = container.dataset.objetNom
       const prix = parseInt(container.dataset.objetPrix)
       const imageUrl = container.dataset.objetImage
+      const quantite = parseInt(container.dataset.objetQuantite)
       
-      ouvrirMenuObjet(id, nom, prix, imageUrl, type)
+      ouvrirMenuObjet(id, nom, prix, imageUrl, type, quantite)
     })
   })
 }
@@ -662,8 +672,8 @@ async function chargerObjetsBoutique() {
 // Ouvrir menu 3 points pour un objet
 let objetEnCoursMenu = null
 
-window.ouvrirMenuObjet = function(id, nom, prix, imageUrl, type) {
-  objetEnCoursMenu = { id, nom, prix, image_url: imageUrl, type }
+window.ouvrirMenuObjet = function(id, nom, prix, imageUrl, type, quantite) {
+  objetEnCoursMenu = { id, nom, prix, image_url: imageUrl, type, quantite }
   document.querySelector('#menu-objet-nom').textContent = nom
   document.querySelector('#menu-objet').classList.remove('hidden')
 }
@@ -728,12 +738,33 @@ document.querySelector('#btn-confirm-achat-final').addEventListener('click', asy
     return
   }
   
+  // Vérifier la quantité disponible
+  const { data: objet } = await supabase
+    .from('objets_boutique')
+    .select('quantite')
+    .eq('id', objetEnCoursAchat.id)
+    .single()
+  
+  if (objet.quantite <= 0) {
+    alert('Cet objet est épuisé !')
+    document.querySelector('#modal-confirmer-achat').classList.add('hidden')
+    objetEnCoursAchat = null
+    await chargerObjetsBoutique()
+    return
+  }
+  
   // Débiter les points
   const nouveauSolde = etudiant.solde - objetEnCoursAchat.prix
   await supabase
     .from('etudiants')
     .update({ solde: nouveauSolde })
     .eq('email', currentUserEmail)
+  
+  // Décrémenter la quantité
+  await supabase
+    .from('objets_boutique')
+    .update({ quantite: objet.quantite - 1 })
+    .eq('id', objetEnCoursAchat.id)
   
   // Enregistrer l'achat
   const { error } = await supabase
@@ -754,8 +785,9 @@ document.querySelector('#btn-confirm-achat-final').addEventListener('click', asy
   document.querySelector('#modal-confirmer-achat').classList.add('hidden')
   objetEnCoursAchat = null
   
-  // Rafraîchir le classement
+  // Rafraîchir le classement et la boutique
   displayWelcomeScreen()
+  await chargerObjetsBoutique()
 })
 
 // ==================== FONCTIONS MES ACHATS ====================
@@ -834,11 +866,12 @@ document.querySelector('#btn-cancel-objet').addEventListener('click', () => {
 document.querySelector('#btn-confirm-objet').addEventListener('click', async () => {
   const nom = document.querySelector('#objet-nom').value.trim()
   const prix = parseInt(document.querySelector('#objet-prix').value)
+  const quantite = parseInt(document.querySelector('#objet-quantite').value) || 1
   const imageUrl = document.querySelector('#objet-image').value.trim()
   const photoFile = document.querySelector('#objet-photo').files[0]
   const type = document.querySelector('#objet-type').value
   
-  if (!nom || !prix || prix <= 0) {
+  if (!nom || !prix || prix <= 0 || quantite < 1) {
     alert('Veuillez remplir tous les champs obligatoires')
     return
   }
@@ -877,6 +910,7 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
     .insert({
       nom,
       prix,
+      quantite,
       image_url: finalImageUrl || null,
       type
     })
@@ -893,6 +927,7 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
   // Réinitialiser le formulaire
   document.querySelector('#objet-nom').value = ''
   document.querySelector('#objet-prix').value = ''
+  document.querySelector('#objet-quantite').value = '1'
   document.querySelector('#objet-image').value = ''
   document.querySelector('#objet-photo').value = ''
   
@@ -911,6 +946,7 @@ document.querySelector('#btn-menu-modifier').addEventListener('click', () => {
   // Pré-remplir le formulaire de modification
   document.querySelector('#modifier-objet-nom').value = objetEnCoursMenu.nom
   document.querySelector('#modifier-objet-prix').value = objetEnCoursMenu.prix
+  document.querySelector('#modifier-objet-quantite').value = objetEnCoursMenu.quantite
   document.querySelector('#modifier-objet-image').value = objetEnCoursMenu.image_url || ''
   
   // Fermer le menu et ouvrir le modal de modification
@@ -950,10 +986,11 @@ document.querySelector('#btn-confirm-modifier').addEventListener('click', async 
   
   const nom = document.querySelector('#modifier-objet-nom').value.trim()
   const prix = parseInt(document.querySelector('#modifier-objet-prix').value)
+  const quantite = parseInt(document.querySelector('#modifier-objet-quantite').value)
   const imageUrl = document.querySelector('#modifier-objet-image').value.trim()
   const photoFile = document.querySelector('#modifier-objet-photo').files[0]
   
-  if (!nom || !prix || prix < 1) {
+  if (!nom || !prix || prix < 1 || quantite < 0) {
     alert('Veuillez remplir tous les champs correctement')
     return
   }
@@ -975,6 +1012,7 @@ document.querySelector('#btn-confirm-modifier').addEventListener('click', async 
     .update({
       nom,
       prix,
+      quantite,
       image_url: finalImageUrl || null
     })
     .eq('id', objetEnCoursMenu.id)

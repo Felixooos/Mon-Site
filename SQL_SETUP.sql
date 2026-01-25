@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS objets_boutique (
   prix INTEGER NOT NULL,
   image_url TEXT,
   type VARCHAR(20) NOT NULL CHECK (type IN ('principal', 'petit')),
+  quantite INTEGER NOT NULL DEFAULT 1,
   created_at TIMESTAMP DEFAULT NOW()
 );
 
