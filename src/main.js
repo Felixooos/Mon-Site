@@ -27,8 +27,15 @@ const homeScreen = document.querySelector('#home-screen')
 const loginScreen = document.querySelector('#login-screen')
 const otpScreen = document.querySelector('#otp-screen')
 const welcomeScreen = document.querySelector('#welcome-screen')
-const pointsCount = document.querySelector('#points-count')
+const leaderboard = document.querySelector('#leaderboard')
+const searchUsers = document.querySelector('#search-users')
+const userName = document.querySelector('#user-name')
+const userSolde = document.querySelector('#user-solde')
+const userRank = document.querySelector('#user-rank')
 const btnAddPoints = document.querySelector('#btn-add-points')
+
+let currentUserEmail = ''
+let allUsers = []
 
 function setEcran(nom) {
   homeScreen.classList.add('hidden')
@@ -198,13 +205,44 @@ async function gererEtudiant(emailUser) {
 
   if (etudiant) {
     console.log("Affichage du profil, solde:", etudiant.solde)
-    pointsCount.textContent = etudiant.solde
+    displayWelcomeScreen(emailUser)
   } else {
     console.warn("Étudiant non trouvé après vérification")
   }
+}
 
-  btnAddPoints.removeEventListener('click', addPointsHandler)
-  btnAddPoints.addEventListener('click', addPointsHandler)
+async function displayWelcomeScreen(userEmail) {
+  currentUserEmail = userEmail
+  try {
+    const { data: users, error } = await supabase
+      .from('etudiants')
+      .select('*')
+      .order('solde', { ascending: false })
+    
+    if (error) {
+      console.error("Erreur récupération utilisateurs:", error)
+      allUsers = []
+    } else {
+      allUsers = users || []
+    }
+    
+    // Trouver la place de l'utilisateur connecté
+    const userIndex = allUsers.findIndex(u => u.email === userEmail)
+    if (userIndex >= 0) {
+      const currentUser = allUsers[userIndex]
+      const displayName = userEmail.split('@')[0]
+      const rank = userIndex + 1
+      const rankText = rank === 1 ? '🥇 1ère place' : rank === 2 ? '🥈 2ème place' : rank === 3 ? '🥉 3ème place' : `${rank}ème place`
+      
+      userRank.textContent = rankText
+      userName.textContent = displayName.toUpperCase()
+      userSolde.textContent = `💰 ${currentUser.solde} points`
+    }
+    
+    afficherClassement(allUsers)
+  } catch (err) {
+    console.error("Erreur displayWelcomeScreen:", err)
+  }
 }
 
 async function addPointsHandler() {
@@ -240,11 +278,67 @@ async function addPointsHandler() {
       return
     }
 
-    pointsCount.textContent = newBalance
+    // Rafraîchir le classement
+    const { data: users } = await supabase
+      .from('etudiants')
+      .select('*')
+      .order('solde', { ascending: false })
+    
+    allUsers = users || []
+    afficherClassement(allUsers)
     alert('✅ +10 points ! 🎉')
   } catch (err) {
     console.error("Erreur:", err)
     alert("Une erreur s'est produite")
+  }
+}
+
+function afficherClassement(users) {
+  leaderboard.innerHTML = ''
+
+  users.forEach((user, index) => {
+    const isCurrentUser = user.email === currentUserEmail
+    const badge = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`
+    
+    const userRow = document.createElement('div')
+    userRow.style.cssText = `
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      background: ${isCurrentUser ? '#667eea' : 'white'};
+      color: ${isCurrentUser ? 'white' : '#333'};
+      border-radius: 8px;
+      border: ${isCurrentUser ? '2px solid #667eea' : '1px solid #ddd'};
+      font-weight: ${isCurrentUser ? 'bold' : 'normal'};
+    `
+    
+    userRow.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
+        <span style="font-size: 20px; min-width: 30px;">${badge}</span>
+        <div>
+          <p style="margin: 0; font-weight: bold;">${user.email.split('@')[0]}</p>
+          <p style="margin: 3px 0 0 0; font-size: 12px; opacity: 0.8;">${user.email}</p>
+        </div>
+      </div>
+      <div style="text-align: right; font-size: 18px; font-weight: bold;">
+        💰 ${user.solde} pts
+      </div>
+    `
+    
+    leaderboard.appendChild(userRow)
+  })
+
+  // Ajouter une séparation après l'utilisateur courant
+  const currentUserIndex = users.findIndex(u => u.email === currentUserEmail)
+  if (currentUserIndex >= 0 && currentUserIndex < users.length - 1) {
+    const separator = document.createElement('div')
+    separator.style.cssText = 'height: 2px; background: #ddd; margin: 10px 0;'
+    const rows = leaderboard.querySelectorAll('div')
+    if (rows.length > currentUserIndex) {
+      rows[currentUserIndex].parentNode.insertBefore(separator, rows[currentUserIndex + 1])
+    }
   }
 }
 
@@ -298,5 +392,12 @@ document.querySelector('#btn-logout').addEventListener('click', async () => {
   setEcran('home')
 })
 
-// ==================== INITIALISATION ====================
+// Barre de recherche
+searchUsers.addEventListener('input', (e) => {
+  const query = e.target.value.toLowerCase()
+  const filtered = allUsers.filter(user => 
+    user.email.toLowerCase().includes(query)
+  )
+  afficherClassement(filtered)
+})
 checkSession()

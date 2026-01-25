@@ -138,15 +138,25 @@
         <button id="btn-verify" style="width: 100%;">Vérifier le code</button>
       </div>
 
-      <!-- Écran Bienvenue (connecté) -->
+      <!-- Écran Bienvenue (connecté) - Classement -->
       <div id="welcome-screen" class="container hidden">
-        <h1>🎉 Bienvenue !</h1>
-        <div class="points-display">
-          <p>Vos points :</p>
-          <h2 id="points-count">0</h2>
+        <h1>🏆 Classement</h1>
+        
+        <div id="user-profile" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
+          <p id="user-rank" style="font-size: 18px; margin: 0; color: white; font-weight: bold;"></p>
+          <p id="user-name" style="font-size: 28px; font-weight: bold; margin: 8px 0 12px 0; color: white;"></p>
+          <p id="user-solde" style="font-size: 22px; margin: 0; color: white; font-weight: bold;"></p>
         </div>
-        <button id="btn-add-points">Gagner +10 points</button>
-        <button id="btn-logout" style="background: #ff6b6b; margin-top: 20px;">Se déconnecter</button>
+        
+        <div style="margin-bottom: 20px;">
+          <input type="text" id="search-users" placeholder="🔍 Chercher un utilisateur..." style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; margin-bottom: 15px;" />
+        </div>
+
+        <div id="leaderboard" style="background: #f9f9f9; padding: 20px; border-radius: 10px; max-height: 600px; overflow-y: auto;">
+          <!-- Les utilisateurs vont s'afficher ici -->
+        </div>
+
+        <button id="btn-logout" style="background: #ff6b6b; margin-top: 20px; width: 100%;">Se déconnecter</button>
       </div>
 
     </div>

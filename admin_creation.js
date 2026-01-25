@@ -10,16 +10,16 @@ console.log("2. Connexion à Supabase...");
 const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
 const utilisateurs = [
-  { email: 'arthur.roi@ecole.fr', code: '84920112', solde: 1500 },
-  { email: 'lea.dubois@ecole.fr', code: '11029384', solde: 200 },
-  { email: 'thomas.bg@ecole.fr', code: '55930211', solde: 0 },
-  { email: 'julie.petit@ecole.fr', code: '77482910', solde: 50 },
-  { email: 'lucas.gamer@ecole.fr', code: '99382019', solde: 100 },
-  { email: 'emma.boss@ecole.fr', code: '33441122', solde: 9999 },
-  { email: 'hugo.dormeur@ecole.fr', code: '66554433', solde: 10 },
-  { email: 'chloe.star@ecole.fr', code: '12341234', solde: 450 },
-  { email: 'nathan.pro@ecole.fr', code: '98765432', solde: 1200 },
-  { email: 'zoe.artist@ecole.fr', code: '56789012', solde: 300 }
+  { email: 'arthur.roi@centralelille.fr', code: '84920112', solde: 1500 },
+  { email: 'lea.dubois@centralelille.fr', code: '11029384', solde: 200 },
+  { email: 'thomas.bg@centralelille.fr', code: '55930211', solde: 0 },
+  { email: 'julie.petit@centralelille.fr', code: '77482910', solde: 50 },
+  { email: 'lucas.gamer@centralelille.fr', code: '99382019', solde: 100 },
+  { email: 'emma.boss@centralelille.fr', code: '33441122', solde: 9999 },
+  { email: 'hugo.dormeur@centralelille.fr', code: '66554433', solde: 10 },
+  { email: 'chloe.star@centralelille.fr', code: '12341234', solde: 450 },
+  { email: 'nathan.pro@centralelille.fr', code: '98765432', solde: 1200 },
+  { email: 'zoe.artist@centralelille.fr', code: '56789012', solde: 300 }
 ]
 
 async function lancerLaMoulinette() {
