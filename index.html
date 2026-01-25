@@ -276,9 +276,8 @@
 
       <!-- Écran Login (deux onglets) -->
       <div id="login-screen" class="container hidden">
-        <button id="btn-back-login" style="position: absolute; top: 35px; left: 20px; background: #333; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold;">← Retour</button>
         
-        <div id="tabs-container" style="margin-bottom: 20px; display: flex; gap: 10px;">
+        <div id="tabs-container" style="margin-bottom: 20px; margin-top: 60px; display: flex; gap: 10px;">
           <button id="tab-nouveau" style="flex: 1; background: #ddd; padding: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">C'est ma 1ère fois</button>
           <button id="tab-connu" style="flex: 1; background: white; padding: 10px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer;">J'ai déjà un compte</button>
         </div>
@@ -296,17 +295,20 @@
           <input type="text" id="code-connexion" placeholder="Ton Code (8 chiffres)" maxlength="8" style="padding: 10px; width: 100%; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px;" />
           <button id="btn-login-code" style="width: 100%;">Me connecter</button>
         </div>
+        
+        <button id="btn-back-login" style="width: 100%; background: #333; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 20px;">← Retour</button>
       </div>
 
       <!-- Écran OTP (vérification du mail) -->
       <div id="otp-screen" class="container hidden">
-        <button id="btn-back-otp" style="position: absolute; top: 35px; left: 20px; background: #333; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold;">← Retour</button>
         
-        <h1>Vérification</h1>
+        <h1 style="margin-top: 60px;">Vérification</h1>
         <p>Code envoyé ! Regarde tes mails.</p>
         <p>Code envoyé ! Regarde tes mails.</p>
         <input type="text" id="otp" placeholder="Code reçu par mail" maxlength="8" style="padding: 10px; width: 100%; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px;" />
         <button id="btn-verify" style="width: 100%;">Vérifier le code</button>
+        
+        <button id="btn-back-otp" style="width: 100%; background: #333; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 20px;">← Retour</button>
       </div>
 
       <!-- Écran Bienvenue (connecté) - Classement -->
