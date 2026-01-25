@@ -107,6 +107,7 @@
           margin-bottom: 15px;
           word-wrap: break-word;
           overflow-wrap: break-word;
+          white-space: nowrap;
         }
         p {
           font-size: 15px;
@@ -162,12 +163,26 @@
           box-sizing: border-box;
         }
         #leaderboard > div {
-          padding: 10px 12px !important;
+          padding: 10px 8px !important;
           margin-bottom: 8px !important;
           font-size: 14px;
           word-wrap: break-word;
           overflow-wrap: break-word;
           overflow: hidden;
+          display: flex !important;
+          justify-content: space-between !important;
+          align-items: center !important;
+          min-height: 50px;
+        }
+        #leaderboard > div > div:first-child {
+          flex: 1;
+          min-width: 0;
+          overflow: hidden;
+        }
+        #leaderboard > div > div:last-child {
+          flex-shrink: 0;
+          margin-left: 10px;
+          white-space: nowrap;
         }
         #tabs-container button {
           font-size: 14px;
