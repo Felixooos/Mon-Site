@@ -93,6 +93,67 @@
         display: none !important;
       }
 
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      .modal.hidden {
+        display: none;
+      }
+      .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+      }
+      .modal-content h3 {
+        margin-bottom: 15px;
+      }
+      .modal-content label {
+        display: block;
+        margin-top: 12px;
+        margin-bottom: 5px;
+        text-align: left;
+        font-weight: bold;
+      }
+      .modal-content input {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        box-sizing: border-box;
+      }
+      .modal-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 15px;
+      }
+      .modal-buttons button {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
       /* RESPONSIVE - Mobile First */
       @media (max-width: 600px) {
         #app {
@@ -266,6 +327,25 @@
         </div>
 
         <button id="btn-logout" style="background: #ff6b6b; margin-top: 20px; width: 100%;">Se déconnecter</button>
+      </div>
+
+      <!-- Modal Admin -->
+      <div id="admin-modal" class="modal hidden">
+        <div class="modal-content">
+          <h3>👑 Zone Admin</h3>
+          <p>Ajouter des points à : <span id="admin-target-user" style="font-weight:bold; color:#e63946;"></span></p>
+          
+          <label>Montant (ex: 50 ou -10)</label>
+          <input type="number" id="admin-amount" placeholder="50">
+          
+          <label>Raison (Obligatoire)</label>
+          <input type="text" id="admin-reason" placeholder="Victoire au Quizz...">
+          
+          <div class="modal-buttons">
+            <button id="btn-cancel-admin" style="background:#999; flex: 1;">Annuler</button>
+            <button id="btn-confirm-admin" style="background:#2a9d8f; flex: 1;">Valider</button>
+          </div>
+        </div>
       </div>
 
     </div>

@@ -36,6 +36,8 @@ const btnAddPoints = document.querySelector('#btn-add-points')
 
 let currentUserEmail = ''
 let allUsers = []
+let jeSuisAdmin = false
+let emailAdmin = ''
 
 function setEcran(nom) {
   homeScreen.classList.add('hidden')
@@ -205,6 +207,9 @@ async function gererEtudiant(emailUser) {
 
   if (etudiant) {
     console.log("Affichage du profil, solde:", etudiant.solde)
+    jeSuisAdmin = etudiant.is_admin || false
+    emailAdmin = etudiant.email
+    if (jeSuisAdmin) console.log("👑 MODE ADMIN ACTIVÉ")
     displayWelcomeScreen(emailUser)
   } else {
     console.warn("Étudiant non trouvé après vérification")
@@ -319,7 +324,7 @@ function afficherClassement(users) {
     userRow.innerHTML = `
       <div style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; overflow: hidden;">
         <span style="font-size: 18px; flex-shrink: 0;">${badge}</span>
-        <div style="min-width: 0; overflow: hidden; flex: 1;">
+        <div style="min-width: 0; overflow: hidden; flex: 1; cursor: ${jeSuisAdmin ? 'pointer' : 'default'};">
           <p style="margin: 0; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">${user.email.split('@')[0]}</p>
         </div>
       </div>
@@ -327,6 +332,14 @@ function afficherClassement(users) {
         💰 ${user.solde}
       </div>
     `
+    
+    // Rendre cliquable si admin
+    if (jeSuisAdmin && !isCurrentUser) {
+      userRow.style.cursor = 'pointer'
+      userRow.addEventListener('click', () => {
+        ouvrirModalAdmin(user.email, user.solde)
+      })
+    }
     
     leaderboard.appendChild(userRow)
   })
@@ -401,4 +414,75 @@ searchUsers.addEventListener('input', (e) => {
   )
   afficherClassement(filtered)
 })
+
+// ==================== LOGIQUE ADMIN ====================
+const adminModal = document.querySelector('#admin-modal')
+const adminTargetSpan = document.querySelector('#admin-target-user')
+let cibleEmail = ""
+let cibleAncienSolde = 0
+
+function ouvrirModalAdmin(emailCible, soldeActuel) {
+  cibleEmail = emailCible
+  cibleAncienSolde = soldeActuel
+  adminTargetSpan.textContent = emailCible
+  document.querySelector('#admin-amount').value = ''
+  document.querySelector('#admin-reason').value = ''
+  adminModal.classList.remove('hidden')
+}
+
+// Bouton Annuler
+document.querySelector('#btn-cancel-admin').addEventListener('click', () => {
+  adminModal.classList.add('hidden')
+})
+
+// Bouton Valider
+document.querySelector('#btn-confirm-admin').addEventListener('click', async () => {
+  const montant = parseInt(document.querySelector('#admin-amount').value)
+  const raison = document.querySelector('#admin-reason').value.trim()
+
+  if (!montant || !raison) {
+    alert("Il faut un montant et une raison !")
+    return
+  }
+
+  // 1. Calcul du nouveau solde
+  const nouveauSolde = cibleAncienSolde + montant
+
+  // 2. Mise à jour du solde de l'étudiant
+  const { error: errorUpdate } = await supabase
+    .from('etudiants')
+    .update({ solde: nouveauSolde })
+    .eq('email', cibleEmail)
+
+  if (errorUpdate) {
+    alert("Erreur mise à jour : " + errorUpdate.message)
+    return
+  }
+
+  // 3. Enregistrement de la transaction (La Trace)
+  const { error: errorTransac } = await supabase
+    .from('transactions')
+    .insert([{
+      destinataire_email: cibleEmail,
+      admin_email: emailAdmin,
+      montant: montant,
+      raison: raison
+    }])
+
+  if (errorTransac) console.error("Erreur log transaction", errorTransac)
+
+  // 4. Succès
+  alert(`✅ Transaction réussie !\n${montant} points ajoutés à ${cibleEmail}.`)
+  adminModal.classList.add('hidden')
+  
+  // Recharger le classement
+  const { data: users } = await supabase
+    .from('etudiants')
+    .select('*')
+    .order('solde', { ascending: false })
+  
+  allUsers = users || []
+  afficherClassement(allUsers)
+})
+
 checkSession()
