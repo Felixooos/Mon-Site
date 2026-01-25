@@ -10,6 +10,8 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        word-break: keep-all;
+        hyphens: manual;
       }
       body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -113,7 +115,9 @@
           margin-bottom: 15px;
           word-wrap: break-word;
           overflow-wrap: break-word;
-          font-weight: 500;
+          font-weight: 600;
+          hyphens: manual;
+          word-break: keep-all;
         }
         input {
           padding: 14px;
@@ -226,7 +230,7 @@
 
         <!-- Formulaire Connexion -->
         <div id="form-connexion" style="display: none;">
-          <p>Connecte-toi avec ton code !</p>
+          <p style="font-size: 18px; font-weight: 700;">Connecte-toi avec ton code !</p>
           <input type="text" id="code-connexion" placeholder="Ton Code (8 chiffres)" maxlength="8" style="padding: 10px; width: 100%; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px;" />
           <button id="btn-login-code" style="width: 100%;">Me connecter</button>
         </div>
