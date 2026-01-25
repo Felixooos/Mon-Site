@@ -485,4 +485,24 @@ document.querySelector('#btn-confirm-admin').addEventListener('click', async () 
   afficherClassement(allUsers)
 })
 
+// ==================== ONGLETS CLASSEMENT/BOUTIQUE ====================
+const tabClassement = document.querySelector('#tab-classement')
+const tabBoutique = document.querySelector('#tab-boutique')
+const classementScreen = document.querySelector('#classement-screen')
+const boutiqueScreen = document.querySelector('#boutique-screen')
+
+tabClassement.addEventListener('click', () => {
+  classementScreen.style.display = 'block'
+  boutiqueScreen.style.display = 'none'
+  tabClassement.style.background = '#e74c3c'
+  tabBoutique.style.background = '#bdc3c7'
+})
+
+tabBoutique.addEventListener('click', () => {
+  classementScreen.style.display = 'none'
+  boutiqueScreen.style.display = 'block'
+  tabClassement.style.background = '#bdc3c7'
+  tabBoutique.style.background = '#e74c3c'
+})
+
 checkSession()
