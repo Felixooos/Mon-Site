@@ -305,25 +305,26 @@ function afficherClassement(users) {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 15px;
-      margin-bottom: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
       background: ${isCurrentUser ? '#667eea' : 'white'};
       color: ${isCurrentUser ? 'white' : '#333'};
       border-radius: 8px;
       border: ${isCurrentUser ? '2px solid #667eea' : '1px solid #ddd'};
       font-weight: ${isCurrentUser ? 'bold' : 'normal'};
+      overflow: hidden;
+      gap: 12px;
     `
     
     userRow.innerHTML = `
-      <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; overflow: hidden;">
-        <span style="font-size: 18px; min-width: 28px; flex-shrink: 0;">${badge}</span>
-        <div style="min-width: 0; overflow: hidden;">
-          <p style="margin: 0; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${user.email.split('@')[0]}</p>
-          <p style="margin: 3px 0 0 0; font-size: 11px; opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${user.email}</p>
+      <div style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; overflow: hidden;">
+        <span style="font-size: 18px; flex-shrink: 0;">${badge}</span>
+        <div style="min-width: 0; overflow: hidden; flex: 1;">
+          <p style="margin: 0; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">${user.email.split('@')[0]}</p>
         </div>
       </div>
-      <div style="text-align: right; font-size: 16px; font-weight: bold; flex-shrink: 0; margin-left: 12px; white-space: nowrap;">
-        💰 ${user.solde} pts
+      <div style="text-align: right; font-size: 15px; font-weight: bold; flex-shrink: 0; white-space: nowrap; padding-left: 8px;">
+        💰 ${user.solde}
       </div>
     `
     

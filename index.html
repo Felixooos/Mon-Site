@@ -156,7 +156,7 @@
         }
         #leaderboard {
           max-height: 500px !important;
-          padding: 12px !important;
+          padding: 8px !important;
           overflow-y: scroll;
           overflow-x: hidden;
           width: 100%;
@@ -164,7 +164,7 @@
         }
         #leaderboard > div {
           padding: 10px 8px !important;
-          margin-bottom: 8px !important;
+          margin-bottom: 6px !important;
           font-size: 14px;
           word-wrap: break-word;
           overflow-wrap: break-word;
@@ -172,17 +172,23 @@
           display: flex !important;
           justify-content: space-between !important;
           align-items: center !important;
-          min-height: 50px;
+          min-height: 45px;
+          width: 100%;
+          box-sizing: border-box;
         }
         #leaderboard > div > div:first-child {
           flex: 1;
           min-width: 0;
           overflow: hidden;
+          display: flex;
+          gap: 6px;
+          align-items: center;
         }
         #leaderboard > div > div:last-child {
           flex-shrink: 0;
-          margin-left: 10px;
+          margin-left: 8px;
           white-space: nowrap;
+          font-size: 14px;
         }
         #tabs-container button {
           font-size: 14px;
