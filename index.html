@@ -18,6 +18,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        scrollbar-gutter: stable;
       }
       #app {
         width: 100%;
@@ -98,51 +99,75 @@
         .container {
           padding: 20px;
           border-radius: 10px;
+          width: 100%;
+          overflow-x: hidden;
         }
         h1 {
           font-size: 24px;
           margin-bottom: 15px;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
         }
         p {
           font-size: 15px;
           margin-bottom: 15px;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
         }
         input {
           padding: 14px;
           margin-bottom: 12px;
           font-size: 16px;
           border-radius: 8px;
+          width: 100%;
+          box-sizing: border-box;
         }
         button {
           padding: 14px;
           font-size: 16px;
           margin-top: 8px;
           border-radius: 8px;
+          width: 100%;
         }
         #user-profile {
           padding: 18px !important;
           margin-bottom: 18px !important;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
         }
         #user-rank {
           font-size: 16px !important;
           margin: 0 !important;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
         }
         #user-name {
-          font-size: 24px !important;
+          font-size: 20px !important;
           margin: 8px 0 10px 0 !important;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
         }
         #user-solde {
-          font-size: 20px !important;
+          font-size: 18px !important;
           margin: 0 !important;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
         }
         #leaderboard {
           max-height: 500px !important;
-          padding: 15px !important;
+          padding: 12px !important;
+          overflow-y: scroll;
+          overflow-x: hidden;
+          width: 100%;
+          box-sizing: border-box;
         }
         #leaderboard > div {
           padding: 10px 12px !important;
           margin-bottom: 8px !important;
-          font-size: 15px;
+          font-size: 14px;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+          overflow: hidden;
         }
         #tabs-container button {
           font-size: 14px;
