@@ -1,8 +1,8 @@
--- Créer la table pour stocker les codes OTP temporaires
+s-- Créer la table pour stocker les codes OTP temporaires
 CREATE TABLE otp_codes (
   id BIGSERIAL PRIMARY KEY,
   email VARCHAR(255) NOT NULL,
-  code VARCHAR(6) NOT NULL,
+  code VARCHAR(8) NOT NULL,
   created_at TIMESTAMP NOT NULL,
   expires_at TIMESTAMP NOT NULL,
   created_at_timestamp TIMESTAMP DEFAULT NOW()
@@ -29,3 +29,73 @@ CREATE POLICY "Allow select otp_codes" ON otp_codes
 CREATE POLICY "Allow delete otp_codes" ON otp_codes
   FOR DELETE
   USING (true);
+
+-- Ajouter le champ is_boutique_manager à la table etudiants
+ALTER TABLE etudiants ADD COLUMN IF NOT EXISTS is_boutique_manager BOOLEAN DEFAULT FALSE;
+
+-- Table pour les objets de la boutique
+CREATE TABLE IF NOT EXISTS objets_boutique (
+  id BIGSERIAL PRIMARY KEY,
+  nom VARCHAR(255) NOT NULL,
+  prix INTEGER NOT NULL,
+  image_url TEXT,
+  type VARCHAR(20) NOT NULL CHECK (type IN ('principal', 'petit')),
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Table pour les achats
+CREATE TABLE IF NOT EXISTS achats (
+  id BIGSERIAL PRIMARY KEY,
+  acheteur_email VARCHAR(255) NOT NULL,
+  objet_id BIGINT NOT NULL REFERENCES objets_boutique(id) ON DELETE CASCADE,
+  prix_paye INTEGER NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Politiques RLS pour objets_boutique
+ALTER TABLE objets_boutique ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Tout le monde peut voir les objets" ON objets_boutique
+  FOR SELECT
+  USING (true);
+
+CREATE POLICY "Seuls les gestionnaires peuvent ajouter des objets" ON objets_boutique
+  FOR INSERT
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM etudiants 
+      WHERE email = auth.jwt() ->> 'email' 
+      AND is_boutique_manager = true
+    )
+  );
+
+CREATE POLICY "Seuls les gestionnaires peuvent modifier des objets" ON objets_boutique
+  FOR UPDATE
+  USING (
+    EXISTS (
+      SELECT 1 FROM etudiants 
+      WHERE email = auth.jwt() ->> 'email' 
+      AND is_boutique_manager = true
+    )
+  );
+
+CREATE POLICY "Seuls les gestionnaires peuvent supprimer des objets" ON objets_boutique
+  FOR DELETE
+  USING (
+    EXISTS (
+      SELECT 1 FROM etudiants 
+      WHERE email = auth.jwt() ->> 'email' 
+      AND is_boutique_manager = true
+    )
+  );
+
+-- Politiques RLS pour achats
+ALTER TABLE achats ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Les utilisateurs voient leurs propres achats" ON achats
+  FOR SELECT
+  USING (acheteur_email = auth.jwt() ->> 'email');
+
+CREATE POLICY "Les utilisateurs peuvent acheter" ON achats
+  FOR INSERT
+  WITH CHECK (acheteur_email = auth.jwt() ->> 'email');

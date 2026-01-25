@@ -88,8 +88,8 @@ document.querySelector('#btn-verify').addEventListener('click', async () => {
     return
   }
 
-  if (!token || token.length !== 6) {
-    alert('Le code doit contenir exactement 6 chiffres !')
+  if (!token || token.length !== 8) {
+    alert('Le code doit contenir exactement 8 chiffres !')
     return
   }
 
@@ -208,8 +208,14 @@ async function gererEtudiant(emailUser) {
   if (etudiant) {
     console.log("Affichage du profil, solde:", etudiant.solde)
     jeSuisAdmin = etudiant.is_admin || false
+    jeSuisBoutiqueManager = etudiant.is_boutique_manager || false
     emailAdmin = etudiant.email
     if (jeSuisAdmin) console.log("👑 MODE ADMIN ACTIVÉ")
+    if (jeSuisBoutiqueManager) {
+      console.log("🛍️ MODE GESTIONNAIRE BOUTIQUE ACTIVÉ")
+      // Afficher le sous-onglet de gestion boutique
+      document.querySelector('#sous-tab-gerer-boutique').style.display = 'block'
+    }
     displayWelcomeScreen(emailUser)
   } else {
     console.warn("Étudiant non trouvé après vérification")
@@ -488,21 +494,371 @@ document.querySelector('#btn-confirm-admin').addEventListener('click', async () 
 // ==================== ONGLETS CLASSEMENT/BOUTIQUE ====================
 const tabClassement = document.querySelector('#tab-classement')
 const tabBoutique = document.querySelector('#tab-boutique')
+const tabMoi = document.querySelector('#tab-moi')
 const classementScreen = document.querySelector('#classement-screen')
 const boutiqueScreen = document.querySelector('#boutique-screen')
+const moiScreen = document.querySelector('#moi-screen')
 
+let jeSuisBoutiqueManager = false
+let objetEnCoursAchat = null
+
+// Gestion des onglets principaux
 tabClassement.addEventListener('click', () => {
   classementScreen.style.display = 'block'
   boutiqueScreen.style.display = 'none'
-  tabClassement.style.background = '#e74c3c'
-  tabBoutique.style.background = '#bdc3c7'
+  moiScreen.style.display = 'none'
+  tabClassement.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)'
+  tabClassement.style.color = 'white'
+  tabBoutique.style.background = 'white'
+  tabBoutique.style.color = '#333'
+  tabMoi.style.background = 'white'
+  tabMoi.style.color = '#333'
 })
 
-tabBoutique.addEventListener('click', () => {
+tabBoutique.addEventListener('click', async () => {
   classementScreen.style.display = 'none'
   boutiqueScreen.style.display = 'block'
-  tabClassement.style.background = '#bdc3c7'
-  tabBoutique.style.background = '#e74c3c'
+  moiScreen.style.display = 'none'
+  tabClassement.style.background = 'white'
+  tabClassement.style.color = '#333'
+  tabBoutique.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)'
+  tabBoutique.style.color = 'white'
+  tabMoi.style.background = 'white'
+  tabMoi.style.color = '#333'
+  
+  await chargerObjetsBoutique()
+})
+
+tabMoi.addEventListener('click', async () => {
+  classementScreen.style.display = 'none'
+  boutiqueScreen.style.display = 'none'
+  moiScreen.style.display = 'block'
+  tabClassement.style.background = 'white'
+  tabClassement.style.color = '#333'
+  tabBoutique.style.background = 'white'
+  tabBoutique.style.color = '#333'
+  tabMoi.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)'
+  tabMoi.style.color = 'white'
+  
+  await chargerMesAchats()
+})
+
+// Sous-onglets de Moi
+const sousTabMesAchats = document.querySelector('#sous-tab-mes-achats')
+const sousTabGererBoutique = document.querySelector('#sous-tab-gerer-boutique')
+const mesAchatsContent = document.querySelector('#mes-achats-content')
+const gererBoutiqueContent = document.querySelector('#gerer-boutique-content')
+
+sousTabMesAchats.addEventListener('click', async () => {
+  mesAchatsContent.style.display = 'block'
+  gererBoutiqueContent.style.display = 'none'
+  sousTabMesAchats.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)'
+  sousTabMesAchats.style.color = 'white'
+  sousTabGererBoutique.style.background = '#f0f0f0'
+  sousTabGererBoutique.style.color = '#333'
+  await chargerMesAchats()
+})
+
+sousTabGererBoutique.addEventListener('click', async () => {
+  mesAchatsContent.style.display = 'none'
+  gererBoutiqueContent.style.display = 'block'
+  sousTabMesAchats.style.background = '#f0f0f0'
+  sousTabMesAchats.style.color = '#333'
+  sousTabGererBoutique.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)'
+  sousTabGererBoutique.style.color = 'white'
+  await chargerObjetsGestion()
+})
+
+// ==================== FONCTIONS BOUTIQUE ====================
+
+async function chargerObjetsBoutique() {
+  const { data: objets, error } = await supabase
+    .from('objets_boutique')
+    .select('*')
+    .order('created_at', { ascending: false })
+  
+  if (error) {
+    console.error('Erreur chargement objets:', error)
+    return
+  }
+  
+  // Afficher les objets dans la boutique
+  const principal = objets.find(o => o.type === 'principal')
+  const petits = objets.filter(o => o.type === 'petit').slice(0, 3)
+  
+  // Item principal
+  const itemPrincipal = document.querySelector('#item-principal')
+  if (principal) {
+    itemPrincipal.innerHTML = `
+      <div style="background: rgba(255,255,255,0.2); width: 150px; height: 150px; border-radius: 10px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 60px; background-image: url('${principal.image_url || ''}'); background-size: cover; background-position: center;">${!principal.image_url ? '📸' : ''}</div>
+      <h3 style="margin: 10px 0; font-size: 20px;">${principal.nom}</h3>
+      <p style="font-size: 24px; font-weight: bold; margin: 10px 0;">💰 ${principal.prix} pts</p>
+      <button onclick="confirmerAchat(${principal.id}, '${principal.nom}', ${principal.prix})" style="background: white; color: #e74c3c; margin-top: 10px; width: 60%; margin-left: auto; margin-right: auto;">Acheter</button>
+    `
+  } else {
+    itemPrincipal.innerHTML = `
+      <div style="background: rgba(255,255,255,0.2); width: 150px; height: 150px; border-radius: 10px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 60px;">📸</div>
+      <p style="color: white;">Aucun objet principal</p>
+    `
+  }
+  
+  // Petits items
+  const container3Items = boutiqueScreen.querySelector('div[style*="display: flex"]')
+  let html3Items = ''
+  
+  for (let i = 0; i < 3; i++) {
+    const petit = petits[i]
+    if (petit) {
+      html3Items += `
+        <div style="flex: 1; background: #f0f0f0; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #e74c3c;">
+          <div style="background: #ddd; width: 100%; height: 80px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; background-image: url('${petit.image_url || ''}'); background-size: cover; background-position: center;">${!petit.image_url ? '📸' : ''}</div>
+          <h4 style="margin: 8px 0; font-size: 14px;">${petit.nom}</h4>
+          <p style="font-weight: bold; color: #e74c3c; margin: 5px 0; font-size: 16px;">${petit.prix} pts</p>
+          <button onclick="confirmerAchat(${petit.id}, '${petit.nom}', ${petit.prix})" style="font-size: 12px; padding: 8px; margin: 5px 0 0 0; width: 100%;">Acheter</button>
+        </div>
+      `
+    } else {
+      html3Items += `
+        <div style="flex: 1; background: #f0f0f0; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #ddd;">
+          <div style="background: #ddd; width: 100%; height: 80px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px;">📸</div>
+          <p style="font-size: 12px; color: #999;">Vide</p>
+        </div>
+      `
+    }
+  }
+  
+  container3Items.innerHTML = html3Items
+}
+
+// Fonction globale pour confirmer achat
+window.confirmerAchat = async function(objetId, objetNom, objetPrix) {
+  objetEnCoursAchat = { id: objetId, nom: objetNom, prix: objetPrix }
+  
+  // Récupérer le solde actuel
+  const { data: etudiant } = await supabase
+    .from('etudiants')
+    .select('solde')
+    .eq('email', currentUserEmail)
+    .single()
+  
+  document.querySelector('#achat-objet-nom').textContent = objetNom
+  document.querySelector('#achat-objet-prix').textContent = objetPrix
+  document.querySelector('#achat-solde-actuel').textContent = etudiant.solde
+  
+  document.querySelector('#modal-confirmer-achat').classList.remove('hidden')
+}
+
+document.querySelector('#btn-cancel-achat').addEventListener('click', () => {
+  document.querySelector('#modal-confirmer-achat').classList.add('hidden')
+  objetEnCoursAchat = null
+})
+
+document.querySelector('#btn-confirm-achat-final').addEventListener('click', async () => {
+  if (!objetEnCoursAchat) return
+  
+  // Vérifier le solde
+  const { data: etudiant } = await supabase
+    .from('etudiants')
+    .select('solde')
+    .eq('email', currentUserEmail)
+    .single()
+  
+  if (etudiant.solde < objetEnCoursAchat.prix) {
+    alert('Solde insuffisant !')
+    return
+  }
+  
+  // Débiter les points
+  const nouveauSolde = etudiant.solde - objetEnCoursAchat.prix
+  await supabase
+    .from('etudiants')
+    .update({ solde: nouveauSolde })
+    .eq('email', currentUserEmail)
+  
+  // Enregistrer l'achat
+  const { error } = await supabase
+    .from('achats')
+    .insert({
+      acheteur_email: currentUserEmail,
+      objet_id: objetEnCoursAchat.id,
+      prix_paye: objetEnCoursAchat.prix
+    })
+  
+  if (error) {
+    alert('Erreur lors de l\'achat')
+    console.error(error)
+    return
+  }
+  
+  alert('Achat effectué !')
+  document.querySelector('#modal-confirmer-achat').classList.add('hidden')
+  objetEnCoursAchat = null
+  
+  // Rafraîchir le classement
+  displayWelcomeScreen()
+})
+
+// ==================== FONCTIONS MES ACHATS ====================
+
+async function chargerMesAchats() {
+  const { data: achats, error } = await supabase
+    .from('achats')
+    .select(`
+      *,
+      objets_boutique (nom, prix, image_url)
+    `)
+    .eq('acheteur_email', currentUserEmail)
+    .order('created_at', { ascending: false })
+  
+  if (error) {
+    console.error('Erreur chargement achats:', error)
+    return
+  }
+  
+  const listeMesAchats = document.querySelector('#liste-mes-achats')
+  
+  if (achats.length === 0) {
+    listeMesAchats.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">Aucun achat pour le moment</p>'
+    return
+  }
+  
+  let html = ''
+  achats.forEach(achat => {
+    const objet = achat.objets_boutique
+    const date = new Date(achat.created_at).toLocaleDateString('fr-FR')
+    html += `
+      <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 10px; display: flex; gap: 15px; align-items: center;">
+        <div style="width: 60px; height: 60px; background: #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; background-image: url('${objet.image_url || ''}'); background-size: cover;">${!objet.image_url ? '📦' : ''}</div>
+        <div style="flex: 1;">
+          <h4 style="margin: 0 0 5px 0; color: #333;">${objet.nom}</h4>
+          <p style="margin: 0; font-size: 14px; color: #666;">${achat.prix_paye} points - ${date}</p>
+        </div>
+      </div>
+    `
+  })
+  
+  listeMesAchats.innerHTML = html
+}
+
+// ==================== FONCTIONS GESTION BOUTIQUE ====================
+
+async function chargerObjetsGestion() {
+  const { data: objets, error } = await supabase
+    .from('objets_boutique')
+    .select('*')
+    .order('created_at', { ascending: false })
+  
+  if (error) {
+    console.error('Erreur chargement objets gestion:', error)
+    return
+  }
+  
+  const listeObjetsGestion = document.querySelector('#liste-objets-gestion')
+  
+  if (objets.length === 0) {
+    listeObjetsGestion.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">Aucun objet dans la boutique</p>'
+    return
+  }
+  
+  let html = ''
+  objets.forEach(objet => {
+    html += `
+      <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+        <div style="display: flex; gap: 15px; align-items: center;">
+          <div style="width: 60px; height: 60px; background: #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; background-image: url('${objet.image_url || ''}'); background-size: cover;">${!objet.image_url ? '📦' : ''}</div>
+          <div style="flex: 1;">
+            <h4 style="margin: 0 0 5px 0; color: #333;">${objet.nom}</h4>
+            <p style="margin: 0; font-size: 14px; color: #666;">${objet.prix} pts - ${objet.type === 'principal' ? '⭐ Principal' : '📦 Petit'}</p>
+          </div>
+          <button onclick="supprimerObjet(${objet.id})" style="background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">🗑️ Supprimer</button>
+        </div>
+      </div>
+    `
+  })
+  
+  listeObjetsGestion.innerHTML = html
+}
+
+window.supprimerObjet = async function(objetId) {
+  if (!confirm('Voulez-vous vraiment supprimer cet objet ?')) return
+  
+  const { error } = await supabase
+    .from('objets_boutique')
+    .delete()
+    .eq('id', objetId)
+  
+  if (error) {
+    alert('Erreur lors de la suppression')
+    console.error(error)
+    return
+  }
+  
+  alert('Objet supprimé !')
+  await chargerObjetsGestion()
+  await chargerObjetsBoutique()
+}
+
+document.querySelector('#btn-ajouter-objet').addEventListener('click', () => {
+  document.querySelector('#modal-ajouter-objet').classList.remove('hidden')
+})
+
+document.querySelector('#btn-cancel-objet').addEventListener('click', () => {
+  document.querySelector('#modal-ajouter-objet').classList.add('hidden')
+})
+
+document.querySelector('#btn-confirm-objet').addEventListener('click', async () => {
+  const nom = document.querySelector('#objet-nom').value.trim()
+  const prix = parseInt(document.querySelector('#objet-prix').value)
+  const imageUrl = document.querySelector('#objet-image').value.trim()
+  const type = document.querySelector('#objet-type').value
+  
+  if (!nom || !prix || prix <= 0) {
+    alert('Veuillez remplir tous les champs obligatoires')
+    return
+  }
+  
+  // Vérifier les limites
+  const { data: objetsExistants } = await supabase
+    .from('objets_boutique')
+    .select('*')
+    .eq('type', type)
+  
+  if (type === 'principal' && objetsExistants.length >= 1) {
+    alert('Il y a déjà un objet principal ! Supprimez-le d\'abord.')
+    return
+  }
+  
+  if (type === 'petit' && objetsExistants.length >= 3) {
+    alert('Il y a déjà 3 petits objets ! Supprimez-en un d\'abord.')
+    return
+  }
+  
+  // Insérer l'objet
+  const { error } = await supabase
+    .from('objets_boutique')
+    .insert({
+      nom,
+      prix,
+      image_url: imageUrl || null,
+      type
+    })
+  
+  if (error) {
+    alert('Erreur lors de l\'ajout')
+    console.error(error)
+    return
+  }
+  
+  alert('Objet ajouté !')
+  document.querySelector('#modal-ajouter-objet').classList.add('hidden')
+  
+  // Réinitialiser le formulaire
+  document.querySelector('#objet-nom').value = ''
+  document.querySelector('#objet-prix').value = ''
+  document.querySelector('#objet-image').value = ''
+  
+  await chargerObjetsGestion()
+  await chargerObjetsBoutique()
 })
 
 checkSession()
