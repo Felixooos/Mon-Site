@@ -556,55 +556,51 @@ async function chargerObjetsBoutique() {
   const principal = objets.find(o => o.type === 'principal')
   const petits = objets.filter(o => o.type === 'petit').slice(0, 3)
   
-  // Item principal
+  // Item principal (UN SEUL)
   const itemPrincipal = document.querySelector('#item-principal')
   if (principal) {
-    const divHtml = document.createElement('div')
-    divHtml.innerHTML = `
+    let html = ''
+    // Ajouter bouton 3 points si gestionnaire
+    if (jeSuisBoutiqueManager) {
+      html += `<button onclick="ouvrirMenuObjet(${principal.id}, '${principal.nom}', ${principal.prix}, '${principal.image_url || ''}', 'principal')" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center;">⋮</button>`
+    }
+    html += `
       <div style="background: rgba(255,255,255,0.2); width: 150px; height: 150px; border-radius: 10px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 60px; background-image: url('${principal.image_url || ''}'); background-size: cover; background-position: center;">${!principal.image_url ? '📸' : ''}</div>
       <h3 style="margin: 10px 0; font-size: 20px;">${principal.nom}</h3>
       <p style="font-size: 24px; font-weight: bold; margin: 10px 0;">💰 ${principal.prix} pts</p>
       <button class="btn-acheter" data-id="${principal.id}" data-nom="${principal.nom}" data-prix="${principal.prix}" style="background: white; color: #e74c3c; margin-top: 10px; width: 60%; margin-left: auto; margin-right: auto;">Acheter</button>
     `
-    itemPrincipal.innerHTML = divHtml.innerHTML
-    
-    // Ajouter long press pour gestionnaires
-    if (jeSuisBoutiqueManager) {
-      ajouterLongPress(itemPrincipal, () => supprimerObjet(principal.id, 'principal'))
-    }
+    itemPrincipal.innerHTML = html
   } else {
-    const divHtml = `
-      <div style="background: rgba(255,255,255,0.2); width: 150px; height: 150px; border-radius: 10px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 60px; cursor: ${jeSuisBoutiqueManager ? 'pointer' : 'default'};">➕</div>
+    const html = `
+      <div style="background: rgba(255,255,255,0.2); width: 150px; height: 150px; border-radius: 10px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 60px; cursor: ${jeSuisBoutiqueManager ? 'pointer' : 'default'};" ${jeSuisBoutiqueManager ? 'onclick="ouvrirModalAjout(\'principal\')"' : ''}>➕</div>
       <p style="color: white;">${jeSuisBoutiqueManager ? 'Cliquez pour ajouter' : 'Aucun objet principal'}</p>
     `
-    itemPrincipal.innerHTML = divHtml
-    
-    if (jeSuisBoutiqueManager) {
-      itemPrincipal.style.cursor = 'pointer'
-      itemPrincipal.onclick = () => ouvrirModalAjout('principal')
-    }
+    itemPrincipal.innerHTML = html
   }
   
-  // Petits items
-  const container3Items = boutiqueScreen.querySelector('div[style*="display: flex"]')
-  container3Items.innerHTML = ''
+  // 3 Petits items
+  const containerPetitsItems = document.querySelector('#container-petits-items')
+  containerPetitsItems.innerHTML = ''
   
   for (let i = 0; i < 3; i++) {
     const petit = petits[i]
     const divItem = document.createElement('div')
     
     if (petit) {
-      divItem.style.cssText = 'flex: 1; background: #f0f0f0; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #e74c3c;'
-      divItem.innerHTML = `
+      divItem.style.cssText = 'flex: 1; background: #f0f0f0; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #e74c3c; position: relative;'
+      let html = ''
+      // Ajouter bouton 3 points si gestionnaire
+      if (jeSuisBoutiqueManager) {
+        html += `<button onclick="ouvrirMenuObjet(${petit.id}, '${petit.nom}', ${petit.prix}, '${petit.image_url || ''}', 'petit')" style="position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">⋮</button>`
+      }
+      html += `
         <div style="background: #ddd; width: 100%; height: 80px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; background-image: url('${petit.image_url || ''}'); background-size: cover; background-position: center;">${!petit.image_url ? '📸' : ''}</div>
         <h4 style="margin: 8px 0; font-size: 14px;">${petit.nom}</h4>
         <p style="font-weight: bold; color: #e74c3c; margin: 5px 0; font-size: 16px;">${petit.prix} pts</p>
         <button class="btn-acheter" data-id="${petit.id}" data-nom="${petit.nom}" data-prix="${petit.prix}" style="font-size: 12px; padding: 8px; margin: 5px 0 0 0; width: 100%;">Acheter</button>
       `
-      
-      if (jeSuisBoutiqueManager) {
-        ajouterLongPress(divItem, () => supprimerObjet(petit.id, 'petit'))
-      }
+      divItem.innerHTML = html
     } else {
       divItem.style.cssText = `flex: 1; background: #f0f0f0; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #ddd; cursor: ${jeSuisBoutiqueManager ? 'pointer' : 'default'};`
       divItem.innerHTML = `
@@ -617,7 +613,8 @@ async function chargerObjetsBoutique() {
       }
     }
     
-    container3Items.appendChild(divItem)
+    containerPetitsItems.appendChild(divItem)
+  }
   }
   
   // Ajouter listeners sur les boutons acheter
@@ -632,42 +629,13 @@ async function chargerObjetsBoutique() {
   })
 }
 
-// Fonction pour ajouter un long press
-function ajouterLongPress(element, callback) {
-  let pressTimer
-  
-  element.addEventListener('mousedown', (e) => {
-    pressTimer = setTimeout(() => {
-      if (confirm('Supprimer cet objet ?')) {
-        callback()
-      }
-    }, 800) // 800ms de pression
-  })
-  
-  element.addEventListener('mouseup', () => {
-    clearTimeout(pressTimer)
-  })
-  
-  element.addEventListener('mouseleave', () => {
-    clearTimeout(pressTimer)
-  })
-  
-  // Pour mobile
-  element.addEventListener('touchstart', (e) => {
-    pressTimer = setTimeout(() => {
-      if (confirm('Supprimer cet objet ?')) {
-        callback()
-      }
-    }, 800)
-  })
-  
-  element.addEventListener('touchend', () => {
-    clearTimeout(pressTimer)
-  })
-  
-  element.addEventListener('touchcancel', () => {
-    clearTimeout(pressTimer)
-  })
+// Ouvrir menu 3 points pour un objet
+let objetEnCoursMenu = null
+
+window.ouvrirMenuObjet = function(id, nom, prix, imageUrl, type) {
+  objetEnCoursMenu = { id, nom, prix, image_url: imageUrl, type }
+  document.querySelector('#menu-objet-nom').textContent = nom
+  document.querySelector('#menu-objet').classList.remove('hidden')
 }
 
 // Ouvrir modal avec type pré-sélectionné
@@ -859,6 +827,85 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
   document.querySelector('#objet-prix').value = ''
   document.querySelector('#objet-image').value = ''
   
+  await chargerObjetsBoutique()
+})
+
+// Event listeners pour menu-objet
+document.querySelector('#btn-menu-annuler').addEventListener('click', () => {
+  document.querySelector('#menu-objet').classList.add('hidden')
+  objetEnCoursMenu = null
+})
+
+document.querySelector('#btn-menu-modifier').addEventListener('click', () => {
+  if (!objetEnCoursMenu) return
+  
+  // Pré-remplir le formulaire de modification
+  document.querySelector('#modifier-objet-nom').value = objetEnCoursMenu.nom
+  document.querySelector('#modifier-objet-prix').value = objetEnCoursMenu.prix
+  document.querySelector('#modifier-objet-image').value = objetEnCoursMenu.image_url || ''
+  
+  // Fermer le menu et ouvrir le modal de modification
+  document.querySelector('#menu-objet').classList.add('hidden')
+  document.querySelector('#modal-modifier-objet').classList.remove('hidden')
+})
+
+document.querySelector('#btn-menu-supprimer').addEventListener('click', async () => {
+  if (!objetEnCoursMenu) return
+  
+  if (!confirm(`Supprimer "${objetEnCoursMenu.nom}" ?`)) return
+  
+  const { error } = await supabase
+    .from('objets_boutique')
+    .delete()
+    .eq('id', objetEnCoursMenu.id)
+  
+  if (error) {
+    alert('Erreur lors de la suppression')
+    console.error(error)
+    return
+  }
+  
+  alert('Objet supprimé !')
+  document.querySelector('#menu-objet').classList.add('hidden')
+  objetEnCoursMenu = null
+  await chargerObjetsBoutique()
+})
+
+// Event listeners pour modal-modifier-objet
+document.querySelector('#btn-cancel-modifier').addEventListener('click', () => {
+  document.querySelector('#modal-modifier-objet').classList.add('hidden')
+})
+
+document.querySelector('#btn-confirm-modifier').addEventListener('click', async () => {
+  if (!objetEnCoursMenu) return
+  
+  const nom = document.querySelector('#modifier-objet-nom').value.trim()
+  const prix = parseInt(document.querySelector('#modifier-objet-prix').value)
+  const imageUrl = document.querySelector('#modifier-objet-image').value.trim()
+  
+  if (!nom || !prix || prix < 1) {
+    alert('Veuillez remplir tous les champs correctement')
+    return
+  }
+  
+  const { error } = await supabase
+    .from('objets_boutique')
+    .update({
+      nom,
+      prix,
+      image_url: imageUrl || null
+    })
+    .eq('id', objetEnCoursMenu.id)
+  
+  if (error) {
+    alert('Erreur lors de la modification')
+    console.error(error)
+    return
+  }
+  
+  alert('Objet modifié !')
+  document.querySelector('#modal-modifier-objet').classList.add('hidden')
+  objetEnCoursMenu = null
   await chargerObjetsBoutique()
 })
 

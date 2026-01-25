@@ -343,34 +343,14 @@
         <div id="boutique-screen" style="display: none;">
           <h2 style="text-align: center; margin-bottom: 20px;">🛍️ Notre Boutique</h2>
           
-          <!-- Item principal en haut -->
-          <div id="item-principal" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; min-height: 200px; display: flex; flex-direction: column; justify-content: center;">
-            <div style="background: rgba(255,255,255,0.2); width: 150px; height: 150px; border-radius: 10px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 60px;">📸</div>
-            <h3 style="margin: 10px 0; font-size: 20px;">Item Principal</h3>
-            <p style="font-size: 24px; font-weight: bold; margin: 10px 0;">💰 100 pts</p>
-            <button style="background: white; color: #e74c3c; margin-top: 10px; width: 60%; margin-left: auto; margin-right: auto;">Acheter</button>
+          <!-- Item principal en haut (UN SEUL) -->
+          <div id="item-principal" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; min-height: 200px; display: flex; flex-direction: column; justify-content: center; position: relative;">
+            <!-- Le contenu sera généré en JS -->
           </div>
 
-          <!-- 3 items plus petits côte à côte -->
-          <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-            <div style="flex: 1; background: #f0f0f0; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #e74c3c;">
-              <div style="background: #ddd; width: 100%; height: 80px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px;">📸</div>
-              <h4 style="margin: 8px 0; font-size: 14px;">Item 1</h4>
-              <p style="font-weight: bold; color: #e74c3c; margin: 5px 0; font-size: 16px;">50 pts</p>
-              <button style="font-size: 12px; padding: 8px; margin: 5px 0 0 0; width: 100%;">Acheter</button>
-            </div>
-            <div style="flex: 1; background: #f0f0f0; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #e74c3c;">
-              <div style="background: #ddd; width: 100%; height: 80px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px;">📸</div>
-              <h4 style="margin: 8px 0; font-size: 14px;">Item 2</h4>
-              <p style="font-weight: bold; color: #e74c3c; margin: 5px 0; font-size: 16px;">50 pts</p>
-              <button style="font-size: 12px; padding: 8px; margin: 5px 0 0 0; width: 100%;">Acheter</button>
-            </div>
-            <div style="flex: 1; background: #f0f0f0; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #e74c3c;">
-              <div style="background: #ddd; width: 100%; height: 80px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px;">📸</div>
-              <h4 style="margin: 8px 0; font-size: 14px;">Item 3</h4>
-              <p style="font-weight: bold; color: #e74c3c; margin: 5px 0; font-size: 16px;">50 pts</p>
-              <button style="font-size: 12px; padding: 8px; margin: 5px 0 0 0; width: 100%;">Acheter</button>
-            </div>
+          <!-- 3 petits items côte à côte -->
+          <div id="container-petits-items" style="display: flex; gap: 10px; margin-bottom: 20px;">
+            <!-- Les 3 items seront générés en JS -->
           </div>
         </div>
 
@@ -444,6 +424,38 @@
           <div class="modal-buttons">
             <button id="btn-cancel-achat" style="background:#999; flex: 1;">Annuler</button>
             <button id="btn-confirm-achat-final" style="background:#e74c3c; flex: 1;">Confirmer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Menu contextuel pour les 3 points -->
+      <div id="menu-objet" class="modal hidden">
+        <div class="modal-content" style="max-width: 300px;">
+          <h3>Gérer l'objet</h3>
+          <p id="menu-objet-nom" style="font-weight: bold; color: #e74c3c; margin-bottom: 15px;"></p>
+          <button id="btn-menu-modifier" style="width: 100%; background: #3498db; margin-bottom: 10px;">✏️ Modifier</button>
+          <button id="btn-menu-supprimer" style="width: 100%; background: #e74c3c; margin-bottom: 10px;">🗑️ Supprimer</button>
+          <button id="btn-menu-annuler" style="width: 100%; background: #999;">Annuler</button>
+        </div>
+      </div>
+
+      <!-- Modal Modifier Objet -->
+      <div id="modal-modifier-objet" class="modal hidden">
+        <div class="modal-content">
+          <h3>✏️ Modifier l'Objet</h3>
+          
+          <label>Nom de l'objet</label>
+          <input type="text" id="modifier-objet-nom" placeholder="Ex: T-shirt Wild Ember">
+          
+          <label>Prix (en points)</label>
+          <input type="number" id="modifier-objet-prix" placeholder="50">
+          
+          <label>URL de l'image (optionnel)</label>
+          <input type="text" id="modifier-objet-image" placeholder="https://...">
+          
+          <div class="modal-buttons">
+            <button id="btn-cancel-modifier" style="background:#999; flex: 1;">Annuler</button>
+            <button id="btn-confirm-modifier" style="background:#3498db; flex: 1;">Modifier</button>
           </div>
         </div>
       </div>
