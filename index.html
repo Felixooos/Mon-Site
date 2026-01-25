@@ -1,13 +1,156 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>mon-site-web</title>
+    <title>Mon Site Web</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #app {
+        width: 100%;
+        max-width: 500px;
+        padding: 20px;
+      }
+      .container {
+        background: white;
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+      h1 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 28px;
+      }
+      p {
+        color: #666;
+        margin-bottom: 20px;
+        font-size: 16px;
+      }
+      input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+      }
+      input:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        margin-top: 10px;
+      }
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+      }
+      .points-display {
+        background: #f0f0f0;
+        padding: 30px;
+        border-radius: 10px;
+        margin: 20px 0;
+      }
+      .points-display h2 {
+        color: #4CAF50;
+        font-size: 32px;
+        margin: 10px 0;
+      }
+      .points-display p {
+        color: #666;
+        font-size: 14px;
+      }
+      .hidden {
+        display: none !important;
+      }
+    </style>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      
+      <!-- Écran d'accueil -->
+      <div id="home-screen" class="container">
+        <h1>Bienvenue 👋</h1>
+        <p>Gérez vos points en toute simplicité</p>
+        <button id="btn-login">Se connecter</button>
+        <button id="btn-register" style="background: #4CAF50;">Créer un compte</button>
+      </div>
+
+      <!-- Écran Login (deux onglets) -->
+      <div id="login-screen" class="container hidden">
+        <button id="btn-back-login" style="position: absolute; top: 20px; left: 20px; background: #f0f0f0; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 16px;">← Retour</button>
+        
+        <h1>Élections BDE 🗳️</h1>
+        
+        <div id="tabs-container" style="margin-bottom: 20px; display: flex; gap: 10px;">
+          <button id="tab-nouveau" style="flex: 1; background: #ddd; padding: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">C'est ma 1ère fois</button>
+          <button id="tab-connu" style="flex: 1; background: white; padding: 10px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer;">J'ai déjà un compte</button>
+        </div>
+
+        <!-- Formulaire Inscription -->
+        <div id="form-inscription">
+          <p>Reçois ton code unique sur ton mail école.</p>
+          <input type="email" id="email-inscription" placeholder="Email école (@ton-ecole.fr)" style="padding: 10px; width: 100%; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px;" />
+          <button id="btn-send-otp" style="width: 100%;">Recevoir mon Code</button>
+        </div>
+
+        <!-- Formulaire Connexion -->
+        <div id="form-connexion" style="display: none;">
+          <p>Connecte-toi avec ton code !</p>
+          <input type="text" id="code-connexion" placeholder="Ton Code (8 chiffres)" maxlength="8" style="padding: 10px; width: 100%; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px;" />
+          <button id="btn-login-code" style="width: 100%;">Me connecter</button>
+        </div>
+      </div>
+
+      <!-- Écran OTP (vérification du mail) -->
+      <div id="otp-screen" class="container hidden">
+        <button id="btn-back-otp" style="position: absolute; top: 20px; left: 20px; background: #f0f0f0; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 16px;">← Retour</button>
+        
+        <h1>Vérification</h1>
+        <p>Code envoyé ! Regarde tes mails.</p>
+        <input type="text" id="otp" placeholder="Code reçu par mail" maxlength="8" style="padding: 10px; width: 100%; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px;" />
+        <button id="btn-verify" style="width: 100%;">Vérifier le code</button>
+      </div>
+
+      <!-- Écran Bienvenue (connecté) -->
+      <div id="welcome-screen" class="container hidden">
+        <h1>🎉 Bienvenue !</h1>
+        <div class="points-display">
+          <p>Vos points :</p>
+          <h2 id="points-count">0</h2>
+        </div>
+        <button id="btn-add-points">Gagner +10 points</button>
+        <button id="btn-logout" style="background: #ff6b6b; margin-top: 20px;">Se déconnecter</button>
+      </div>
+
+    </div>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
