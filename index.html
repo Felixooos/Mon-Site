@@ -16,11 +16,11 @@
       body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background: white;
-        min-height: 100vh;
+        height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        scrollbar-gutter: stable;
+        overflow: hidden;
       }
       #app {
         width: 100%;
@@ -34,6 +34,13 @@
         box-shadow: none;
         text-align: center;
         min-height: 100vh;
+      }
+      .no-scroll {
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
       h1 {
         color: #333;
@@ -267,7 +274,7 @@
     <div id="app">
       
       <!-- Écran d'accueil -->
-      <div id="home-screen" class="container">
+      <div id="home-screen" class="container no-scroll">
         <h1>Wild EMBER 🐘</h1>
         <p>Gérez vos campagnes en toutes simplicités</p>
         <button id="btn-login" style="padding: 16px; font-size: 18px; margin-top: 15px;">Se connecter</button>
@@ -275,7 +282,7 @@
       </div>
 
       <!-- Écran Login (deux onglets) -->
-      <div id="login-screen" class="container hidden">
+      <div id="login-screen" class="container no-scroll hidden">
         
         <div id="tabs-container" style="margin-bottom: 20px; margin-top: 60px; display: flex; gap: 10px;">
           <button id="tab-nouveau" style="flex: 1; background: #ddd; padding: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">C'est ma 1ère fois</button>
@@ -300,7 +307,7 @@
       </div>
 
       <!-- Écran OTP (vérification du mail) -->
-      <div id="otp-screen" class="container hidden">
+      <div id="otp-screen" class="container no-scroll hidden">
         
         <h1 style="margin-top: 60px;">Vérification</h1>
         <p>Code envoyé ! Regarde tes mails.</p>
