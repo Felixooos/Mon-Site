@@ -349,11 +349,15 @@ function afficherClassement(users) {
   // Ajouter une séparation après l'utilisateur courant
   const currentUserIndex = users.findIndex(u => u.email === currentUserEmail)
   if (currentUserIndex >= 0 && currentUserIndex < users.length - 1) {
-    const separator = document.createElement('div')
-    separator.style.cssText = 'height: 2px; background: #ddd; margin: 10px 0;'
-    const rows = leaderboard.querySelectorAll('div')
-    if (rows.length > currentUserIndex) {
-      rows[currentUserIndex].parentNode.insertBefore(separator, rows[currentUserIndex + 1])
+    try {
+      const separator = document.createElement('div')
+      separator.style.cssText = 'height: 2px; background: #ddd; margin: 10px 0;'
+      const rows = Array.from(leaderboard.children)
+      if (rows.length > currentUserIndex + 1) {
+        leaderboard.insertBefore(separator, rows[currentUserIndex + 1])
+      }
+    } catch (e) {
+      console.log('Erreur ajout séparateur (non critique):', e)
     }
   }
 }
@@ -562,7 +566,7 @@ async function chargerObjetsBoutique() {
     let html = ''
     // Ajouter bouton 3 points si gestionnaire
     if (jeSuisBoutiqueManager) {
-      html += `<button onclick="ouvrirMenuObjet(${principal.id}, '${principal.nom}', ${principal.prix}, '${principal.image_url || ''}', 'principal')" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center;">⋮</button>`
+      html += `<button class="btn-menu-3pts" data-objet-id="${principal.id}" data-objet-type="principal" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">⋮</button>`
     }
     html += `
       <div style="background: rgba(255,255,255,0.2); width: 150px; height: 150px; border-radius: 10px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 60px; background-image: url('${principal.image_url || ''}'); background-size: cover; background-position: center;">${!principal.image_url ? '📸' : ''}</div>
@@ -571,12 +575,20 @@ async function chargerObjetsBoutique() {
       <button class="btn-acheter" data-id="${principal.id}" data-nom="${principal.nom}" data-prix="${principal.prix}" style="background: white; color: #e74c3c; margin-top: 10px; width: 60%; margin-left: auto; margin-right: auto;">Acheter</button>
     `
     itemPrincipal.innerHTML = html
+    itemPrincipal.dataset.objetId = principal.id
+    itemPrincipal.dataset.objetNom = principal.nom
+    itemPrincipal.dataset.objetPrix = principal.prix
+    itemPrincipal.dataset.objetImage = principal.image_url || ''
   } else {
     const html = `
-      <div style="background: rgba(255,255,255,0.2); width: 150px; height: 150px; border-radius: 10px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 60px; cursor: ${jeSuisBoutiqueManager ? 'pointer' : 'default'};" ${jeSuisBoutiqueManager ? 'onclick="ouvrirModalAjout(\'principal\')"' : ''}>➕</div>
+      <div class="zone-ajout-objet" style="background: rgba(255,255,255,0.2); width: 150px; height: 150px; border-radius: 10px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 60px; cursor: ${jeSuisBoutiqueManager ? 'pointer' : 'default'};">➕</div>
       <p style="color: white;">${jeSuisBoutiqueManager ? 'Cliquez pour ajouter' : 'Aucun objet principal'}</p>
     `
     itemPrincipal.innerHTML = html
+    
+    if (jeSuisBoutiqueManager) {
+      itemPrincipal.querySelector('.zone-ajout-objet').addEventListener('click', () => ouvrirModalAjout('principal'))
+    }
   }
   
   // 3 Petits items
@@ -592,7 +604,7 @@ async function chargerObjetsBoutique() {
       let html = ''
       // Ajouter bouton 3 points si gestionnaire
       if (jeSuisBoutiqueManager) {
-        html += `<button onclick="ouvrirMenuObjet(${petit.id}, '${petit.nom}', ${petit.prix}, '${petit.image_url || ''}', 'petit')" style="position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">⋮</button>`
+        html += `<button class="btn-menu-3pts" data-objet-id="${petit.id}" data-objet-type="petit" style="position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">⋮</button>`
       }
       html += `
         <div style="background: #ddd; width: 100%; height: 80px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; background-image: url('${petit.image_url || ''}'); background-size: cover; background-position: center;">${!petit.image_url ? '📸' : ''}</div>
@@ -601,6 +613,10 @@ async function chargerObjetsBoutique() {
         <button class="btn-acheter" data-id="${petit.id}" data-nom="${petit.nom}" data-prix="${petit.prix}" style="font-size: 12px; padding: 8px; margin: 5px 0 0 0; width: 100%;">Acheter</button>
       `
       divItem.innerHTML = html
+      divItem.dataset.objetId = petit.id
+      divItem.dataset.objetNom = petit.nom
+      divItem.dataset.objetPrix = petit.prix
+      divItem.dataset.objetImage = petit.image_url || ''
     } else {
       divItem.style.cssText = `flex: 1; background: #f0f0f0; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #ddd; cursor: ${jeSuisBoutiqueManager ? 'pointer' : 'default'};`
       divItem.innerHTML = `
@@ -615,7 +631,6 @@ async function chargerObjetsBoutique() {
     
     containerPetitsItems.appendChild(divItem)
   }
-  }
   
   // Ajouter listeners sur les boutons acheter
   document.querySelectorAll('.btn-acheter').forEach(btn => {
@@ -625,6 +640,21 @@ async function chargerObjetsBoutique() {
       const nom = btn.dataset.nom
       const prix = parseInt(btn.dataset.prix)
       confirmerAchat(id, nom, prix)
+    })
+  })
+  
+  // Ajouter listeners sur les boutons 3 points
+  document.querySelectorAll('.btn-menu-3pts').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation()
+      const id = parseInt(btn.dataset.objetId)
+      const type = btn.dataset.objetType
+      const container = btn.closest('[data-objet-id]')
+      const nom = container.dataset.objetNom
+      const prix = parseInt(container.dataset.objetPrix)
+      const imageUrl = container.dataset.objetImage
+      
+      ouvrirMenuObjet(id, nom, prix, imageUrl, type)
     })
   })
 }
