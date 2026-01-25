@@ -202,17 +202,15 @@
       
       <!-- Écran d'accueil -->
       <div id="home-screen" class="container">
-        <h1>Bienvenue 👋</h1>
-        <p>Gérez vos points en toute simplicité</p>
+        <h1>Bienvenue chez les wilds 🐺</h1>
+        <p>Gérez vos campagnes en toutes simplicités</p>
         <button id="btn-login" style="padding: 16px; font-size: 18px; margin-top: 15px;">Se connecter</button>
         <button id="btn-register" style="background: #4CAF50; padding: 16px; font-size: 18px; margin-top: 12px;">Créer un compte</button>
       </div>
 
       <!-- Écran Login (deux onglets) -->
       <div id="login-screen" class="container hidden">
-        <button id="btn-back-login" style="position: absolute; top: 20px; left: 20px; background: #f0f0f0; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 16px;">← Retour</button>
-        
-        <h1>Élections BDE 🗳️</h1>
+        <button id="btn-back-login" style="position: absolute; top: 20px; left: 20px; background: #333; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold;">← Retour</button>
         
         <div id="tabs-container" style="margin-bottom: 20px; display: flex; gap: 10px;">
           <button id="tab-nouveau" style="flex: 1; background: #ddd; padding: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">C'est ma 1ère fois</button>
@@ -236,9 +234,10 @@
 
       <!-- Écran OTP (vérification du mail) -->
       <div id="otp-screen" class="container hidden">
-        <button id="btn-back-otp" style="position: absolute; top: 20px; left: 20px; background: #f0f0f0; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 16px;">← Retour</button>
+        <button id="btn-back-otp" style="position: absolute; top: 20px; left: 20px; background: #333; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold;">← Retour</button>
         
         <h1>Vérification</h1>
+        <p>Code envoyé ! Regarde tes mails.</p>
         <p>Code envoyé ! Regarde tes mails.</p>
         <input type="text" id="otp" placeholder="Code reçu par mail" maxlength="8" style="padding: 10px; width: 100%; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px;" />
         <button id="btn-verify" style="width: 100%;">Vérifier le code</button>
