@@ -397,14 +397,12 @@
           <label>Prix (en points)</label>
           <input type="number" id="objet-prix" placeholder="50">
           
-          <label>URL de l'image (optionnel)</label>
+          <label>📸 Photo de l'objet</label>
+          <input type="file" id="objet-photo" accept="image/*" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px;">
+          <p style="font-size: 12px; color: #999; margin: -8px 0 10px 0;">Ou entrez une URL :</p>
           <input type="text" id="objet-image" placeholder="https://...">
           
-          <label>Type d'objet</label>
-          <select id="objet-type" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px;">
-            <option value="principal">Item Principal (max 1)</option>
-            <option value="petit">Petit Item (max 3)</option>
-          </select>
+          <input type="hidden" id="objet-type">
           
           <div class="modal-buttons">
             <button id="btn-cancel-objet" style="background:#999; flex: 1;">Annuler</button>
@@ -450,7 +448,9 @@
           <label>Prix (en points)</label>
           <input type="number" id="modifier-objet-prix" placeholder="50">
           
-          <label>URL de l'image (optionnel)</label>
+          <label>📸 Nouvelle photo (optionnel)</label>
+          <input type="file" id="modifier-objet-photo" accept="image/*" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px;">
+          <p style="font-size: 12px; color: #999; margin: -8px 0 10px 0;">Ou entrez une URL :</p>
           <input type="text" id="modifier-objet-image" placeholder="https://...">
           
           <div class="modal-buttons">

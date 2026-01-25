@@ -802,6 +802,31 @@ async function chargerMesAchats() {
 
 // ==================== GESTION MODAL AJOUT OBJET ====================
 
+// Fonction pour uploader une photo vers Supabase Storage
+async function uploadPhoto(file) {
+  if (!file) return null
+  
+  const fileExt = file.name.split('.').pop()
+  const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`
+  const filePath = `objets/${fileName}`
+  
+  const { data, error } = await supabase.storage
+    .from('photos-boutique')
+    .upload(filePath, file)
+  
+  if (error) {
+    console.error('Erreur upload photo:', error)
+    return null
+  }
+  
+  // Récupérer l'URL publique
+  const { data: urlData } = supabase.storage
+    .from('photos-boutique')
+    .getPublicUrl(filePath)
+  
+  return urlData.publicUrl
+}
+
 document.querySelector('#btn-cancel-objet').addEventListener('click', () => {
   document.querySelector('#modal-ajouter-objet').classList.add('hidden')
 })
@@ -810,11 +835,24 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
   const nom = document.querySelector('#objet-nom').value.trim()
   const prix = parseInt(document.querySelector('#objet-prix').value)
   const imageUrl = document.querySelector('#objet-image').value.trim()
+  const photoFile = document.querySelector('#objet-photo').files[0]
   const type = document.querySelector('#objet-type').value
   
   if (!nom || !prix || prix <= 0) {
     alert('Veuillez remplir tous les champs obligatoires')
     return
+  }
+  
+  // Upload photo si sélectionnée
+  let finalImageUrl = imageUrl
+  if (photoFile) {
+    const uploadedUrl = await uploadPhoto(photoFile)
+    if (uploadedUrl) {
+      finalImageUrl = uploadedUrl
+    } else {
+      alert('Erreur lors de l\'upload de la photo')
+      return
+    }
   }
   
   // Vérifier les limites
@@ -839,7 +877,7 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
     .insert({
       nom,
       prix,
-      image_url: imageUrl || null,
+      image_url: finalImageUrl || null,
       type
     })
   
@@ -856,6 +894,7 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
   document.querySelector('#objet-nom').value = ''
   document.querySelector('#objet-prix').value = ''
   document.querySelector('#objet-image').value = ''
+  document.querySelector('#objet-photo').value = ''
   
   await chargerObjetsBoutique()
 })
@@ -912,10 +951,23 @@ document.querySelector('#btn-confirm-modifier').addEventListener('click', async 
   const nom = document.querySelector('#modifier-objet-nom').value.trim()
   const prix = parseInt(document.querySelector('#modifier-objet-prix').value)
   const imageUrl = document.querySelector('#modifier-objet-image').value.trim()
+  const photoFile = document.querySelector('#modifier-objet-photo').files[0]
   
   if (!nom || !prix || prix < 1) {
     alert('Veuillez remplir tous les champs correctement')
     return
+  }
+  
+  // Upload nouvelle photo si sélectionnée
+  let finalImageUrl = imageUrl
+  if (photoFile) {
+    const uploadedUrl = await uploadPhoto(photoFile)
+    if (uploadedUrl) {
+      finalImageUrl = uploadedUrl
+    } else {
+      alert('Erreur lors de l\'upload de la photo')
+      return
+    }
   }
   
   const { error } = await supabase
@@ -923,7 +975,7 @@ document.querySelector('#btn-confirm-modifier').addEventListener('click', async 
     .update({
       nom,
       prix,
-      image_url: imageUrl || null
+      image_url: finalImageUrl || null
     })
     .eq('id', objetEnCoursMenu.id)
   
