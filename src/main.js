@@ -81,15 +81,16 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
 // ==================== 2. VALIDATION DU CODE REÇU PAR MAIL (Création du compte) ====================
 document.querySelector('#btn-verify').addEventListener('click', async () => {
   const email = localStorage.getItem('emailTemp')
-  const token = document.querySelector('#otp').value
+  const token = document.querySelector('#otp').value.trim() // .trim() enlève les espaces accidentels
   
   if (!email) {
     alert('Email manquant !')
     return
   }
 
-  if (!token || token.length < 6) {
-    alert('Rentre le code reçu par mail !')
+  // On accepte entre 6 et 8 chiffres
+  if (!token || token.length < 6 || token.length > 8) {
+    alert('Le code doit contenir entre 6 et 8 chiffres !')
     return
   }
 
