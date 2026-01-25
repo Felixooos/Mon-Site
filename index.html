@@ -28,7 +28,7 @@
         padding: 0;
       }
       .container {
-        background: white;
+        background: transparent;
         border-radius: 0;
         padding: 10px;
         box-shadow: none;
@@ -158,20 +158,10 @@
         cursor: pointer;
       }
 
-      .hidden {
-        display: none !important;
-      }
-
       /* RESPONSIVE - Mobile First */
       @media (max-width: 600px) {
-        #app {
-          padding: 10px;
-        }
         .container {
-          padding: 20px;
-          border-radius: 10px;
-          width: 100%;
-          overflow-x: hidden;
+          padding: 15px;
         }
         h1 {
           font-size: 16px;
@@ -275,48 +265,51 @@
       
       <!-- Écran d'accueil -->
       <div id="home-screen" class="container no-scroll">
-        <img src="/logo.svg" alt="Logo Wild EMBER" style="width: 300px; height: auto; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto; margin-top: -50px;" />
-        <h1 style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">WILD EMBER </h1>
-        <p style="color: #e74c3c; font-weight: 600;">Gérez vos campagnes en toutes simplicités</p>
-        <button id="btn-login" style="padding: 16px; font-size: 18px; margin-top: 15px; background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%); box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);">Se connecter</button>
-        <button id="btn-register" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); padding: 16px; font-size: 18px; margin-top: 12px; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);">Créer un compte</button>
+        <div style="background: white; padding: 30px 20px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+          <img src="/logo.svg" alt="Logo Wild EMBER" style="width: 250px; height: auto; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;" />
+          <h1 style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 32px; margin-bottom: 15px;">WILD EMBER</h1>
+          <p style="color: #e74c3c; font-weight: 600; margin-bottom: 25px;">Gérez vos campagnes en toutes simplicités</p>
+          <button id="btn-login" style="padding: 16px; font-size: 18px; margin-top: 10px; background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%); box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);">Se connecter</button>
+          <button id="btn-register" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); padding: 16px; font-size: 18px; margin-top: 12px; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);">Créer un compte</button>
+        </div>
       </div>
 
       <!-- Écran Login (deux onglets) -->
       <div id="login-screen" class="container no-scroll hidden">
-        
-        <div id="tabs-container" style="margin-bottom: 20px; margin-top: 60px; display: flex; gap: 10px;">
-          <button id="tab-nouveau" style="flex: 1; background: #ddd; padding: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">C'est ma 1ère fois</button>
-          <button id="tab-connu" style="flex: 1; background: white; padding: 10px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer;">J'ai déjà un compte</button>
-        </div>
+        <div style="background: white; padding: 30px 20px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+          <div id="tabs-container" style="margin-bottom: 20px; display: flex; gap: 10px;">
+            <button id="tab-nouveau" style="flex: 1; background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%); color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 10px rgba(255, 107, 53, 0.3);">C'est ma 1ère fois</button>
+            <button id="tab-connu" style="flex: 1; background: #f0f0f0; color: #333; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">J'ai déjà un compte</button>
+          </div>
 
-        <!-- Formulaire Inscription -->
-        <div id="form-inscription">
-          <p>Reçois ton code unique sur ton mail école.</p>
-          <input type="email" id="email-inscription" placeholder="Email école (@ton-ecole.fr)" style="padding: 10px; width: 100%; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px;" />
-          <button id="btn-send-otp" style="width: 100%;">Recevoir mon Code</button>
-        </div>
+          <!-- Formulaire Inscription -->
+          <div id="form-inscription">
+            <p style="color: #333;">Reçois ton code unique sur ton mail école.</p>
+            <input type="email" id="email-inscription" placeholder="Email école (@ton-ecole.fr)" style="padding: 12px; width: 100%; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px;" />
+            <button id="btn-send-otp" style="width: 100%;">Recevoir mon Code</button>
+          </div>
 
-        <!-- Formulaire Connexion -->
-        <div id="form-connexion" style="display: none;">
-          <p style="font-size: 18px; font-weight: 700;">Connecte-toi avec ton code !</p>
-          <input type="text" id="code-connexion" placeholder="Ton Code (8 chiffres)" maxlength="8" style="padding: 10px; width: 100%; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px;" />
-          <button id="btn-login-code" style="width: 100%;">Me connecter</button>
+          <!-- Formulaire Connexion -->
+          <div id="form-connexion" style="display: none;">
+            <p style="font-size: 18px; font-weight: 700; color: #333;">Connecte-toi avec ton code !</p>
+            <input type="text" id="code-connexion" placeholder="Ton Code (8 chiffres)" maxlength="8" style="padding: 12px; width: 100%; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px;" />
+            <button id="btn-login-code" style="width: 100%;">Me connecter</button>
+          </div>
+          
+          <button id="btn-back-login" style="width: 100%; background: #555; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 25px;">← Retour</button>
         </div>
-        
-        <button id="btn-back-login" style="width: 100%; background: #333; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 20px;">← Retour</button>
       </div>
 
       <!-- Écran OTP (vérification du mail) -->
       <div id="otp-screen" class="container no-scroll hidden">
-        
-        <h1 style="margin-top: 60px;">Vérification</h1>
-        <p>Code envoyé ! Regarde tes mails.</p>
-        <p>Code envoyé ! Regarde tes mails.</p>
-        <input type="text" id="otp" placeholder="Code reçu par mail" maxlength="8" style="padding: 10px; width: 100%; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px;" />
-        <button id="btn-verify" style="width: 100%;">Vérifier le code</button>
-        
-        <button id="btn-back-otp" style="width: 100%; background: #333; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 20px;">← Retour</button>
+        <div style="background: white; padding: 30px 20px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+          <h1 style="color: #e74c3c; font-size: 28px; margin-bottom: 15px;">Vérification</h1>
+          <p style="color: #666; margin-bottom: 20px;">Code envoyé ! Regarde tes mails.</p>
+          <input type="text" id="otp" placeholder="Code reçu par mail" maxlength="8" style="padding: 12px; width: 100%; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px;" />
+          <button id="btn-verify" style="width: 100%;">Vérifier le code</button>
+          
+          <button id="btn-back-otp" style="width: 100%; background: #555; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 25px;">← Retour</button>
+        </div>
       </div>
 
       <!-- Écran Bienvenue (connecté) - Classement -->
