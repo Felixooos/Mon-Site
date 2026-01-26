@@ -140,13 +140,20 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     
     console.log("Code OTP vérifié ! Session créée:", data)
     
-    // Maintenant définir ce code comme mot de passe permanent
-    const { error: updateError } = await supabase.auth.updateUser({ 
-      password: codeOTP 
+    // Se déconnecter temporairement pour forcer une vraie connexion après
+    await supabase.auth.signOut()
+    
+    // Maintenant créer le compte avec signUp en utilisant le code comme mot de passe
+    const { error: signUpError } = await supabase.auth.signUp({
+      email: email,
+      password: codeOTP,
+      options: {
+        emailRedirectTo: window.location.origin
+      }
     })
     
-    if (updateError) {
-      console.error("Erreur définition mot de passe:", updateError)
+    if (signUpError) {
+      console.error("Erreur création compte:", signUpError)
     }
     
     // Créer l'étudiant dans la base
@@ -180,16 +187,19 @@ document.querySelector('#signup-form').addEventListener('submit', async (e) => {
     const email = document.querySelector('#email-inscription').value
     const password = document.querySelector('#otp').value
     
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password
-    })
+    // Laisser un délai pour que Safari détecte le formulaire
+    setTimeout(async () => {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password
+      })
 
-    if (error) {
-      afficherMessageNFC('❌', 'Erreur', 'Erreur de connexion: ' + error.message, '#e74c3c');
-    } else {
-      checkSession()
-    }
+      if (error) {
+        afficherMessageNFC('❌', 'Erreur', 'Erreur de connexion: ' + error.message, '#e74c3c');
+      } else {
+        checkSession()
+      }
+    }, 100)
   }
 })
 
