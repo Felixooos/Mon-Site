@@ -975,6 +975,15 @@ document.querySelector('#btn-confirm-achat-final').addEventListener('click', asy
     .update({ solde: nouveauSolde })
     .eq('email', currentUserEmail)
   
+  // Créer une transaction négative pour l'achat
+  await supabase
+    .from('transactions')
+    .insert({
+      destinataire_email: currentUserEmail,
+      montant: -objetEnCoursAchat.prix,
+      raison: `Achat: ${objetEnCoursAchat.nom}`
+    })
+  
   // Décrémenter la quantité
   await supabase
     .from('objets_boutique')
