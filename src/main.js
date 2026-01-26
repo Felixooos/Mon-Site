@@ -412,6 +412,32 @@ function afficherClassement(users) {
     const isCurrentUser = user.email === currentUserEmail
     const badge = index === 0 ? '1.' : index === 1 ? '2.' : index === 2 ? '3.' : `${index + 1}.`
     
+    // Couleurs pour les 3 premiers
+    let bgColor = 'white'
+    let textColor = '#333'
+    let borderColor = '#ddd'
+    
+    if (isCurrentUser) {
+      bgColor = '#667eea'
+      textColor = 'white'
+      borderColor = '#667eea'
+    } else if (index === 0) {
+      // Or
+      bgColor = 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)'
+      textColor = '#333'
+      borderColor = '#FFD700'
+    } else if (index === 1) {
+      // Argent
+      bgColor = 'linear-gradient(135deg, #C0C0C0 0%, #A8A8A8 100%)'
+      textColor = '#333'
+      borderColor = '#C0C0C0'
+    } else if (index === 2) {
+      // Bronze
+      bgColor = 'linear-gradient(135deg, #CD7F32 0%, #B87333 100%)'
+      textColor = 'white'
+      borderColor = '#CD7F32'
+    }
+    
     const userRow = document.createElement('div')
     userRow.style.cssText = `
       display: flex;
@@ -419,11 +445,11 @@ function afficherClassement(users) {
       align-items: center;
       padding: 10px 12px;
       margin-bottom: 8px;
-      background: ${isCurrentUser ? '#667eea' : 'white'};
-      color: ${isCurrentUser ? 'white' : '#333'};
+      background: ${bgColor};
+      color: ${textColor};
       border-radius: 8px;
-      border: ${isCurrentUser ? '2px solid #667eea' : '1px solid #ddd'};
-      font-weight: ${isCurrentUser ? 'bold' : 'normal'};
+      border: 2px solid ${borderColor};
+      font-weight: ${isCurrentUser || index < 3 ? 'bold' : 'normal'};
       overflow: hidden;
       gap: 12px;
     `
