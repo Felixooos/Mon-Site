@@ -346,17 +346,30 @@ async function displayWelcomeScreen(userEmail) {
       console.error("Erreur récupération transactions:", transactionsError)
     }
     
-    // Calculer le total des gains pour chaque étudiant
+    // Récupérer tous les achats
+    const { data: achats, error: achatsError } = await supabase
+      .from('achats')
+      .select('acheteur_email, prix_paye')
+    
+    if (achatsError) {
+      console.error("Erreur récupération achats:", achatsError)
+    }
+    
+    // Calculer le total des gains et le solde réel pour chaque étudiant
     allUsers = (etudiants || []).map(etudiant => {
       const userTransactions = (transactions || []).filter(t => t.destinataire_email === etudiant.email)
       const totalGains = userTransactions
         .filter(t => t.montant > 0)
         .reduce((sum, t) => sum + t.montant, 0)
       
+      // Calculer le total des achats
+      const userAchats = (achats || []).filter(a => a.acheteur_email === etudiant.email)
+      const totalAchats = userAchats.reduce((sum, a) => sum + a.prix_paye, 0)
+      
       return {
         ...etudiant,
-        total_gains: totalGains, // Pour le classement
-        solde_reel: etudiant.solde // Pour le solde en haut à droite
+        total_gains: totalGains, // Pour le classement (entrées seulement)
+        solde_reel: totalGains - totalAchats // Pour le solde actuel (entrées - sorties)
       }
     }).sort((a, b) => b.total_gains - a.total_gains)
     
@@ -967,22 +980,6 @@ document.querySelector('#btn-confirm-achat-final').addEventListener('click', asy
     await chargerObjetsBoutique()
     return
   }
-  
-  // Débiter les points
-  const nouveauSolde = etudiant.solde - objetEnCoursAchat.prix
-  await supabase
-    .from('etudiants')
-    .update({ solde: nouveauSolde })
-    .eq('email', currentUserEmail)
-  
-  // Créer une transaction négative pour l'achat
-  await supabase
-    .from('transactions')
-    .insert({
-      destinataire_email: currentUserEmail,
-      montant: -objetEnCoursAchat.prix,
-      raison: `Achat: ${objetEnCoursAchat.nom}`
-    })
   
   // Décrémenter la quantité
   await supabase
