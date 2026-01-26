@@ -152,26 +152,6 @@ document.querySelector('#btn-verify').addEventListener('click', async () => {
   }, 500)
 })
 
-  if (!token || token.length !== 8) {
-    afficherMessageNFC('⚠️', 'Code invalide', 'Le code doit contenir exactement 8 chiffres !', '#f39c12');
-    return
-  }
-
-  const { error, data } = await supabase.auth.verifyOtp({ email, token, type: 'email'})
-  
-  if (error) {
-    console.error("Erreur OTP:", error)
-    afficherMessageNFC('❌', 'Code incorrect', 'Code faux ! Vérifie tes mails.', '#e74c3c');
-    return
-  }
-
-  console.log("OTP vérifié, session créée:", data)
-  
-  setTimeout(() => {
-    checkSession()
-  }, 500)
-})
-
 // ==================== 3. CONNEXION DIRECTE (Code uniquement) 🚀 ====================
 // Intercepter la soumission du formulaire de connexion
 document.querySelector('#login-form').addEventListener('submit', async (e) => {
