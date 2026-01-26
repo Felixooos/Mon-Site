@@ -448,9 +448,10 @@ document.querySelector('#btn-register').addEventListener('click', () => {
   document.querySelector('#email-inscription').value = ''
   document.querySelector('#email-inscription').disabled = false
   document.querySelector('#otp').value = ''
+  document.querySelector('#otp').disabled = false
   document.querySelector('#otp-section').style.display = 'none'
-  document.querySelector('#password-display').style.display = 'none'
   document.querySelector('#btn-send-otp').textContent = 'Recevoir mon code'
+  document.querySelector('#btn-send-otp').type = 'button'
   
   // Afficher JUSTE l'inscription, pas les onglets
   document.querySelector('#tabs-container').style.display = 'none'
