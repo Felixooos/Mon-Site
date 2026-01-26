@@ -1227,6 +1227,7 @@ document.querySelector('#btn-menu-supprimer').addEventListener('click', async ()
 // Event listeners pour modal-modifier-objet
 document.querySelector('#btn-cancel-modifier').addEventListener('click', () => {
   document.querySelector('#modal-modifier-objet').classList.add('hidden')
+  document.body.style.overflow = ''
 })
 
 document.querySelector('#btn-confirm-modifier').addEventListener('click', async () => {
@@ -1239,7 +1240,6 @@ document.querySelector('#btn-confirm-modifier').addEventListener('click', async 
   const photoFile = document.querySelector('#modifier-objet-photo').files[0]
   
   if (!nom || !prix || prix < 1 || quantite < 0) {
-    alert('Veuillez remplir tous les champs correctement')
     return
   }
   
@@ -1250,7 +1250,6 @@ document.querySelector('#btn-confirm-modifier').addEventListener('click', async 
     if (uploadedUrl) {
       finalImageUrl = uploadedUrl
     } else {
-      alert('Erreur lors de l\'upload de la photo')
       return
     }
   }
@@ -1266,15 +1265,12 @@ document.querySelector('#btn-confirm-modifier').addEventListener('click', async 
     .eq('id', objetEnCoursMenu.id)
   
   if (error) {
-    alert('Erreur lors de la modification')
     console.error(error)
     return
   }
   
-  alert('Objet modifié !')
-  document.querySelector('#modal-modifier-objet').classList.add('hidden')
-  objetEnCoursMenu = null
-  await chargerObjetsBoutique()
+  // Rafraîchir la page
+  location.reload()
 })
 
 // ==================== GESTION NFC / QR CODE ====================
@@ -1386,6 +1382,15 @@ document.querySelector('#btn-close-nfc-info').addEventListener('click', () => {
   document.querySelector('#nfc-info-modal').classList.add('hidden');
   document.body.style.overflow = '';
 });
+
+// Empêcher la soumission par Enter dans tous les inputs des modales
+document.querySelectorAll('.modal input').forEach(input => {
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+    }
+  })
+})
 
 checkSession()
 verifierTagUrl()
