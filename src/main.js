@@ -138,18 +138,30 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
       return
     }
     
-    console.log("Code OTP vérifié ! Session créée:", data)
+    console.log("Code OTP vérifié ! Email confirmé")
     
-    // Définir le code OTP comme mot de passe permanent
-    const { error: updateError } = await supabase.auth.updateUser({ 
-      password: codeOTP 
+    // Se déconnecter de la session OTP
+    await supabase.auth.signOut()
+    
+    // Créer un vrai compte avec le code comme mot de passe
+    const { error: signUpError } = await supabase.auth.signUp({
+      email: email,
+      password: codeOTP,
+      options: {
+        emailRedirectTo: window.location.origin,
+        data: {
+          email_confirmed: true
+        }
+      }
     })
     
-    if (updateError) {
-      console.error("Erreur définition mot de passe:", updateError)
-    } else {
-      console.log("Mot de passe défini:", codeOTP)
+    if (signUpError) {
+      console.error("Erreur création compte:", signUpError)
+      afficherMessageNFC('❌', 'Erreur', signUpError.message, '#e74c3c');
+      return
     }
+    
+    console.log("Compte créé avec succès")
     
     // Créer l'étudiant dans la base
     const { data: nouveau, error: insertError } = await supabase
@@ -166,14 +178,13 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     
     console.log("Étudiant créé:", nouveau)
     
-    // On est déjà connecté grâce à verifyOtp
-    // Mais on soumet quand même le formulaire pour que Safari enregistre
+    // Changer pour l'étape connexion
     etapeInscription = 'complete'
     
-    // Attendre un peu puis soumettre le formulaire pour Safari
+    // Soumettre le formulaire pour que Safari enregistre
     setTimeout(() => {
       document.querySelector('#signup-form').requestSubmit()
-    }, 300)
+    }, 100)
   }
 })
 
@@ -181,13 +192,25 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
 document.querySelector('#signup-form').addEventListener('submit', async (e) => {
   e.preventDefault()
   
-  // Si on est à l'étape "Connexion", juste rediriger (on est déjà connecté)
+  // Si on est à l'étape "Connexion", se connecter avec le mot de passe
   if (etapeInscription === 'complete') {
-    console.log("Soumission formulaire - déjà connecté, redirection...")
-    // Safari devrait détecter et proposer d'enregistrer le mot de passe ici
-    setTimeout(() => {
+    const email = document.querySelector('#email-inscription').value
+    const password = document.querySelector('#otp').value
+    
+    console.log("Connexion avec email:", email)
+    
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password
+    })
+
+    if (error) {
+      console.error("Erreur connexion:", error)
+      afficherMessageNFC('❌', 'Erreur', 'Erreur de connexion: ' + error.message, '#e74c3c');
+    } else {
+      console.log("Connexion réussie !")
       checkSession()
-    }, 100)
+    }
   }
 })
 
