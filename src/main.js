@@ -1029,5 +1029,96 @@ document.querySelector('#btn-confirm-modifier').addEventListener('click', async 
   await chargerObjetsBoutique()
 })
 
+// ==================== GESTION NFC / QR CODE ====================
+
+// 1. Fonction lancée au chargement de la page
+async function verifierTagUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const tagCode = params.get('tag');
+
+  // S'il n'y a pas de tag, on ne fait rien
+  if (!tagCode) return;
+
+  console.log("🔍 Tag détecté :", tagCode);
+
+  // ✨ NETTOYAGE IMMÉDIAT DE L'URL (Sécurité visuelle)
+  // On remplace l'URL actuelle par l'URL de base sans recharger la page
+  window.history.replaceState({}, document.title, window.location.pathname);
+
+  // Vérifier la connexion
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    // Si pas connecté, on sauvegarde le tag pour après le login
+    localStorage.setItem('pendingTag', tagCode);
+    alert("Connecte-toi vite pour récupérer tes points !");
+    return;
+  }
+
+  // Si connecté, on traite le tag
+  await scannerTag(tagCode, session.user.email);
+}
+
+// 2. Fonction de traitement
+async function scannerTag(code, emailUser) {
+  // A. Récupérer les infos du tag (Points + Message)
+  const { data: tagInfo, error } = await supabase
+    .from('nfc_tags')
+    .select('*')
+    .eq('code', code)
+    .single();
+
+  if (!tagInfo || !tagInfo.active) {
+    alert("❌ Ce tag est invalide ou désactivé.");
+    return;
+  }
+
+  // B. Vérifier si DÉJÀ scanné
+  const { data: dejaScanne } = await supabase
+    .from('transactions')
+    .select('*')
+    .eq('destinataire_email', emailUser)
+    .eq('raison', `NFC: ${code}`)
+    .single();
+
+  if (dejaScanne) {
+    alert(`⚠️ Tu as déjà scanné le tag "${code}" ! Pas de triche !`);
+    return;
+  }
+
+  // C. Ajouter les points
+  const { data: etudiant } = await supabase
+    .from('etudiants')
+    .select('solde')
+    .eq('email', emailUser)
+    .single();
+
+  const nouveauSolde = etudiant.solde + tagInfo.points;
+
+  await supabase.from('etudiants').update({ solde: nouveauSolde }).eq('email', emailUser);
+  
+  // D. Enregistrer la transaction
+  await supabase.from('transactions').insert([{
+      destinataire_email: emailUser,
+      montant: tagInfo.points,
+      raison: `NFC: ${code}`,
+      admin_email: 'SYSTEM_NFC'
+  }]);
+
+  // E. AFFICHER LA BELLE FENÊTRE 🎉
+  document.querySelector('#nfc-custom-message').textContent = tagInfo.message; // Le message de la BDD
+  document.querySelector('#nfc-points-amount').textContent = `+${tagInfo.points}`;
+  document.querySelector('#nfc-success-modal').classList.remove('hidden');
+
+  // Mise à jour du compteur visuel
+  if(document.querySelector('#points-count')) {
+      document.querySelector('#points-count').textContent = nouveauSolde;
+  }
+}
+
+// Bouton pour fermer la fenêtre
+document.querySelector('#btn-close-nfc').addEventListener('click', () => {
+  document.querySelector('#nfc-success-modal').classList.add('hidden');
+});
 
 checkSession()
+verifierTagUrl()
