@@ -110,7 +110,10 @@ document.querySelector('#btn-verify').addEventListener('click', async () => {
 })
 
 // ==================== 3. CONNEXION DIRECTE (Code uniquement) 🚀 ====================
-document.querySelector('#btn-login-code').addEventListener('click', async () => {
+// Intercepter la soumission du formulaire de connexion
+document.querySelector('#login-form').addEventListener('submit', async (e) => {
+  e.preventDefault() // Empêcher le rechargement de la page
+  
   const email = document.querySelector('#email-connexion').value.trim().toLowerCase()
   const code = document.querySelector('#code-connexion').value.trim()
 
@@ -141,8 +144,15 @@ document.querySelector('#btn-login-code').addEventListener('click', async () => 
     password: code
   })
 
-  if (error) alert("Erreur de connexion: " + error.message)
+  if (error) afficherMessageNFC('❌', 'Erreur', 'Erreur de connexion: ' + error.message, '#e74c3c');
   else checkSession()
+})
+
+// Garder aussi le listener sur le bouton pour compatibilité
+document.querySelector('#btn-login-code').addEventListener('click', async (e) => {
+  e.preventDefault()
+  document.querySelector('#login-form').dispatchEvent(new Event('submit'))
+})
 })
 
 // ==================== 4. VERIFICATION SESSION & CREATION PROFIL ====================
