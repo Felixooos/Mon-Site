@@ -594,11 +594,13 @@ function ouvrirModalAdmin(emailCible, soldeActuel) {
   document.querySelector('#admin-amount').value = ''
   document.querySelector('#admin-reason').value = ''
   adminModal.classList.remove('hidden')
+  document.body.style.overflow = 'hidden'
 }
 
 // Bouton Annuler
 document.querySelector('#btn-cancel-admin').addEventListener('click', () => {
   adminModal.classList.add('hidden')
+  document.body.style.overflow = ''
 })
 
 // Bouton Valider
@@ -910,6 +912,7 @@ window.ouvrirMenuObjet = function(id, nom, prix, imageUrl, taille, quantite) {
   objetEnCoursMenu = { id, nom, prix, image_url: imageUrl, taille, quantite }
   document.querySelector('#menu-objet-nom').textContent = nom
   document.querySelector('#menu-objet').classList.remove('hidden')
+  document.body.style.overflow = 'hidden'
 }
 
 async function supprimerObjet(objetId, type) {
@@ -944,10 +947,12 @@ window.confirmerAchat = async function(objetId, objetNom, objetPrix) {
   document.querySelector('#achat-solde-actuel').textContent = etudiant.solde
   
   document.querySelector('#modal-confirmer-achat').classList.remove('hidden')
+  document.body.style.overflow = 'hidden'
 }
 
 document.querySelector('#btn-cancel-achat').addEventListener('click', () => {
   document.querySelector('#modal-confirmer-achat').classList.add('hidden')
+  document.body.style.overflow = ''
   objetEnCoursAchat = null
 })
 
@@ -1077,6 +1082,7 @@ async function uploadPhoto(file) {
 
 document.querySelector('#btn-cancel-objet').addEventListener('click', () => {
   document.querySelector('#modal-ajouter-objet').classList.add('hidden')
+  document.body.style.overflow = ''
 })
 
 document.querySelector('#btn-confirm-objet').addEventListener('click', async () => {
@@ -1146,6 +1152,7 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
     afficherMessageNFC('', 'Succès', 'Objet ajouté !', '#2a9d8f');
   }
   document.querySelector('#modal-ajouter-objet').classList.add('hidden')
+  document.body.style.overflow = ''
   
   // Réinitialiser le formulaire
   document.querySelector('#objet-nom').value = ''
@@ -1160,6 +1167,7 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
 // Event listeners pour menu-objet
 document.querySelector('#btn-menu-annuler').addEventListener('click', () => {
   document.querySelector('#menu-objet').classList.add('hidden')
+  document.body.style.overflow = ''
   objetEnCoursMenu = null
 })
 
@@ -1194,6 +1202,7 @@ document.querySelector('#btn-menu-modifier').addEventListener('click', () => {
   // Fermer le menu et ouvrir le modal
   document.querySelector('#menu-objet').classList.add('hidden')
   document.querySelector('#modal-ajouter-objet').classList.remove('hidden')
+  document.body.style.overflow = 'hidden'
 })
 
 document.querySelector('#btn-menu-supprimer').addEventListener('click', async () => {
@@ -1282,6 +1291,7 @@ function afficherMessageNFC(emoji, titre, message, couleur = '#e74c3c') {
   document.querySelector('#nfc-info-modal .modal-content').style.border = `3px solid ${couleur}`;
   document.querySelector('#btn-close-nfc-info').style.background = couleur;
   document.querySelector('#nfc-info-modal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
 }
 
 // 1. Fonction lancée au chargement de la page
@@ -1361,6 +1371,7 @@ async function scannerTag(code, emailUser) {
   document.querySelector('#nfc-custom-message').textContent = tagInfo.message; // Le message de la BDD
   document.querySelector('#nfc-points-amount').textContent = `+${tagInfo.points}`;
   document.querySelector('#nfc-success-modal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
 
   // Mise à jour du compteur visuel
   if(document.querySelector('#points-count')) {
@@ -1371,10 +1382,12 @@ async function scannerTag(code, emailUser) {
 // Boutons pour fermer les fenêtres
 document.querySelector('#btn-close-nfc').addEventListener('click', () => {
   document.querySelector('#nfc-success-modal').classList.add('hidden');
+  document.body.style.overflow = '';
 });
 
 document.querySelector('#btn-close-nfc-info').addEventListener('click', () => {
   document.querySelector('#nfc-info-modal').classList.add('hidden');
+  document.body.style.overflow = '';
 });
 
 checkSession()
