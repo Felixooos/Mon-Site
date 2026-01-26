@@ -29,18 +29,6 @@ tabConnu.addEventListener('click', () => {
   }
 })
 
-// Bouton copier le mot de passe
-document.querySelector('#btn-copy-password').addEventListener('click', () => {
-  const password = document.querySelector('#generated-password').textContent
-  navigator.clipboard.writeText(password).then(() => {
-    const btn = document.querySelector('#btn-copy-password')
-    btn.textContent = '✅ Copié !'
-    setTimeout(() => {
-      btn.textContent = '📋 Copier'
-    }, 2000)
-  })
-})
-
 // ==================== LOGIQUE SUPABASE ====================
 
 const homeScreen = document.querySelector('#home-screen')
@@ -176,16 +164,10 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     
     console.log("Étudiant créé:", nouveau)
     
-    // Afficher le mot de passe et le mettre dans l'input caché
-    document.querySelector('#generated-password').textContent = codeOTP
-    document.querySelector('#password-hidden').value = codeOTP
-    document.querySelector('#password-display').style.display = 'block'
-    document.querySelector('#otp').disabled = true
-    
-    // On est déjà connecté grâce à verifyOtp, donc on redirige direct
-    setTimeout(() => {
-      checkSession()
-    }, 1000)
+    // Changer le bouton en "Connexion" et type submit
+    btnSendOtp.textContent = 'Connexion'
+    btnSendOtp.type = 'submit'
+    etapeInscription = 'complete'
   }
 })
 
@@ -193,9 +175,21 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
 document.querySelector('#signup-form').addEventListener('submit', async (e) => {
   e.preventDefault()
   
-  // Si on est à l'étape "Se connecter", déclencher la connexion
+  // Si on est à l'étape "Connexion", se connecter
   if (etapeInscription === 'complete') {
-    document.querySelector('#btn-send-otp').click()
+    const email = document.querySelector('#email-inscription').value
+    const password = document.querySelector('#otp').value
+    
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password
+    })
+
+    if (error) {
+      afficherMessageNFC('❌', 'Erreur', 'Erreur de connexion: ' + error.message, '#e74c3c');
+    } else {
+      checkSession()
+    }
   }
 })
 
@@ -465,8 +459,8 @@ document.querySelector('#btn-back-login').addEventListener('click', () => {
   document.querySelector('#otp').value = ''
   document.querySelector('#otp').disabled = false
   document.querySelector('#otp-section').style.display = 'none'
-  document.querySelector('#password-display').style.display = 'none'
   document.querySelector('#btn-send-otp').textContent = 'Recevoir mon code'
+  document.querySelector('#btn-send-otp').type = 'button'
   localStorage.removeItem('emailTemp')
   setEcran('home')
 })

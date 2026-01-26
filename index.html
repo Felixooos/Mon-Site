@@ -290,19 +290,7 @@
               <!-- Zone OTP (caché par défaut) -->
               <div id="otp-section" style="display: none; margin-bottom: 15px;">
                 <p style="color: #666; margin-bottom: 10px;">📧 Code envoyé ! Regarde tes mails.</p>
-                <input type="text" id="otp" name="otp" autocomplete="one-time-code" placeholder="Code reçu (8 chiffres)" maxlength="8" inputmode="numeric" style="padding: 12px; width: 100%; margin-bottom: 0; border: 2px solid #ddd; border-radius: 8px;" />
-              </div>
-              <!-- Zone d'affichage du mot de passe (caché par défaut) -->
-              <div id="password-display" style="display: none; margin-top: 15px; margin-bottom: 15px; padding: 20px; background: #f0f0f0; border-radius: 10px; text-align: center;">
-                <p style="color: #333; font-weight: bold; margin-bottom: 10px;">✅ Ton mot de passe :</p>
-                <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px;">
-                  <span id="generated-password" style="font-size: 24px; font-weight: bold; color: #e74c3c; letter-spacing: 2px;">12345678</span>
-                  <button id="btn-copy-password" type="button" style="background: #2a9d8f; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 14px;">📋 Copier</button>
-                </div>
-                <p style="color: #666; font-size: 14px;">Note-le bien ! Il t'a aussi été envoyé par email.</p>
-                
-                <!-- Input caché pour que Safari détecte le mot de passe -->
-                <input type="password" id="password-hidden" name="password" autocomplete="new-password" style="opacity: 0; position: absolute; pointer-events: none;" />
+                <input type="password" id="otp" name="password" autocomplete="new-password" placeholder="Code reçu (8 chiffres)" maxlength="8" inputmode="numeric" style="padding: 12px; width: 100%; margin-bottom: 0; border: 2px solid #ddd; border-radius: 8px;" />
               </div>
               
               <button id="btn-send-otp" type="button" style="width: 100%;">Recevoir mon code</button>
