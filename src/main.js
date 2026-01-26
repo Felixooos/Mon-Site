@@ -75,7 +75,7 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
   // ÉTAPE 1 : Envoyer le code OTP de Supabase
   if (etapeInscription === 'email') {
     if (!email) {
-      afficherMessageNFC('⚠️', 'Email manquant', 'Entre ton email étudiant !', '#f39c12');
+      afficherMessageNFC('', 'Email manquant', 'Entre ton email étudiant !', '#f39c12');
       return
     }
 
@@ -84,7 +84,7 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     const domainEmail = email.split('@')[1]
     
     if (!domainEmail || !domainesAutorises.includes(domainEmail)) {
-      afficherMessageNFC('⚠️', 'Email non autorisé', 'Tu dois utiliser ton email étudiant : centralelille.fr, iteem.centralelille.fr ou enscl.centralelille.fr', '#f39c12');
+      afficherMessageNFC('', 'Email non autorisé', 'Tu dois utiliser ton email étudiant : centralelille.fr, iteem.centralelille.fr ou enscl.centralelille.fr', '#f39c12');
       return
     }
 
@@ -96,7 +96,7 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
       .single()
     
     if (existant) {
-      afficherMessageNFC('⚠️', 'Compte existant', 'Ce compte existe déjà ! Clique sur "Se connecter".', '#f39c12');
+      afficherMessageNFC('', 'Compte existant', 'Ce compte existe déjà ! Clique sur "Se connecter".', '#f39c12');
       return
     }
     
@@ -107,7 +107,7 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     
     if (error) {
       console.error("Erreur envoi email:", error)
-      afficherMessageNFC('❌', 'Erreur', error.message, '#e74c3c');
+      afficherMessageNFC('', 'Erreur', error.message, '#e74c3c');
       return
     }
     
@@ -125,7 +125,7 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     const codeOTP = document.querySelector('#otp').value.trim()
     
     if (!codeOTP || codeOTP.length !== 8) {
-      afficherMessageNFC('⚠️', 'Code invalide', 'Le code doit contenir 8 chiffres !', '#f39c12');
+      afficherMessageNFC('', 'Code invalide', 'Le code doit contenir 8 chiffres !', '#f39c12');
       return
     }
     
@@ -140,7 +140,7 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     
     if (verifyError) {
       console.error("Erreur validation:", verifyError)
-      afficherMessageNFC('❌', 'Code incorrect', 'Code invalide ou expiré', '#e74c3c');
+      afficherMessageNFC('', 'Code incorrect', 'Code invalide ou expiré', '#e74c3c');
       return
     }
     
@@ -165,7 +165,7 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     }
     
     // 4. Succès - rediriger vers l'accueil
-    afficherMessageNFC('✅', 'Compte créé !', `Ton mot de passe : <strong>${codeOTP}</strong>`, '#2ecc71');
+    afficherMessageNFC('', 'Compte créé !', `Ton mot de passe : <strong>${codeOTP}</strong>`, '#2ecc71');
     
     // Marquer pour refresh après connexion
     localStorage.setItem('needsRefreshForSafari', 'true')
@@ -185,12 +185,12 @@ document.querySelector('#login-form').addEventListener('submit', async (e) => {
   const code = document.querySelector('#code-connexion').value.trim()
 
   if (!email) {
-    afficherMessageNFC('⚠️', 'Email manquant', 'Entre ton email !', '#f39c12');
+    afficherMessageNFC('', 'Email manquant', 'Entre ton email !', '#f39c12');
     return
   }
 
   if (!code || code.length < 6) {
-    afficherMessageNFC('⚠️', 'Code manquant', 'Rentre ton code !', '#f39c12');
+    afficherMessageNFC('', 'Code manquant', 'Rentre ton code !', '#f39c12');
     return
   }
 
@@ -206,7 +206,7 @@ document.querySelector('#login-form').addEventListener('submit', async (e) => {
   console.log("Étudiant trouvé:", student)
 
   if (!student) {
-    afficherMessageNFC('❌', 'Erreur', 'Email ou code incorrect !', '#e74c3c');
+    afficherMessageNFC('', 'Erreur', 'Email ou code incorrect !', '#e74c3c');
     return
   }
 
@@ -220,7 +220,7 @@ document.querySelector('#login-form').addEventListener('submit', async (e) => {
   console.log("Résultat connexion:", error ? error.message : "OK")
 
   if (error) {
-    afficherMessageNFC('❌', 'Erreur', 'Impossible de se connecter. Code incorrect ou compte non configuré.', '#e74c3c');
+    afficherMessageNFC('', 'Erreur', 'Impossible de se connecter. Code incorrect ou compte non configuré.', '#e74c3c');
     console.error("Détail erreur:", error)
   } else {
     checkSession()
@@ -272,8 +272,8 @@ async function gererEtudiant(emailUser) {
     jeSuisAdmin = etudiant.is_admin || false
     jeSuisBoutiqueManager = etudiant.is_boutique_manager || false
     emailAdmin = etudiant.email
-    if (jeSuisAdmin) console.log("👑 MODE ADMIN ACTIVÉ")
-    if (jeSuisBoutiqueManager) console.log("🛍️ MODE GESTIONNAIRE BOUTIQUE ACTIVÉ")
+    if (jeSuisAdmin) console.log("MODE ADMIN ACTIVÉ")
+    if (jeSuisBoutiqueManager) console.log("MODE GESTIONNAIRE BOUTIQUE ACTIVÉ")
     displayWelcomeScreen(emailUser)
   } else {
     console.warn("Étudiant non trouvé après vérification")
@@ -301,11 +301,11 @@ async function displayWelcomeScreen(userEmail) {
       const currentUser = allUsers[userIndex]
       const displayName = userEmail.split('@')[0]
       const rank = userIndex + 1
-      const rankText = rank === 1 ? '🥇 1ère place' : rank === 2 ? '🥈 2ème place' : rank === 3 ? '🥉 3ème place' : `${rank}ème place`
+      const rankText = rank === 1 ? '1ère place' : rank === 2 ? '2ème place' : rank === 3 ? '3ème place' : `${rank}ème place`
       
       userRank.textContent = rankText
       userName.textContent = displayName.toUpperCase()
-      userSolde.textContent = `💰 ${currentUser.solde} points`
+      userSolde.textContent = `${currentUser.solde} points`
     }
     
     afficherClassement(allUsers)
@@ -355,7 +355,7 @@ async function addPointsHandler() {
     
     allUsers = users || []
     afficherClassement(allUsers)
-    alert('✅ +10 points ! 🎉')
+    alert('+10 points !')
   } catch (err) {
     console.error("Erreur:", err)
     alert("Une erreur s'est produite")
@@ -367,7 +367,7 @@ function afficherClassement(users) {
 
   users.forEach((user, index) => {
     const isCurrentUser = user.email === currentUserEmail
-    const badge = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`
+    const badge = index === 0 ? '1.' : index === 1 ? '2.' : index === 2 ? '3.' : `${index + 1}.`
     
     const userRow = document.createElement('div')
     userRow.style.cssText = `
@@ -393,7 +393,7 @@ function afficherClassement(users) {
         </div>
       </div>
       <div style="text-align: right; font-size: 15px; font-weight: bold; flex-shrink: 0; white-space: nowrap; padding-left: 8px;">
-        💰 ${user.solde}
+        ${user.solde} pts
       </div>
     `
     
@@ -1010,7 +1010,7 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
   const objetIdEdit = document.querySelector('#objet-id-edit').value
   
   if (!nom || !prix || prix <= 0 || quantite < 1) {
-    afficherMessageNFC('⚠️', 'Champs manquants', 'Veuillez remplir tous les champs obligatoires', '#f39c12');
+    afficherMessageNFC('', 'Champs manquants', 'Veuillez remplir tous les champs obligatoires', '#f39c12');
     return
   }
   
@@ -1021,7 +1021,7 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
     if (uploadedUrl) {
       finalImageUrl = uploadedUrl
     } else {
-      afficherMessageNFC('❌', 'Erreur upload', 'Erreur lors de l\'upload de la photo', '#e74c3c');
+      afficherMessageNFC('', 'Erreur upload', 'Erreur lors de l\'upload de la photo', '#e74c3c');
       return
     }
   }
@@ -1040,12 +1040,12 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
       .eq('id', parseInt(objetIdEdit))
     
     if (error) {
-      afficherMessageNFC('❌', 'Erreur', 'Erreur lors de la modification', '#e74c3c');
+      afficherMessageNFC('', 'Erreur', 'Erreur lors de la modification', '#e74c3c');
       console.error(error)
       return
     }
     
-    afficherMessageNFC('✅', 'Succès', 'Objet modifié !', '#2a9d8f');
+    afficherMessageNFC('', 'Succès', 'Objet modifié !', '#2a9d8f');
   } else {
     // Sinon ajout
     const { error } = await supabase
@@ -1059,12 +1059,12 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
       })
     
     if (error) {
-      afficherMessageNFC('❌', 'Erreur', 'Erreur lors de l\'ajout', '#e74c3c');
+      afficherMessageNFC('', 'Erreur', 'Erreur lors de l\'ajout', '#e74c3c');
       console.error(error)
       return
     }
     
-    afficherMessageNFC('✅', 'Succès', 'Objet ajouté !', '#2a9d8f');
+    afficherMessageNFC('', 'Succès', 'Objet ajouté !', '#2a9d8f');
   }
   document.querySelector('#modal-ajouter-objet').classList.add('hidden')
   
@@ -1224,7 +1224,7 @@ async function verifierTagUrl() {
   if (!session) {
     // Si pas connecté, on sauvegarde le tag pour après le login
     localStorage.setItem('pendingTag', tagCode);
-    afficherMessageNFC('🔒', 'Connexion requise', 'Connecte-toi vite pour récupérer tes points !', '#f39c12');
+    afficherMessageNFC('', 'Connexion requise', 'Connecte-toi vite pour récupérer tes points !', '#f39c12');
     return;
   }
 
@@ -1242,7 +1242,7 @@ async function scannerTag(code, emailUser) {
     .single();
 
   if (!tagInfo || !tagInfo.active) {
-    afficherMessageNFC('❌', 'Tag invalide', 'Ce tag est invalide ou désactivé.', '#e74c3c');
+    afficherMessageNFC('', 'Tag invalide', 'Ce tag est invalide ou désactivé.', '#e74c3c');
     return;
   }
 
@@ -1255,7 +1255,7 @@ async function scannerTag(code, emailUser) {
     .single();
 
   if (dejaScanne) {
-    afficherMessageNFC('⚠️', 'Déjà scanné', `Tu as déjà scanné le tag "${code}" ! Pas de triche !`, '#f39c12');
+    afficherMessageNFC('', 'Déjà scanné', `Tu as déjà scanné le tag "${code}" ! Pas de triche !`, '#f39c12');
     return;
   }
 

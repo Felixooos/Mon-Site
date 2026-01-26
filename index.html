@@ -289,7 +289,7 @@
               
               <!-- Zone OTP (caché par défaut) -->
               <div id="otp-section" style="display: none; margin-bottom: 15px;">
-                <p style="color: #666; margin-bottom: 10px;">📧 Code envoyé ! Regarde tes mails.</p>
+                <p style="color: #666; margin-bottom: 10px;">Code envoyé ! Regarde tes mails.</p>
                 <input type="password" id="otp" name="password" autocomplete="new-password" placeholder="Code reçu (8 chiffres)" maxlength="8" inputmode="numeric" style="padding: 12px; width: 100%; margin-bottom: 0; border: 2px solid #ddd; border-radius: 8px;" />
               </div>
               
@@ -330,7 +330,7 @@
         <!-- Onglets de navigation -->
         <div id="tabs-welcome" style="display: flex; gap: 8px; margin-bottom: 20px;">
           <button id="tab-classement" style="flex: 1; background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; padding: 12px; margin: 0; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; box-shadow: 0 3px 15px rgba(231, 76, 60, 0.4); font-size: 14px;">📊 Classement</button>
-          <button id="tab-boutique" style="flex: 1; background: hwb(0 100% 0%); color: #333; padding: 12px; margin: 0; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1); font-size: 14px;">🛍️ Boutique</button>
+          <button id="tab-boutique" style="flex: 1; background: hwb(0 100% 0%); color: #333; padding: 12px; margin: 0; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1); font-size: 14px;">Boutique</button>
           <button id="tab-moi" style="flex: 1; background: white; color: #333; padding: 12px; margin: 0; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1); font-size: 14px;">👤 Moi</button>
         </div>
         
@@ -352,7 +352,7 @@
 
         <!-- Écran Boutique -->
         <div id="boutique-screen" style="display: none;">
-          <h2 style="text-align: center; margin-bottom: 20px;">🛍️ Notre Boutique</h2>
+          <h2 style="text-align: center; margin-bottom: 20px;">Notre Boutique</h2>
           
           <!-- Grille flexible pour les objets -->
           <div id="objets-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 80px; grid-auto-flow: dense;">
@@ -378,7 +378,7 @@
       <!-- Modal Admin -->
       <div id="admin-modal" class="modal hidden">
         <div class="modal-content">
-          <h3>👑 Zone Admin</h3>
+          <h3>Zone Admin</h3>
           <p>Ajouter des points à : <span id="admin-target-user" style="font-weight:bold; color:#e63946;"></span></p>
           
           <label>Montant (ex: 50 ou -10)</label>
@@ -458,8 +458,8 @@
         <div class="modal-content" style="max-width: 300px;">
           <h3>Gérer l'objet</h3>
           <p id="menu-objet-nom" style="font-weight: bold; color: #e74c3c; margin-bottom: 15px;"></p>
-          <button id="btn-menu-modifier" style="width: 100%; background: #3498db; margin-bottom: 10px;">✏️ Modifier</button>
-          <button id="btn-menu-supprimer" style="width: 100%; background: #e74c3c; margin-bottom: 10px;">🗑️ Supprimer</button>
+          <button id="btn-menu-modifier" style="width: 100%; background: #3498db; margin-bottom: 10px;">Modifier</button>
+          <button id="btn-menu-supprimer" style="width: 100%; background: #e74c3c; margin-bottom: 10px;">Supprimer</button>
           <button id="btn-menu-annuler" style="width: 100%; background: #999;">Annuler</button>
         </div>
       </div>
@@ -467,7 +467,7 @@
       <!-- Modal Modifier Objet -->
       <div id="modal-modifier-objet" class="modal hidden">
         <div class="modal-content">
-          <h3>✏️ Modifier l'Objet</h3>
+          <h3>Modifier l'Objet</h3>
           
           <label>Nom de l'objet</label>
           <input type="text" id="modifier-objet-nom" placeholder="Ex: T-shirt Wild Ember">
@@ -493,7 +493,7 @@
       <!-- Modal NFC Success -->
       <div id="nfc-success-modal" class="modal hidden">
         <div class="modal-content" style="border: 3px solid #2a9d8f;">
-          <h2 style="font-size: 3rem; margin:0;">🎉</h2>
+          <h2 style="font-size: 2rem; margin:0; color: #27ae60;">✓</h2>
           <h3 style="color: #2a9d8f;">POINTS GAGNÉS !</h3>
           
           <p id="nfc-custom-message" style="font-size: 1.2rem; font-weight: bold; margin: 20px 0;; color: black">
@@ -510,7 +510,7 @@
       <!-- Modal NFC Info/Erreur -->
       <div id="nfc-info-modal" class="modal hidden">
         <div class="modal-content" style="border: 3px solid #e74c3c;">
-          <h2 id="nfc-info-emoji" style="font-size: 3rem; margin:0;">⚠️</h2>
+          <h2 id="nfc-info-emoji" style="font-size: 2rem; margin:0; color: #e74c3c;">!</h2>
           <h3 id="nfc-info-titre" style="color: #e74c3c; margin: 15px 0;">Attention</h3>
           
           <p id="nfc-info-message" style="font-size: 1.1rem; margin: 20px 0; line-height: 1.5;">
