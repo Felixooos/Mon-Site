@@ -140,20 +140,13 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     
     console.log("Code OTP vérifié ! Session créée:", data)
     
-    // Se déconnecter temporairement pour forcer une vraie connexion après
-    await supabase.auth.signOut()
-    
-    // Maintenant créer le compte avec signUp en utilisant le code comme mot de passe
-    const { error: signUpError } = await supabase.auth.signUp({
-      email: email,
-      password: codeOTP,
-      options: {
-        emailRedirectTo: window.location.origin
-      }
+    // Définir le code OTP comme mot de passe permanent
+    const { error: updateError } = await supabase.auth.updateUser({ 
+      password: codeOTP 
     })
     
-    if (signUpError) {
-      console.error("Erreur création compte:", signUpError)
+    if (updateError) {
+      console.error("Erreur définition mot de passe:", updateError)
     }
     
     // Créer l'étudiant dans la base
@@ -171,10 +164,11 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     
     console.log("Étudiant créé:", nouveau)
     
-    // Changer le bouton en "Connexion" et type submit
-    btnSendOtp.textContent = 'Connexion'
-    btnSendOtp.type = 'submit'
-    etapeInscription = 'complete'
+    // On est déjà connecté, rediriger directement
+    afficherMessageNFC('✅', 'Compte créé !', 'Bienvenue ! Ton mot de passe est le code que tu as reçu par email.', '#2ecc71');
+    setTimeout(() => {
+      checkSession()
+    }, 1500)
   }
 })
 
