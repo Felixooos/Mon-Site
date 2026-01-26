@@ -73,13 +73,12 @@ function setEcran(nom) {
 
 // ==================== 1. INSCRIPTION (email → code email → validation → mot de passe → connexion) ====================
 let etapeInscription = 'email' // 'email', 'otp', ou 'complete'
-let codeGenere = '' // Stocker le code généré
 
 document.querySelector('#btn-send-otp').addEventListener('click', async () => {
   const btnSendOtp = document.querySelector('#btn-send-otp')
   const email = document.querySelector('#email-inscription').value.trim().toLowerCase()
   
-  // ÉTAPE 1 : Générer et envoyer le code
+  // ÉTAPE 1 : Envoyer le code OTP de Supabase
   if (etapeInscription === 'email') {
     if (!email) {
       afficherMessageNFC('⚠️', 'Email manquant', 'Entre ton email étudiant !', '#f39c12');
@@ -106,21 +105,11 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
       afficherMessageNFC('⚠️', 'Compte existant', 'Ce compte existe déjà ! Clique sur "Se connecter".', '#f39c12');
       return
     }
-
-    // Générer un code à 8 chiffres
-    codeGenere = Math.floor(10000000 + Math.random() * 90000000).toString()
     
-    console.log("Code généré:", codeGenere)
+    console.log("Envoi du code OTP...")
     
-    // Envoyer le code par email via Supabase Auth (OTP)
-    const { error } = await supabase.auth.signInWithOtp({ 
-      email: email,
-      options: {
-        data: {
-          code: codeGenere
-        }
-      }
-    })
+    // Envoyer le code OTP de Supabase
+    const { error } = await supabase.auth.signInWithOtp({ email: email })
     
     if (error) {
       console.error("Erreur envoi email:", error)
@@ -130,7 +119,6 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     
     // Stocker temporairement
     localStorage.setItem('emailTemp', email)
-    localStorage.setItem('codeTemp', codeGenere)
     
     // Afficher la zone OTP
     document.querySelector('#email-inscription').disabled = true
@@ -138,41 +126,45 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     btnSendOtp.textContent = 'Valider le code'
     etapeInscription = 'otp'
   }
-  // ÉTAPE 2 : Vérifier le code tapé
+  // ÉTAPE 2 : Vérifier le code OTP et créer le compte
   else if (etapeInscription === 'otp') {
-    const codeType = document.querySelector('#otp').value.trim()
+    const codeOTP = document.querySelector('#otp').value.trim()
     
-    if (!codeType || codeType.length !== 8) {
-      afficherMessageNFC('⚠️', 'Code invalide', 'Le code doit contenir exactement 8 chiffres !', '#f39c12');
+    if (!codeOTP || codeOTP.length !== 6) {
+      afficherMessageNFC('⚠️', 'Code invalide', 'Le code doit contenir 6 chiffres !', '#f39c12');
       return
     }
     
-    // Vérifier que le code tapé correspond au code généré
-    if (codeType !== codeGenere) {
+    console.log("Vérification du code OTP...")
+    
+    // Vérifier le code OTP de Supabase
+    const { error: verifyError, data } = await supabase.auth.verifyOtp({ 
+      email: email, 
+      token: codeOTP, 
+      type: 'email'
+    })
+    
+    if (verifyError) {
+      console.error("Erreur vérification OTP:", verifyError)
       afficherMessageNFC('❌', 'Code incorrect', 'Le code ne correspond pas ! Vérifie tes mails.', '#e74c3c');
       return
     }
     
-    console.log("Code validé ! Création du compte...")
+    console.log("Code OTP vérifié ! Session créée:", data)
     
-    // Créer le compte Supabase avec ce code comme mot de passe
-    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-      email: email,
-      password: codeGenere
+    // Maintenant définir ce code comme mot de passe permanent
+    const { error: updateError } = await supabase.auth.updateUser({ 
+      password: codeOTP 
     })
     
-    if (signUpError) {
-      console.error("Erreur création compte:", signUpError)
-      afficherMessageNFC('❌', 'Erreur', signUpError.message, '#e74c3c');
-      return
+    if (updateError) {
+      console.error("Erreur définition mot de passe:", updateError)
     }
-    
-    console.log("Compte Supabase créé:", signUpData)
     
     // Créer l'étudiant dans la base
     const { data: nouveau, error: insertError } = await supabase
       .from('etudiants')
-      .insert([{ email: email, code_perso: codeGenere, solde: 0 }])
+      .insert([{ email: email, code_perso: codeOTP, solde: 0 }])
       .select()
       .single()
 
@@ -185,28 +177,15 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     console.log("Étudiant créé:", nouveau)
     
     // Afficher le mot de passe et le mettre dans l'input caché
-    document.querySelector('#generated-password').textContent = codeGenere
-    document.querySelector('#password-hidden').value = codeGenere
+    document.querySelector('#generated-password').textContent = codeOTP
+    document.querySelector('#password-hidden').value = codeOTP
     document.querySelector('#password-display').style.display = 'block'
     document.querySelector('#otp').disabled = true
-    btnSendOtp.textContent = 'Se connecter'
-    btnSendOtp.type = 'submit' // Changer en submit pour que Safari détecte
-    etapeInscription = 'complete'
-  }
-  // ÉTAPE 3 : Se connecter
-  else if (etapeInscription === 'complete') {
-    const password = document.querySelector('#generated-password').textContent
     
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password
-    })
-
-    if (error) {
-      afficherMessageNFC('❌', 'Erreur', 'Erreur de connexion: ' + error.message, '#e74c3c');
-    } else {
+    // On est déjà connecté grâce à verifyOtp, donc on redirige direct
+    setTimeout(() => {
       checkSession()
-    }
+    }, 1000)
   }
 })
 
@@ -480,7 +459,6 @@ document.querySelector('#btn-register').addEventListener('click', () => {
 document.querySelector('#btn-back-login').addEventListener('click', () => {
   // Réinitialiser tout
   etapeInscription = 'email'
-  codeGenere = ''
   document.querySelector('#email-inscription').value = ''
   document.querySelector('#email-inscription').disabled = false
   document.querySelector('#code-connexion').value = ''
@@ -490,7 +468,6 @@ document.querySelector('#btn-back-login').addEventListener('click', () => {
   document.querySelector('#password-display').style.display = 'none'
   document.querySelector('#btn-send-otp').textContent = 'Recevoir mon code'
   localStorage.removeItem('emailTemp')
-  localStorage.removeItem('codeTemp')
   setEcran('home')
 })
 
