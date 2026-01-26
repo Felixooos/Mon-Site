@@ -155,18 +155,15 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
       console.error("Erreur création:", insertError)
     }
     
-    // 3. Succès - laisser Safari détecter puis rediriger
+    // 3. Succès - rediriger et recharger pour Safari
     afficherMessageNFC('✅', 'Compte créé !', `Ton mot de passe : <strong>${codeOTP}</strong>`, '#2ecc71');
     
-    // Déclencher VRAIE soumission du formulaire pour Safari
+    // Attendre puis rediriger
     setTimeout(() => {
-      const form = document.querySelector('#signup-form')
-      if (form && form.requestSubmit) {
-        form.requestSubmit() // Safari va intercepter ça
-      }
-      // Attendre que Safari traite, puis rediriger
-      setTimeout(() => checkSession(), 500)
-    }, 1000)
+      checkSession()
+      // Recharger pour que Safari propose d'enregistrer
+      setTimeout(() => location.reload(), 300)
+    }, 1200)
   }
 })
 
