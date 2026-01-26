@@ -328,19 +328,23 @@ async function displayWelcomeScreen(userEmail) {
   try {
     const { data: etudiants, error } = await supabase
       .from('etudiants')
-      .select('*')
+      .select('*, transactions:transactions!destinataire_email(montant)')
     
     if (error) {
       console.error("Erreur récupération utilisateurs:", error)
       allUsers = []
     } else {
-      // Pour l'instant, on utilise le solde pour le classement
-      // Plus tard on pourra ajouter le système de total_gains avec les transactions
+      // Calculer le total des gains (transactions positives uniquement)
       allUsers = (etudiants || []).map(etudiant => {
+        const transactions = etudiant.transactions || []
+        const totalGains = transactions
+          .filter(t => t.montant > 0)
+          .reduce((sum, t) => sum + t.montant, 0)
+        
         return {
           ...etudiant,
-          total_gains: etudiant.solde,
-          solde_reel: etudiant.solde
+          total_gains: totalGains, // Pour le classement
+          solde_reel: etudiant.solde // Pour le solde en haut à droite
         }
       }).sort((a, b) => b.total_gains - a.total_gains)
     }
@@ -579,7 +583,6 @@ document.querySelector('#btn-confirm-admin').addEventListener('click', async () 
   const raison = document.querySelector('#admin-reason').value.trim()
 
   if (!montant || !raison) {
-    alert("Il faut un montant et une raison !")
     return
   }
 
@@ -609,18 +612,8 @@ document.querySelector('#btn-confirm-admin').addEventListener('click', async () 
 
   if (errorTransac) console.error("Erreur log transaction", errorTransac)
 
-  // 4. Succès
-  alert(`✅ Transaction réussie !\n${montant} points ajoutés à ${cibleEmail}.`)
-  adminModal.classList.add('hidden')
-  
-  // Recharger le classement
-  const { data: users } = await supabase
-    .from('etudiants')
-    .select('*')
-    .order('solde', { ascending: false })
-  
-  allUsers = users || []
-  afficherClassement(allUsers)
+  // 4. Succès - rafraîchir la page
+  location.reload()
 })
 
 // ==================== ONGLETS CLASSEMENT/BOUTIQUE ====================
