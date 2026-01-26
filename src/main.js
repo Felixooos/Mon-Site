@@ -638,16 +638,28 @@ document.querySelector('#btn-confirm-admin').addEventListener('click', async () 
   }
 
   // 3. Enregistrement de la transaction (La Trace)
+  const transactionData = {
+    destinataire_email: cibleEmail,
+    montant: montant,
+    raison: raison
+  }
+  
+  // Ajouter admin_email seulement si défini
+  if (emailAdmin) {
+    transactionData.admin_email = emailAdmin
+  }
+  
+  console.log("Insertion transaction:", transactionData)
+  
   const { error: errorTransac } = await supabase
     .from('transactions')
-    .insert([{
-      destinataire_email: cibleEmail,
-      admin_email: emailAdmin,
-      montant: montant,
-      raison: raison
-    }])
+    .insert([transactionData])
 
-  if (errorTransac) console.error("Erreur log transaction", errorTransac)
+  if (errorTransac) {
+    console.error("Erreur log transaction:", errorTransac)
+  } else {
+    console.log("Transaction enregistrée avec succès")
+  }
 
   // 4. Succès - rafraîchir la page
   location.reload()
