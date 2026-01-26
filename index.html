@@ -342,15 +342,13 @@
         <div id="boutique-screen" style="display: none;">
           <h2 style="text-align: center; margin-bottom: 20px;">🛍️ Notre Boutique</h2>
           
-          <!-- Item principal en haut (UN SEUL OBJET) v2 -->
-          <div id="item-principal" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; min-height: 200px; position: relative;">
-            <!-- Le contenu sera généré en JS -->
+          <!-- Grille flexible pour les objets -->
+          <div id="objets-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 80px;">
+            <!-- Les objets seront générés en JS -->
           </div>
-
-          <!-- 3 petits items côte à côte -->
-          <div id="container-petits-items" style="display: flex; gap: 10px; margin-bottom: 20px;">
-            <!-- Les 3 items seront générés en JS -->
-          </div>
+          
+          <!-- Bouton flottant pour ajouter (admin seulement) -->
+          <button id="btn-ajouter-objet-flottant" class="hidden" style="position: fixed; bottom: 80px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background: #e74c3c; color: white; border: none; font-size: 30px; cursor: pointer; box-shadow: 0 4px 15px rgba(231,76,60,0.4); z-index: 100;">➕</button>
         </div>
 
         <!-- Écran Moi -->
@@ -387,7 +385,15 @@
       <!-- Modal Ajouter Objet Boutique -->
       <div id="modal-ajouter-objet" class="modal hidden">
         <div class="modal-content">
-          <h3>➕ Ajouter un Objet</h3>
+          <h3 id="modal-titre-objet">➕ Ajouter un Objet</h3>
+          
+          <label>Taille de l'objet</label>
+          <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <button type="button" class="btn-taille" data-taille="petit" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: white; cursor: pointer; font-size: 14px;">📦 Petit</button>
+            <button type="button" class="btn-taille" data-taille="moyen" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: white; cursor: pointer; font-size: 14px;">📦📦 Moyen</button>
+            <button type="button" class="btn-taille" data-taille="gros" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: white; cursor: pointer; font-size: 14px;">📦📦📦 Gros</button>
+          </div>
+          <input type="hidden" id="objet-taille" value="petit">
           
           <label>Nom de l'objet</label>
           <input type="text" id="objet-nom" placeholder="Ex: T-shirt Wild Ember">
@@ -399,11 +405,19 @@
           <input type="number" id="objet-quantite" placeholder="10" value="1" min="1">
           
           <label>📸 Photo de l'objet</label>
-          <input type="file" id="objet-photo" accept="image/*" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px;">
-          <p style="font-size: 12px; color: #999; margin: -8px 0 10px 0;">Ou entrez une URL :</p>
+          <div id="zone-upload" style="border: 2px dashed #ddd; border-radius: 12px; padding: 30px; text-align: center; margin-bottom: 10px; cursor: pointer; transition: all 0.3s; background: #f9f9f9;">
+            <div id="preview-image" style="display: none; margin-bottom: 10px;">
+              <img id="img-preview" src="" style="max-width: 100%; max-height: 150px; border-radius: 8px;">
+            </div>
+            <p style="margin: 0; color: #666; font-size: 14px;">📷 Cliquez pour choisir une photo</p>
+            <p style="margin: 5px 0 0 0; color: #999; font-size: 12px;">ou glissez-déposez ici</p>
+          </div>
+          <input type="file" id="objet-photo" accept="image/*" style="display: none;">
+          <p style="font-size: 12px; color: #999; margin: 5px 0;">Ou entrez une URL :</p>
           <input type="text" id="objet-image" placeholder="https://...">
           
           <input type="hidden" id="objet-type">
+          <input type="hidden" id="objet-id-edit">
           
           <div class="modal-buttons">
             <button id="btn-cancel-objet" style="background:#999; flex: 1;">Annuler</button>

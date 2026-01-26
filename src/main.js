@@ -557,9 +557,204 @@ async function chargerObjetsBoutique() {
     return
   }
   
-  // Afficher les objets dans la boutique
-  const principal = objets.find(o => o.type === 'principal')
-  const petits = objets.filter(o => o.type === 'petit').slice(0, 3)
+  // Afficher le bouton d'ajout si gestionnaire
+  const btnAjout = document.querySelector('#btn-ajouter-objet-flottant')
+  if (jeSuisBoutiqueManager) {
+    btnAjout.classList.remove('hidden')
+  } else {
+    btnAjout.classList.add('hidden')
+  }
+  
+  // Créer la grille
+  const grid = document.querySelector('#objets-grid')
+  grid.innerHTML = ''
+  
+  objets.forEach(objet => {
+    const estEpuise = objet.quantite <= 0
+    const taille = objet.taille || 'petit'
+    
+    // Définir le nombre de colonnes occupées
+    let gridColumn = ''
+    if (taille === 'gros') gridColumn = 'span 3'
+    else if (taille === 'moyen') gridColumn = 'span 2'
+    else gridColumn = 'span 1'
+    
+    const div = document.createElement('div')
+    div.style.cssText = `
+      grid-column: ${gridColumn};
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      position: relative;
+      border: 2px solid ${estEpuise ? '#ddd' : '#e74c3c'};
+    `
+    
+    let html = ''
+    
+    // Menu 3 points si gestionnaire
+    if (jeSuisBoutiqueManager) {
+      html += `<button class="btn-menu-3pts" data-objet-id="${objet.id}" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">⋮</button>`
+    }
+    
+    // Image
+    const imageHeight = taille === 'gros' ? '200px' : taille === 'moyen' ? '150px' : '120px'
+    html += `
+      <div style="background: #f0f0f0; width: 100%; height: ${imageHeight}; border-radius: 10px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; font-size: 50px; background-image: url('${objet.image_url || ''}'); background-size: cover; background-position: center;">
+        ${!objet.image_url ? '📸' : ''}
+      </div>
+    `
+    
+    // Nom
+    const fontSize = taille === 'gros' ? '22px' : taille === 'moyen' ? '18px' : '16px'
+    html += `<h3 style="margin: 10px 0; font-size: ${fontSize}; color: #333;">${objet.nom}</h3>`
+    
+    // Prix
+    html += `<p style="font-size: 20px; font-weight: bold; color: #e74c3c; margin: 8px 0;">💰 ${objet.prix} pts</p>`
+    
+    // Stock
+    html += `<p style="font-size: 14px; margin: 8px 0; color: ${estEpuise ? '#e74c3c' : '#2ecc71'};">${estEpuise ? '❌ Épuisé' : `✅ ${objet.quantite} disponible(s)`}</p>`
+    
+    // Bouton acheter
+    html += `<button class="btn-acheter" data-id="${objet.id}" data-nom="${objet.nom}" data-prix="${objet.prix}" style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: ${estEpuise ? 'not-allowed' : 'pointer'}; background: ${estEpuise ? '#ddd' : '#e74c3c'}; color: white; font-size: 16px;" ${estEpuise ? 'disabled' : ''}>Acheter</button>`
+    
+    div.innerHTML = html
+    div.dataset.objetId = objet.id
+    div.dataset.objetNom = objet.nom
+    div.dataset.objetPrix = objet.prix
+    div.dataset.objetImage = objet.image_url || ''
+    div.dataset.objetQuantite = objet.quantite
+    div.dataset.objetTaille = taille
+    grid.appendChild(div)
+  })
+  
+  // Ajouter listeners sur les boutons acheter
+  document.querySelectorAll('.btn-acheter').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation()
+      const id = parseInt(btn.dataset.id)
+      const nom = btn.dataset.nom
+      const prix = parseInt(btn.dataset.prix)
+      confirmerAchat(id, nom, prix)
+    })
+  })
+  
+  // Ajouter listeners sur les menus 3 points
+  document.querySelectorAll('.btn-menu-3pts').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation()
+      const id = parseInt(btn.dataset.objetId)
+      const container = btn.closest('[data-objet-id]')
+      const nom = container.dataset.objetNom
+      const prix = parseInt(container.dataset.objetPrix)
+      const imageUrl = container.dataset.objetImage
+      const quantite = parseInt(container.dataset.objetQuantite)
+      const taille = container.dataset.objetTaille
+      
+      ouvrirMenuObjet(id, nom, prix, imageUrl, taille, quantite)
+    })
+  })
+}
+
+// Bouton flottant pour ajouter un objet
+document.querySelector('#btn-ajouter-objet-flottant').addEventListener('click', () => {
+  ouvrirModalAjout()
+})
+
+// Gestion du choix de taille dans le modal
+document.querySelectorAll('.btn-taille').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.btn-taille').forEach(b => {
+      b.style.border = '2px solid #ddd'
+      b.style.background = 'white'
+    })
+    btn.style.border = '2px solid #e74c3c'
+    btn.style.background = '#ffe6e6'
+    document.querySelector('#objet-taille').value = btn.dataset.taille
+  })
+})
+
+// Gestion de l'upload de photo avec preview
+const zoneUpload = document.querySelector('#zone-upload')
+const inputPhoto = document.querySelector('#objet-photo')
+const previewDiv = document.querySelector('#preview-image')
+const imgPreview = document.querySelector('#img-preview')
+
+zoneUpload.addEventListener('click', () => {
+  inputPhoto.click()
+})
+
+zoneUpload.addEventListener('dragover', (e) => {
+  e.preventDefault()
+  zoneUpload.style.borderColor = '#e74c3c'
+  zoneUpload.style.background = '#ffe6e6'
+})
+
+zoneUpload.addEventListener('dragleave', () => {
+  zoneUpload.style.borderColor = '#ddd'
+  zoneUpload.style.background = '#f9f9f9'
+})
+
+zoneUpload.addEventListener('drop', (e) => {
+  e.preventDefault()
+  zoneUpload.style.borderColor = '#ddd'
+  zoneUpload.style.background = '#f9f9f9'
+  const file = e.dataTransfer.files[0]
+  if (file && file.type.startsWith('image/')) {
+    inputPhoto.files = e.dataTransfer.files
+    afficherPreview(file)
+  }
+})
+
+inputPhoto.addEventListener('change', (e) => {
+  const file = e.target.files[0]
+  if (file) {
+    afficherPreview(file)
+  }
+})
+
+function afficherPreview(file) {
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    imgPreview.src = e.target.result
+    previewDiv.style.display = 'block'
+  }
+  reader.readAsDataURL(file)
+}
+
+// Ouvrir modal avec type pré-sélectionné (ancien système)
+function ouvrirModalAjout(type = null) {
+  // Réinitialiser le formulaire
+  document.querySelector('#objet-nom').value = ''
+  document.querySelector('#objet-prix').value = ''
+  document.querySelector('#objet-quantite').value = '1'
+  document.querySelector('#objet-image').value = ''
+  document.querySelector('#objet-photo').value = ''
+  document.querySelector('#objet-id-edit').value = ''
+  previewDiv.style.display = 'none'
+  
+  // Sélectionner la taille "petit" par défaut
+  document.querySelectorAll('.btn-taille').forEach(b => {
+    b.style.border = '2px solid #ddd'
+    b.style.background = 'white'
+  })
+  document.querySelector('.btn-taille[data-taille="petit"]').style.border = '2px solid #e74c3c'
+  document.querySelector('.btn-taille[data-taille="petit"]').style.background = '#ffe6e6'
+  document.querySelector('#objet-taille').value = 'petit'
+  
+  document.querySelector('#modal-titre-objet').textContent = '➕ Ajouter un Objet'
+  document.querySelector('#btn-confirm-objet').textContent = 'Ajouter'
+  document.querySelector('#modal-ajouter-objet').classList.remove('hidden')
+}
+
+// Ouvrir menu 3 points pour un objet
+let objetEnCoursMenu = null
+
+window.ouvrirMenuObjet = function(id, nom, prix, imageUrl, taille, quantite) {
+  objetEnCoursMenu = { id, nom, prix, image_url: imageUrl, taille, quantite }
+  document.querySelector('#menu-objet-nom').textContent = nom
+  document.querySelector('#menu-objet').classList.remove('hidden')
+}
   
   // Item principal (UN SEUL)
   const itemPrincipal = document.querySelector('#item-principal')
@@ -870,10 +1065,11 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
   const quantite = parseInt(document.querySelector('#objet-quantite').value) || 1
   const imageUrl = document.querySelector('#objet-image').value.trim()
   const photoFile = document.querySelector('#objet-photo').files[0]
-  const type = document.querySelector('#objet-type').value
+  const taille = document.querySelector('#objet-taille').value
+  const objetIdEdit = document.querySelector('#objet-id-edit').value
   
   if (!nom || !prix || prix <= 0 || quantite < 1) {
-    alert('Veuillez remplir tous les champs obligatoires')
+    afficherMessageNFC('⚠️', 'Champs manquants', 'Veuillez remplir tous les champs obligatoires', '#f39c12');
     return
   }
   
@@ -884,45 +1080,51 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
     if (uploadedUrl) {
       finalImageUrl = uploadedUrl
     } else {
-      alert('Erreur lors de l\'upload de la photo')
+      afficherMessageNFC('❌', 'Erreur upload', 'Erreur lors de l\'upload de la photo', '#e74c3c');
       return
     }
   }
   
-  // Vérifier les limites
-  const { data: objetsExistants } = await supabase
-    .from('objets_boutique')
-    .select('*')
-    .eq('type', type)
-  
-  if (type === 'principal' && objetsExistants.length >= 1) {
-    alert('Il y a déjà un objet principal ! Supprimez-le d\'abord.')
-    return
+  // Si modification
+  if (objetIdEdit) {
+    const { error } = await supabase
+      .from('objets_boutique')
+      .update({
+        nom,
+        prix,
+        quantite,
+        image_url: finalImageUrl || null,
+        taille
+      })
+      .eq('id', parseInt(objetIdEdit))
+    
+    if (error) {
+      afficherMessageNFC('❌', 'Erreur', 'Erreur lors de la modification', '#e74c3c');
+      console.error(error)
+      return
+    }
+    
+    afficherMessageNFC('✅', 'Succès', 'Objet modifié !', '#2a9d8f');
+  } else {
+    // Sinon ajout
+    const { error } = await supabase
+      .from('objets_boutique')
+      .insert({
+        nom,
+        prix,
+        quantite,
+        image_url: finalImageUrl || null,
+        taille
+      })
+    
+    if (error) {
+      afficherMessageNFC('❌', 'Erreur', 'Erreur lors de l\'ajout', '#e74c3c');
+      console.error(error)
+      return
+    }
+    
+    afficherMessageNFC('✅', 'Succès', 'Objet ajouté !', '#2a9d8f');
   }
-  
-  if (type === 'petit' && objetsExistants.length >= 3) {
-    alert('Il y a déjà 3 petits objets ! Supprimez-en un d\'abord.')
-    return
-  }
-  
-  // Insérer l'objet
-  const { error } = await supabase
-    .from('objets_boutique')
-    .insert({
-      nom,
-      prix,
-      quantite,
-      image_url: finalImageUrl || null,
-      type
-    })
-  
-  if (error) {
-    alert('Erreur lors de l\'ajout')
-    console.error(error)
-    return
-  }
-  
-  alert('Objet ajouté !')
   document.querySelector('#modal-ajouter-objet').classList.add('hidden')
   
   // Réinitialiser le formulaire
@@ -944,15 +1146,34 @@ document.querySelector('#btn-menu-annuler').addEventListener('click', () => {
 document.querySelector('#btn-menu-modifier').addEventListener('click', () => {
   if (!objetEnCoursMenu) return
   
-  // Pré-remplir le formulaire de modification
-  document.querySelector('#modifier-objet-nom').value = objetEnCoursMenu.nom
-  document.querySelector('#modifier-objet-prix').value = objetEnCoursMenu.prix
-  document.querySelector('#modifier-objet-quantite').value = objetEnCoursMenu.quantite
-  document.querySelector('#modifier-objet-image').value = objetEnCoursMenu.image_url || ''
+  // Pré-remplir le formulaire dans le modal d'ajout (en mode édition)
+  document.querySelector('#objet-nom').value = objetEnCoursMenu.nom
+  document.querySelector('#objet-prix').value = objetEnCoursMenu.prix
+  document.querySelector('#objet-quantite').value = objetEnCoursMenu.quantite
+  document.querySelector('#objet-image').value = objetEnCoursMenu.image_url || ''
+  document.querySelector('#objet-id-edit').value = objetEnCoursMenu.id
+  previewDiv.style.display = 'none'
   
-  // Fermer le menu et ouvrir le modal de modification
+  // Sélectionner la bonne taille
+  const taille = objetEnCoursMenu.taille || 'petit'
+  document.querySelectorAll('.btn-taille').forEach(b => {
+    b.style.border = '2px solid #ddd'
+    b.style.background = 'white'
+  })
+  const btnTaille = document.querySelector(`.btn-taille[data-taille="${taille}"]`)
+  if (btnTaille) {
+    btnTaille.style.border = '2px solid #e74c3c'
+    btnTaille.style.background = '#ffe6e6'
+  }
+  document.querySelector('#objet-taille').value = taille
+  
+  // Changer le titre et le bouton
+  document.querySelector('#modal-titre-objet').textContent = '✏️ Modifier l\'Objet'
+  document.querySelector('#btn-confirm-objet').textContent = 'Modifier'
+  
+  // Fermer le menu et ouvrir le modal
   document.querySelector('#menu-objet').classList.add('hidden')
-  document.querySelector('#modal-modifier-objet').classList.remove('hidden')
+  document.querySelector('#modal-ajouter-objet').classList.remove('hidden')
 })
 
 document.querySelector('#btn-menu-supprimer').addEventListener('click', async () => {
