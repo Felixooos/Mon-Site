@@ -221,20 +221,23 @@ async function gererEtudiant(emailUser) {
     etudiant = nouveau
     console.log("Étudiant créé:", etudiant)
     
-    // Pré-remplir le formulaire de connexion pour Safari
+    // Rediriger vers l'écran de connexion avec les infos pré-remplies
+    setEcran('login')
+    
+    // Passer en mode connexion (pas inscription)
+    document.querySelector('#form-inscription').style.display = 'none'
+    document.querySelector('#form-connexion').style.display = 'block'
+    document.querySelector('#tab-nouveau').style.background = 'white'
+    document.querySelector('#tab-connu').style.background = '#ddd'
+    
+    // Pré-remplir le formulaire
     document.querySelector('#email-connexion').value = emailUser
     document.querySelector('#code-connexion').value = codeOtp
     
-    afficherMessageNFC('✅', 'Compte créé !', `Ton code de connexion est : ${codeOtp}\n\nNote-le bien, il te servira de mot de passe !`, '#2a9d8f');
-    
-    // Forcer une soumission invisible du formulaire pour que Safari propose d'enregistrer
+    // Afficher le message après un court délai
     setTimeout(() => {
-      const loginForm = document.querySelector('#login-form')
-      if (loginForm) {
-        const submitEvent = new Event('submit', { bubbles: true, cancelable: true })
-        loginForm.dispatchEvent(submitEvent)
-      }
-    }, 500)
+      afficherMessageNFC('✅', 'Compte créé !', `Ton code : ${codeOtp}\n\nMaintenant connecte-toi pour que Safari enregistre tes identifiants !`, '#2a9d8f');
+    }, 300)
   }
 
   if (etudiant) {
