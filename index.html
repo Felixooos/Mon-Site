@@ -15,7 +15,7 @@
       }
       body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #ff7300 50%,#ff0000 100%);
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         min-height: 100vh;
         display: flex;
         justify-content: center;
@@ -80,6 +80,15 @@
       button:hover {
         transform: translateY(-2px);
         box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
+      }
+      button:disabled {
+        background: #cccccc;
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+      button:disabled:hover {
+        transform: none;
+        box-shadow: none;
       }
       .points-display {
         background: #f0f0f0;

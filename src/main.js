@@ -68,6 +68,45 @@ document.querySelector('#signup-form').addEventListener('submit', (e) => {
   console.log('Formulaire soumis - Safari va détecter')
 })
 
+// ==================== VALIDATION DES CHAMPS EN TEMPS RÉEL ====================
+const emailInscription = document.querySelector('#email-inscription')
+const otpInput = document.querySelector('#otp')
+const btnSendOtp = document.querySelector('#btn-send-otp')
+
+// Vérifier les champs d'inscription
+function verifierChampsInscription() {
+  if (etapeInscription === 'email') {
+    // Étape email : activer si email valide
+    const emailValide = emailInscription.value.trim().includes('@')
+    btnSendOtp.disabled = !emailValide
+  } else if (etapeInscription === 'otp') {
+    // Étape OTP : activer si 8 chiffres
+    const codeValide = otpInput.value.trim().length === 8
+    btnSendOtp.disabled = !codeValide
+  }
+}
+
+emailInscription.addEventListener('input', verifierChampsInscription)
+otpInput.addEventListener('input', verifierChampsInscription)
+
+// Vérifier les champs de connexion
+const emailConnexion = document.querySelector('#email-connexion')
+const codeConnexion = document.querySelector('#code-connexion')
+const btnLoginCode = document.querySelector('#btn-login-code')
+
+function verifierChampsConnexion() {
+  const emailValide = emailConnexion.value.trim().includes('@')
+  const codeValide = codeConnexion.value.trim().length === 8
+  btnLoginCode.disabled = !(emailValide && codeValide)
+}
+
+emailConnexion.addEventListener('input', verifierChampsConnexion)
+codeConnexion.addEventListener('input', verifierChampsConnexion)
+
+// Initialiser les boutons comme désactivés
+btnSendOtp.disabled = true
+btnLoginCode.disabled = true
+
 document.querySelector('#btn-send-otp').addEventListener('click', async () => {
   const btnSendOtp = document.querySelector('#btn-send-otp')
   const email = document.querySelector('#email-inscription').value.trim().toLowerCase()
@@ -119,6 +158,10 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     document.querySelector('#otp-section').style.display = 'block'
     btnSendOtp.textContent = 'Valider le code'
     etapeInscription = 'otp'
+    
+    // Réinitialiser le bouton comme désactivé
+    btnSendOtp.disabled = true
+    verifierChampsInscription()
   }
   // ÉTAPE 2 : Vérifier le code OTP
   else if (etapeInscription === 'otp') {
