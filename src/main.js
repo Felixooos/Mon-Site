@@ -194,6 +194,8 @@ document.querySelector('#login-form').addEventListener('submit', async (e) => {
     return
   }
 
+  console.log("Tentative connexion:", email, "avec code:", code)
+
   const { data: student } = await supabase
     .from('etudiants')
     .select('email, code_perso')
@@ -201,18 +203,28 @@ document.querySelector('#login-form').addEventListener('submit', async (e) => {
     .eq('code_perso', code)
     .single()
 
+  console.log("Étudiant trouvé:", student)
+
   if (!student) {
     afficherMessageNFC('❌', 'Erreur', 'Email ou code incorrect !', '#e74c3c');
     return
   }
+
+  console.log("Connexion Supabase Auth avec:", student.email, code)
 
   const { error } = await supabase.auth.signInWithPassword({
     email: student.email,
     password: code
   })
 
-  if (error) afficherMessageNFC('❌', 'Erreur', 'Erreur de connexion: ' + error.message, '#e74c3c');
-  else checkSession()
+  console.log("Résultat connexion:", error ? error.message : "OK")
+
+  if (error) {
+    afficherMessageNFC('❌', 'Erreur', 'Impossible de se connecter. Code incorrect ou compte non configuré.', '#e74c3c');
+    console.error("Détail erreur:", error)
+  } else {
+    checkSession()
+  }
 })
 
 // Garder aussi le listener sur le bouton pour compatibilité
