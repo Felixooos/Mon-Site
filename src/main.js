@@ -726,16 +726,16 @@ async function chargerObjetsBoutique() {
       html += `<button class="btn-menu-3pts" data-objet-id="${objet.id}" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">⋮</button>`
     }
     
-    // Image (hauteur fixe)
+    // Image (prend l'espace disponible)
     const imageHeight = taille === 'gros' ? '200px' : taille === 'moyen' ? '150px' : '120px'
     html += `
-      <div style="background: white; width: 100%; height: ${imageHeight}; flex-shrink: 0; border-radius: 10px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; font-size: 50px; background-image: url('${objet.image_url || ''}'); background-size: contain; background-repeat: no-repeat; background-position: center;">
+      <div style="background: white; width: 100%; flex: 1; min-height: ${imageHeight}; border-radius: 10px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; font-size: 50px; background-image: url('${objet.image_url || ''}'); background-size: contain; background-repeat: no-repeat; background-position: center;">
         ${!objet.image_url ? '📸' : ''}
       </div>
     `
     
-    // Contenu flexible (description)
-    html += `<div style="flex: 1; display: flex; flex-direction: column;">`
+    // Contenu en bas (hauteur fixe)
+    html += `<div style="flex-shrink: 0;">`
     
     // Nom
     const fontSize = taille === 'gros' ? '22px' : taille === 'moyen' ? '18px' : '16px'
@@ -745,12 +745,12 @@ async function chargerObjetsBoutique() {
     html += `<p style="font-size: 20px; font-weight: bold; color: #e74c3c; margin: 8px 0; display: flex; align-items: center; gap: 8px;">${objet.prix} <img src="/Wbuck.png" style="width: 20px; height: 20px;" /></p>`
     
     // Stock
-    html += `<p style="font-size: 14px; margin: 8px 0 auto 0; color: ${estEpuise ? '#e74c3c' : '#666'};">${estEpuise ? 'Épuisé' : `Quantité : ${objet.quantite}`}</p>`
+    html += `<p style="font-size: 14px; margin: 8px 0; color: ${estEpuise ? '#e74c3c' : '#666'};">${estEpuise ? 'Épuisé' : `Quantité : ${objet.quantite}`}</p>`
+    
+    // Bouton acheter
+    html += `<button class="btn-acheter" data-id="${objet.id}" data-nom="${objet.nom}" data-prix="${objet.prix}" style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: ${estEpuise ? 'not-allowed' : 'pointer'}; background: ${estEpuise ? '#ddd' : '#e74c3c'}; color: white; font-size: 16px; margin-top: 8px;" ${estEpuise ? 'disabled' : ''}>Acheter</button>`
     
     html += `</div>`
-    
-    // Bouton acheter (toujours en bas)
-    html += `<button class="btn-acheter" data-id="${objet.id}" data-nom="${objet.nom}" data-prix="${objet.prix}" style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: ${estEpuise ? 'not-allowed' : 'pointer'}; background: ${estEpuise ? '#ddd' : '#e74c3c'}; color: white; font-size: 16px; margin-top: 12px;" ${estEpuise ? 'disabled' : ''}>Acheter</button>`
     
     div.innerHTML = html
     div.dataset.objetId = objet.id
