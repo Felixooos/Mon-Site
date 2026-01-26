@@ -62,6 +62,12 @@ function setEcran(nom) {
 // ==================== 1. INSCRIPTION (email → code email → validation → mot de passe → connexion) ====================
 let etapeInscription = 'email' // 'email', 'otp', ou 'complete'
 
+// Empêcher rechargement mais laisser Safari détecter le submit
+document.querySelector('#signup-form').addEventListener('submit', (e) => {
+  e.preventDefault() // Empêche le rechargement
+  console.log('Formulaire soumis - Safari va détecter')
+})
+
 document.querySelector('#btn-send-otp').addEventListener('click', async () => {
   const btnSendOtp = document.querySelector('#btn-send-otp')
   const email = document.querySelector('#email-inscription').value.trim().toLowerCase()
@@ -149,20 +155,18 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
       console.error("Erreur création:", insertError)
     }
     
-    // 3. Succès - déclencher soumission pour Safari
+    // 3. Succès - laisser Safari détecter puis rediriger
     afficherMessageNFC('✅', 'Compte créé !', `Ton mot de passe : <strong>${codeOTP}</strong>`, '#2ecc71');
     
-    // Soumettre le formulaire pour que Safari détecte le mot de passe
+    // Déclencher VRAIE soumission du formulaire pour Safari
     setTimeout(() => {
       const form = document.querySelector('#signup-form')
-      if (form) {
-        // Créer un event de soumission
-        const submitEvent = new Event('submit', { bubbles: true, cancelable: true })
-        form.dispatchEvent(submitEvent)
+      if (form && form.requestSubmit) {
+        form.requestSubmit() // Safari va intercepter ça
       }
-      // Rediriger immédiatement après
-      setTimeout(() => checkSession(), 100)
-    }, 800)
+      // Attendre que Safari traite, puis rediriger
+      setTimeout(() => checkSession(), 500)
+    }, 1000)
   }
 })
 
