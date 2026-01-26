@@ -1208,21 +1208,18 @@ document.querySelector('#btn-menu-modifier').addEventListener('click', () => {
 document.querySelector('#btn-menu-supprimer').addEventListener('click', async () => {
   if (!objetEnCoursMenu) return
   
-  if (!confirm(`Supprimer "${objetEnCoursMenu.nom}" ?`)) return
-  
   const { error } = await supabase
     .from('objets_boutique')
     .delete()
     .eq('id', objetEnCoursMenu.id)
   
   if (error) {
-    alert('Erreur lors de la suppression')
     console.error(error)
     return
   }
   
-  alert('Objet supprimé !')
   document.querySelector('#menu-objet').classList.add('hidden')
+  document.body.style.overflow = ''
   objetEnCoursMenu = null
   await chargerObjetsBoutique()
 })
