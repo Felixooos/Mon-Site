@@ -146,7 +146,16 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     
     console.log("Code validé ✓")
     
-    // 2. Créer l'étudiant dans la base
+    // 2. Définir le code comme mot de passe permanent dans Supabase Auth
+    const { error: passwordError } = await supabase.auth.updateUser({
+      password: codeOTP
+    })
+    
+    if (passwordError) {
+      console.error("Erreur mot de passe:", passwordError)
+    }
+    
+    // 3. Créer l'étudiant dans la base
     const { error: insertError } = await supabase
       .from('etudiants')
       .insert([{ email: email, code_perso: codeOTP, solde: 0 }])
@@ -155,7 +164,7 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
       console.error("Erreur création:", insertError)
     }
     
-    // 3. Succès - rediriger vers l'accueil
+    // 4. Succès - rediriger vers l'accueil
     afficherMessageNFC('✅', 'Compte créé !', `Ton mot de passe : <strong>${codeOTP}</strong>`, '#2ecc71');
     
     // Marquer pour refresh après connexion
