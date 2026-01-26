@@ -326,28 +326,39 @@ async function gererEtudiant(emailUser) {
 async function displayWelcomeScreen(userEmail) {
   currentUserEmail = userEmail
   try {
-    const { data: etudiants, error } = await supabase
+    // D'abord récupérer tous les étudiants
+    const { data: etudiants, error: etudiantsError } = await supabase
       .from('etudiants')
-      .select('*, transactions:transactions!destinataire_email(montant)')
+      .select('*')
     
-    if (error) {
-      console.error("Erreur récupération utilisateurs:", error)
+    if (etudiantsError) {
+      console.error("Erreur récupération étudiants:", etudiantsError)
       allUsers = []
-    } else {
-      // Calculer le total des gains (transactions positives uniquement)
-      allUsers = (etudiants || []).map(etudiant => {
-        const transactions = etudiant.transactions || []
-        const totalGains = transactions
-          .filter(t => t.montant > 0)
-          .reduce((sum, t) => sum + t.montant, 0)
-        
-        return {
-          ...etudiant,
-          total_gains: totalGains, // Pour le classement
-          solde_reel: etudiant.solde // Pour le solde en haut à droite
-        }
-      }).sort((a, b) => b.total_gains - a.total_gains)
+      return
     }
+    
+    // Ensuite récupérer toutes les transactions
+    const { data: transactions, error: transactionsError } = await supabase
+      .from('transactions')
+      .select('destinataire_email, montant')
+    
+    if (transactionsError) {
+      console.error("Erreur récupération transactions:", transactionsError)
+    }
+    
+    // Calculer le total des gains pour chaque étudiant
+    allUsers = (etudiants || []).map(etudiant => {
+      const userTransactions = (transactions || []).filter(t => t.destinataire_email === etudiant.email)
+      const totalGains = userTransactions
+        .filter(t => t.montant > 0)
+        .reduce((sum, t) => sum + t.montant, 0)
+      
+      return {
+        ...etudiant,
+        total_gains: totalGains, // Pour le classement
+        solde_reel: etudiant.solde // Pour le solde en haut à droite
+      }
+    }).sort((a, b) => b.total_gains - a.total_gains)
     
     const userIndex = allUsers.findIndex(u => u.email === userEmail)
     if (userIndex >= 0) {
