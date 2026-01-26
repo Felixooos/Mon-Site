@@ -326,19 +326,27 @@ async function gererEtudiant(emailUser) {
 async function displayWelcomeScreen(userEmail) {
   currentUserEmail = userEmail
   try {
-    const { data: users, error } = await supabase
+    const { data: etudiants, error } = await supabase
       .from('etudiants')
-      .select('*')
-      .order('solde', { ascending: false })
+      .select('*, transactions:transactions!destinataire_email(montant)')
     
     if (error) {
       console.error("Erreur récupération utilisateurs:", error)
       allUsers = []
     } else {
-      allUsers = users || []
+      allUsers = (etudiants || []).map(etudiant => {
+        const totalGains = etudiant.transactions
+          .filter(t => t.montant > 0)
+          .reduce((sum, t) => sum + t.montant, 0)
+        
+        return {
+          ...etudiant,
+          total_gains: totalGains,
+          solde_reel: etudiant.solde
+        }
+      }).sort((a, b) => b.total_gains - a.total_gains)
     }
     
-    // Trouver la place de l'utilisateur connecté
     const userIndex = allUsers.findIndex(u => u.email === userEmail)
     if (userIndex >= 0) {
       const currentUser = allUsers[userIndex]
@@ -348,11 +356,10 @@ async function displayWelcomeScreen(userEmail) {
       
       userRank.textContent = rankText
       userName.textContent = displayName.toUpperCase()
-      userSolde.innerHTML = `${currentUser.solde} <img src="/Wbuck.png" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;" />`
+      userSolde.innerHTML = `${currentUser.total_gains} <img src="/Wbuck.png" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;" />`
       
-      // Mettre à jour le cadre en haut à droite
       const soldeHeader = document.querySelector('#solde-header-amount')
-      if (soldeHeader) soldeHeader.textContent = currentUser.solde
+      if (soldeHeader) soldeHeader.textContent = currentUser.solde_reel
     }
     
     afficherClassement(allUsers)
@@ -469,7 +476,7 @@ function afficherClassement(users) {
         </div>
       </div>
       <div style="text-align: right; font-size: 15px; font-weight: bold; flex-shrink: 0; white-space: nowrap; padding-left: 8px; display: flex; align-items: center; gap: 5px;">
-        ${user.solde} <img src="/Wbuck.png" style="width: 16px; height: 16px;" />
+        ${user.total_gains} <img src="/Wbuck.png" style="width: 16px; height: 16px;" />
       </div>
     `
     
@@ -987,13 +994,8 @@ document.querySelector('#btn-confirm-achat-final').addEventListener('click', asy
     return
   }
   
-  alert('Achat effectué !')
-  document.querySelector('#modal-confirmer-achat').classList.add('hidden')
-  objetEnCoursAchat = null
-  
-  // Rafraîchir le classement et la boutique
-  displayWelcomeScreen()
-  await chargerObjetsBoutique()
+  // Rafraîchir la page pour mettre à jour le solde
+  location.reload()
 })
 
 // ==================== FONCTIONS MES ACHATS ====================
