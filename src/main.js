@@ -742,7 +742,7 @@ async function chargerObjetsBoutique() {
     html += `<h3 style="margin: 10px 0; font-size: ${fontSize}; color: #333;">${objet.nom}</h3>`
     
     // Prix
-    html += `<p style="font-size: 20px; font-weight: bold; color: #e74c3c; margin: 8px 0; display: flex; align-items: center; gap: 8px;">${objet.prix} <img src="/Wbuck.png" style="width: 20px; height: 20px;" /></p>`
+    html += `<p style="font-size: 20px; font-weight: bold; color: #e74c3c; margin: 8px 0; display: flex; align-items: center; justify-content: center; gap: 8px;">${objet.prix} <img src="/Wbuck.png" style="width: 20px; height: 20px;" /></p>`
     
     // Stock
     html += `<p style="font-size: 14px; margin: 8px 0; color: ${estEpuise ? '#e74c3c' : '#666'};">${estEpuise ? 'Épuisé' : `Quantité : ${objet.quantite}`}</p>`
