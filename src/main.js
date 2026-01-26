@@ -130,8 +130,8 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
   else if (etapeInscription === 'otp') {
     const codeOTP = document.querySelector('#otp').value.trim()
     
-    if (!codeOTP || codeOTP.length !== 6) {
-      afficherMessageNFC('⚠️', 'Code invalide', 'Le code doit contenir 6 chiffres !', '#f39c12');
+    if (!codeOTP || codeOTP.length !== 8) {
+      afficherMessageNFC('⚠️', 'Code invalide', 'Le code doit contenir 8 chiffres !', '#f39c12');
       return
     }
     
