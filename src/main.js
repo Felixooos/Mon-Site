@@ -56,7 +56,7 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
   const email = document.querySelector('#email-inscription').value.trim().toLowerCase()
   
   if (!email) {
-    alert('Entre ton email !')
+    afficherMessageNFC('⚠️', 'Email manquant', 'Entre ton email étudiant !', '#f39c12');
     return
   }
 
@@ -65,14 +65,15 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
   const domainEmail = email.split('@')[1]
   
   if (!domainEmail || !domainesAutorises.includes(domainEmail)) {
-    alert('⚠️ Adresse mail etudiante non conforme.\n\nTu dois utiliser:\n• centralelille.fr\n• iteem.centralelille.fr\n• enscl.centralelille.fr')
+    afficherMessageNFC('⚠️', 'Email non autorisé', 'Tu dois utiliser ton email étudiant : centralelille.fr, iteem.centralelille.fr ou enscl.centralelille.fr', '#f39c12');
     return
   }
 
   const { error } = await supabase.auth.signInWithOtp({ email })
-  if (error) alert("Erreur: " + error.message)
-  else {
-    alert('Code envoyé ! Vérifie tes mails.')
+  if (error) {
+    afficherMessageNFC('❌', 'Erreur', error.message, '#e74c3c');
+  } else {
+    afficherMessageNFC('📧', 'Mail envoyé !', 'Vérifie tes mails et entre le code reçu.', '#2a9d8f');
     setEcran('otp')
     localStorage.setItem('emailTemp', email)
   }
@@ -84,12 +85,12 @@ document.querySelector('#btn-verify').addEventListener('click', async () => {
   const token = document.querySelector('#otp').value.trim()
   
   if (!email) {
-    alert('Email manquant !')
+    afficherMessageNFC('⚠️', 'Email manquant', 'Email introuvable !', '#f39c12');
     return
   }
 
   if (!token || token.length !== 8) {
-    alert('Le code doit contenir exactement 8 chiffres !')
+    afficherMessageNFC('⚠️', 'Code invalide', 'Le code doit contenir exactement 8 chiffres !', '#f39c12');
     return
   }
 
@@ -97,7 +98,7 @@ document.querySelector('#btn-verify').addEventListener('click', async () => {
   
   if (error) {
     console.error("Erreur OTP:", error)
-    alert("Code faux !")
+    afficherMessageNFC('❌', 'Code incorrect', 'Code faux ! Vérifie tes mails.', '#e74c3c');
     return
   }
 
@@ -202,7 +203,7 @@ async function gererEtudiant(emailUser) {
       
     etudiant = nouveau
     console.log("Étudiant créé:", etudiant)
-    alert(`✅ Compte créé ! Ton code de connexion est : ${codeOtp}\n\nNote-le bien, il te servira de mot de passe !`)
+    afficherMessageNFC('✅', 'Compte créé !', `Ton code de connexion est : ${codeOtp}\n\nNote-le bien, il te servira de mot de passe !`, '#2a9d8f');
   }
 
   if (etudiant) {
