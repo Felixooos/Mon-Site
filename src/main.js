@@ -450,21 +450,6 @@ function afficherClassement(users) {
     
     leaderboard.appendChild(userRow)
   })
-
-  // Ajouter une séparation après l'utilisateur courant
-  const currentUserIndex = users.findIndex(u => u.email === currentUserEmail)
-  if (currentUserIndex >= 0 && currentUserIndex < users.length - 1) {
-    try {
-      const separator = document.createElement('div')
-      separator.style.cssText = 'height: 2px; background: #ddd; margin: 10px 0;'
-      const rows = Array.from(leaderboard.children)
-      if (rows.length > currentUserIndex + 1) {
-        leaderboard.insertBefore(separator, rows[currentUserIndex + 1])
-      }
-    } catch (e) {
-      console.log('Erreur ajout séparateur (non critique):', e)
-    }
-  }
 }
 
 // ==================== BOUTONS ACCUEIL ====================
