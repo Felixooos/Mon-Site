@@ -111,21 +111,28 @@ document.querySelector('#btn-verify').addEventListener('click', async () => {
 
 // ==================== 3. CONNEXION DIRECTE (Code uniquement) 🚀 ====================
 document.querySelector('#btn-login-code').addEventListener('click', async () => {
+  const email = document.querySelector('#email-connexion').value.trim().toLowerCase()
   const code = document.querySelector('#code-connexion').value.trim()
 
+  if (!email) {
+    afficherMessageNFC('⚠️', 'Email manquant', 'Entre ton email !', '#f39c12');
+    return
+  }
+
   if (!code || code.length < 6) {
-    alert('Rentre ton code !')
+    afficherMessageNFC('⚠️', 'Code manquant', 'Rentre ton code !', '#f39c12');
     return
   }
 
   const { data: student } = await supabase
     .from('etudiants')
     .select('email, code_perso')
+    .eq('email', email)
     .eq('code_perso', code)
     .single()
 
   if (!student) {
-    alert("Code incorrect !")
+    afficherMessageNFC('❌', 'Erreur', 'Email ou code incorrect !', '#e74c3c');
     return
   }
 
