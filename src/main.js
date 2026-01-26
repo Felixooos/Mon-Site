@@ -71,14 +71,14 @@ function setEcran(nom) {
   if (nom === 'welcome') welcomeScreen.classList.remove('hidden')
 }
 
-// ==================== 1. INSCRIPTION (Tout sur une page) ====================
-let etapeInscription = 'email' // 'email', 'otp', 'complete'
+// ==================== 1. INSCRIPTION (Simple : email → code généré → connexion) ====================
+let etapeInscription = 'email' // 'email' ou 'complete'
 
 document.querySelector('#btn-send-otp').addEventListener('click', async () => {
   const btnSendOtp = document.querySelector('#btn-send-otp')
   const email = document.querySelector('#email-inscription').value.trim().toLowerCase()
   
-  // ÉTAPE 1 : Envoi du code par email
+  // ÉTAPE 1 : Créer le compte et générer le code
   if (etapeInscription === 'email') {
     if (!email) {
       afficherMessageNFC('⚠️', 'Email manquant', 'Entre ton email étudiant !', '#f39c12');
@@ -106,51 +106,48 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
       return
     }
 
-    // Créer le compte avec OTP
-    const { error } = await supabase.auth.signInWithOtp({ email })
-    if (error) {
-      afficherMessageNFC('❌', 'Erreur', error.message, '#e74c3c');
+    // Générer un code à 8 chiffres
+    const code = Math.floor(10000000 + Math.random() * 90000000).toString()
+    
+    console.log("Création compte avec code:", code)
+    
+    // Créer le compte Supabase avec ce code comme mot de passe
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+      email: email,
+      password: code
+    })
+    
+    if (signUpError) {
+      console.error("Erreur création compte:", signUpError)
+      afficherMessageNFC('❌', 'Erreur', signUpError.message, '#e74c3c');
       return
     }
     
-    // Stocker l'email temporairement
-    localStorage.setItem('emailTemp', email)
+    console.log("Compte Supabase créé:", signUpData)
     
-    // Afficher la zone OTP et désactiver l'email
+    // Créer l'étudiant dans la base
+    const { data: nouveau, error: insertError } = await supabase
+      .from('etudiants')
+      .insert([{ email: email, code_perso: code, solde: 0 }])
+      .select()
+      .single()
+
+    if (insertError) {
+      console.error("Erreur insertion étudiant:", insertError)
+      afficherMessageNFC('❌', 'Erreur', 'Erreur lors de l\'enregistrement', '#e74c3c');
+      return
+    }
+    
+    console.log("Étudiant créé:", nouveau)
+    
+    // Afficher le mot de passe
+    document.querySelector('#generated-password').textContent = code
+    document.querySelector('#password-display').style.display = 'block'
     document.querySelector('#email-inscription').disabled = true
-    document.querySelector('#otp-section').style.display = 'block'
-    btnSendOtp.textContent = 'Valider le code'
-    etapeInscription = 'otp'
-    
-  } 
-  // ÉTAPE 2 : Validation du code OTP
-  else if (etapeInscription === 'otp') {
-    const token = document.querySelector('#otp').value.trim()
-    
-    if (!token || token.length !== 8) {
-      afficherMessageNFC('⚠️', 'Code invalide', 'Le code doit contenir exactement 8 chiffres !', '#f39c12');
-      return
-    }
-
-    const { error, data } = await supabase.auth.verifyOtp({ email, token, type: 'email'})
-    
-    if (error) {
-      console.error("Erreur OTP:", error)
-      afficherMessageNFC('❌', 'Code incorrect', 'Code faux ! Vérifie tes mails.', '#e74c3c');
-      return
-    }
-
-    console.log("OTP vérifié, session créée:", data)
-    
-    // Créer le compte et afficher le mot de passe
-    await creerCompteEtAfficherMdp(email, token)
-    
-    // Afficher le mot de passe et changer le bouton
-    document.querySelector('#otp').disabled = true
     btnSendOtp.textContent = 'Se connecter'
     etapeInscription = 'complete'
   }
-  // ÉTAPE 3 : Se connecter
+  // ÉTAPE 2 : Se connecter
   else if (etapeInscription === 'complete') {
     const password = document.querySelector('#generated-password').textContent
     
@@ -166,41 +163,6 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     }
   }
 })
-
-// Fonction pour créer le compte et afficher le mot de passe
-async function creerCompteEtAfficherMdp(emailUser, codeOtp) {
-  console.log("Création du compte avec email:", emailUser, "code:", codeOtp)
-  
-  // Définir le mot de passe
-  const { error: errorUpdate } = await supabase.auth.updateUser({ password: codeOtp })
-  
-  if (errorUpdate) {
-    console.error("Erreur mot de passe:", errorUpdate)
-    afficherMessageNFC('❌', 'Erreur', 'Erreur lors de la création du compte: ' + errorUpdate.message, '#e74c3c');
-    return
-  }
-
-  console.log("Mot de passe défini avec succès")
-
-  // Créer l'étudiant dans la base
-  const { data: nouveau, error: insertError } = await supabase
-    .from('etudiants')
-    .insert([{ email: emailUser, code_perso: codeOtp, solde: 0 }])
-    .select()
-    .single()
-
-  if (insertError) {
-    console.error("Erreur insertion étudiant:", insertError)
-    afficherMessageNFC('❌', 'Erreur', 'Erreur lors de l\'enregistrement', '#e74c3c');
-    return
-  }
-    
-  console.log("Étudiant créé:", nouveau)
-  
-  // Afficher le mot de passe dans l'interface
-  document.querySelector('#generated-password').textContent = codeOtp
-  document.querySelector('#password-display').style.display = 'block'
-}
 
 // ==================== 3. CONNEXION DIRECTE (Code uniquement) 🚀 ====================
 // Intercepter la soumission du formulaire de connexion
@@ -465,9 +427,6 @@ document.querySelector('#btn-back-login').addEventListener('click', () => {
   document.querySelector('#email-inscription').value = ''
   document.querySelector('#email-inscription').disabled = false
   document.querySelector('#code-connexion').value = ''
-  document.querySelector('#otp').value = ''
-  document.querySelector('#otp').disabled = false
-  document.querySelector('#otp-section').style.display = 'none'
   document.querySelector('#password-display').style.display = 'none'
   document.querySelector('#btn-send-otp').textContent = 'Recevoir mon code'
   localStorage.removeItem('emailTemp')
