@@ -623,21 +623,7 @@ document.querySelector('#btn-confirm-admin').addEventListener('click', async () 
     return
   }
 
-  // 1. Calcul du nouveau solde
-  const nouveauSolde = cibleAncienSolde + montant
-
-  // 2. Mise à jour du solde de l'étudiant
-  const { error: errorUpdate } = await supabase
-    .from('etudiants')
-    .update({ solde: nouveauSolde })
-    .eq('email', cibleEmail)
-
-  if (errorUpdate) {
-    alert("Erreur mise à jour : " + errorUpdate.message)
-    return
-  }
-
-  // 3. Enregistrement de la transaction (La Trace)
+  // Enregistrement de la transaction
   const transactionData = {
     destinataire_email: cibleEmail,
     montant: montant,
@@ -657,11 +643,12 @@ document.querySelector('#btn-confirm-admin').addEventListener('click', async () 
 
   if (errorTransac) {
     console.error("Erreur log transaction:", errorTransac)
-  } else {
-    console.log("Transaction enregistrée avec succès")
+    return
   }
-
-  // 4. Succès - rafraîchir la page
+  
+  console.log("Transaction enregistrée avec succès")
+  
+  // Rafraîchir la page
   location.reload()
 })
 
