@@ -335,7 +335,8 @@ async function displayWelcomeScreen(userEmail) {
       allUsers = []
     } else {
       allUsers = (etudiants || []).map(etudiant => {
-        const totalGains = etudiant.transactions
+        const transactions = etudiant.transactions || []
+        const totalGains = transactions
           .filter(t => t.montant > 0)
           .reduce((sum, t) => sum + t.montant, 0)
         
