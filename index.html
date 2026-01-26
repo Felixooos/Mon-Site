@@ -285,7 +285,18 @@
           <div id="form-inscription">
             <p style="color: #333;">Reçois ton code unique sur ton mail école.</p>
             <input type="email" id="email-inscription" name="email" autocomplete="username email" placeholder="Email école (@ton-ecole.fr)" style="padding: 12px; width: 100%; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px;" />
-            <button id="btn-send-otp" style="width: 100%;">Recevoir mon Code</button>
+            <button id="btn-send-otp" style="width: 100%;">Recevoir mon mot de passe</button>
+            
+            <!-- Zone d'affichage du mot de passe (caché par défaut) -->
+            <div id="password-display" style="display: none; margin-top: 20px; padding: 20px; background: #f0f0f0; border-radius: 10px; text-align: center;">
+              <p style="color: #333; font-weight: bold; margin-bottom: 10px;">Ton mot de passe :</p>
+              <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <span id="generated-password" style="font-size: 24px; font-weight: bold; color: #e74c3c; letter-spacing: 2px;">12345678</span>
+                <button id="btn-copy-password" style="background: #2a9d8f; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 14px;">📋 Copier</button>
+              </div>
+              <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Note-le bien ou copie-le !</p>
+              <button id="btn-go-login" style="width: 100%; background: #e74c3c; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Connexion</button>
+            </div>
           </div>
 
           <!-- Formulaire Connexion -->

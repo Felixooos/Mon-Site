@@ -19,6 +19,32 @@ tabConnu.addEventListener('click', () => {
   formConnexion.style.display = 'block'
   tabNouveau.style.background = 'white'
   tabConnu.style.background = '#ddd'
+  
+  // Pré-remplir si nouveau compte créé
+  const newEmail = localStorage.getItem('newAccountEmail')
+  const newPassword = localStorage.getItem('newAccountPassword')
+  if (newEmail && newPassword) {
+    document.querySelector('#email-connexion').value = newEmail
+    document.querySelector('#code-connexion').value = newPassword
+  }
+})
+
+// Bouton copier le mot de passe
+document.querySelector('#btn-copy-password').addEventListener('click', () => {
+  const password = document.querySelector('#generated-password').textContent
+  navigator.clipboard.writeText(password).then(() => {
+    const btn = document.querySelector('#btn-copy-password')
+    btn.textContent = '✅ Copié !'
+    setTimeout(() => {
+      btn.textContent = '📋 Copier'
+    }, 2000)
+  })
+})
+
+// Bouton aller à la connexion
+document.querySelector('#btn-go-login').addEventListener('click', () => {
+  // Passer à l'onglet connexion
+  tabConnu.click()
 })
 
 // ==================== LOGIQUE SUPABASE ====================
@@ -69,14 +95,30 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     return
   }
 
+  // Vérifier si le compte existe déjà
+  const { data: existant } = await supabase
+    .from('etudiants')
+    .select('email')
+    .eq('email', email)
+    .single()
+  
+  if (existant) {
+    afficherMessageNFC('⚠️', 'Compte existant', 'Ce compte existe déjà ! Utilise l\'onglet "J\'ai déjà un compte".', '#f39c12');
+    return
+  }
+
+  // Créer le compte avec OTP
   const { error } = await supabase.auth.signInWithOtp({ email })
   if (error) {
     afficherMessageNFC('❌', 'Erreur', error.message, '#e74c3c');
-  } else {
-    afficherMessageNFC('📧', 'Mail envoyé !', 'Vérifie tes mails et entre le code reçu.', '#2a9d8f');
-    setEcran('otp')
-    localStorage.setItem('emailTemp', email)
+    return
   }
+  
+  // Stocker l'email temporairement
+  localStorage.setItem('emailTemp', email)
+  
+  // Passer à l'écran OTP
+  setEcran('otp')
 })
 
 // ==================== 2. VALIDATION DU CODE REÇU PAR MAIL (Création du compte) ====================
@@ -88,6 +130,27 @@ document.querySelector('#btn-verify').addEventListener('click', async () => {
     afficherMessageNFC('⚠️', 'Email manquant', 'Email introuvable !', '#f39c12');
     return
   }
+
+  if (!token || token.length !== 8) {
+    afficherMessageNFC('⚠️', 'Code invalide', 'Le code doit contenir exactement 8 chiffres !', '#f39c12');
+    return
+  }
+
+  const { error, data } = await supabase.auth.verifyOtp({ email, token, type: 'email'})
+  
+  if (error) {
+    console.error("Erreur OTP:", error)
+    afficherMessageNFC('❌', 'Code incorrect', 'Code faux ! Vérifie tes mails.', '#e74c3c');
+    return
+  }
+
+  console.log("OTP vérifié, session créée:", data)
+  
+  // Attendre que la session soit active puis créer le compte
+  setTimeout(() => {
+    checkSession()
+  }, 500)
+})
 
   if (!token || token.length !== 8) {
     afficherMessageNFC('⚠️', 'Code invalide', 'Le code doit contenir exactement 8 chiffres !', '#f39c12');
@@ -221,23 +284,15 @@ async function gererEtudiant(emailUser) {
     etudiant = nouveau
     console.log("Étudiant créé:", etudiant)
     
-    // Rediriger vers l'écran de connexion avec les infos pré-remplies
-    setEcran('login')
+    // Afficher le mot de passe dans l'interface
+    document.querySelector('#generated-password').textContent = codeOtp
+    document.querySelector('#password-display').style.display = 'block'
+    document.querySelector('#btn-send-otp').style.display = 'none'
+    document.querySelector('#email-inscription').disabled = true
     
-    // Passer en mode connexion (pas inscription)
-    document.querySelector('#form-inscription').style.display = 'none'
-    document.querySelector('#form-connexion').style.display = 'block'
-    document.querySelector('#tab-nouveau').style.background = 'white'
-    document.querySelector('#tab-connu').style.background = '#ddd'
-    
-    // Pré-remplir le formulaire
-    document.querySelector('#email-connexion').value = emailUser
-    document.querySelector('#code-connexion').value = codeOtp
-    
-    // Afficher le message après un court délai
-    setTimeout(() => {
-      afficherMessageNFC('✅', 'Compte créé !', `Ton code : ${codeOtp}\n\nMaintenant connecte-toi pour que Safari enregistre tes identifiants !`, '#2a9d8f');
-    }, 300)
+    // Stocker les infos pour la connexion
+    localStorage.setItem('newAccountEmail', emailUser)
+    localStorage.setItem('newAccountPassword', codeOtp)
   }
 
   if (etudiant) {
