@@ -220,7 +220,21 @@ async function gererEtudiant(emailUser) {
       
     etudiant = nouveau
     console.log("Étudiant créé:", etudiant)
+    
+    // Pré-remplir le formulaire de connexion pour Safari
+    document.querySelector('#email-connexion').value = emailUser
+    document.querySelector('#code-connexion').value = codeOtp
+    
     afficherMessageNFC('✅', 'Compte créé !', `Ton code de connexion est : ${codeOtp}\n\nNote-le bien, il te servira de mot de passe !`, '#2a9d8f');
+    
+    // Forcer une soumission invisible du formulaire pour que Safari propose d'enregistrer
+    setTimeout(() => {
+      const loginForm = document.querySelector('#login-form')
+      if (loginForm) {
+        const submitEvent = new Event('submit', { bubbles: true, cancelable: true })
+        loginForm.dispatchEvent(submitEvent)
+      }
+    }, 500)
   }
 
   if (etudiant) {
