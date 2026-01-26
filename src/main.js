@@ -196,7 +196,6 @@ document.querySelector('#btn-login-code').addEventListener('click', async (e) =>
   e.preventDefault()
   document.querySelector('#login-form').dispatchEvent(new Event('submit'))
 })
-})
 
 // ==================== 4. VERIFICATION SESSION & CREATION PROFIL ====================
 async function checkSession() {
