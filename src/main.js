@@ -410,9 +410,12 @@ function afficherClassement(users) {
 
   users.forEach((user, index) => {
     const isCurrentUser = user.email === currentUserEmail
-    const badge = index === 0 ? '1.' : index === 1 ? '2.' : index === 2 ? '3.' : `${index + 1}.`
     
-    // Couleurs pour les 3 premiers
+    // Trouver le VRAI rang dans le classement complet (allUsers)
+    const vraiRang = allUsers.findIndex(u => u.email === user.email) + 1
+    const badge = vraiRang === 1 ? '1.' : vraiRang === 2 ? '2.' : vraiRang === 3 ? '3.' : `${vraiRang}.`
+    
+    // Couleurs pour les 3 premiers du classement RÉEL
     let bgColor = 'white'
     let textColor = '#333'
     let borderColor = '#ddd'
@@ -421,17 +424,17 @@ function afficherClassement(users) {
       bgColor = '#667eea'
       textColor = 'white'
       borderColor = '#667eea'
-    } else if (index === 0) {
+    } else if (vraiRang === 1) {
       // Or
       bgColor = 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)'
       textColor = '#333'
       borderColor = '#FFD700'
-    } else if (index === 1) {
+    } else if (vraiRang === 2) {
       // Argent
       bgColor = 'linear-gradient(135deg, #C0C0C0 0%, #A8A8A8 100%)'
       textColor = '#333'
       borderColor = '#C0C0C0'
-    } else if (index === 2) {
+    } else if (vraiRang === 3) {
       // Bronze
       bgColor = 'linear-gradient(135deg, #CD7F32 0%, #B87333 100%)'
       textColor = 'white'
@@ -449,7 +452,7 @@ function afficherClassement(users) {
       color: ${textColor};
       border-radius: 8px;
       border: 2px solid ${borderColor};
-      font-weight: ${isCurrentUser || index < 3 ? 'bold' : 'normal'};
+      font-weight: ${isCurrentUser || vraiRang <= 3 ? 'bold' : 'normal'};
       overflow: hidden;
       gap: 12px;
     `
@@ -732,7 +735,7 @@ async function chargerObjetsBoutique() {
     html += `<p style="font-size: 20px; font-weight: bold; color: #e74c3c; margin: 8px 0;">💰 ${objet.prix} pts</p>`
     
     // Stock
-    html += `<p style="font-size: 14px; margin: 8px 0; color: ${estEpuise ? '#e74c3c' : '#2ecc71'};">${estEpuise ? '❌ Épuisé' : `✅ ${objet.quantite} disponible(s)`}</p>`
+    html += `<p style="font-size: 14px; margin: 8px 0; color: ${estEpuise ? '#e74c3c' : '#666'};">${estEpuise ? 'Épuisé' : `Quantité : ${objet.quantite}`}</p>`
     
     // Bouton acheter
     html += `<button class="btn-acheter" data-id="${objet.id}" data-nom="${objet.nom}" data-prix="${objet.prix}" style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: ${estEpuise ? 'not-allowed' : 'pointer'}; background: ${estEpuise ? '#ddd' : '#e74c3c'}; color: white; font-size: 16px;" ${estEpuise ? 'disabled' : ''}>Acheter</button>`
