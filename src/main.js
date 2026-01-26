@@ -719,7 +719,7 @@ async function chargerObjetsBoutique() {
     // Image
     const imageHeight = taille === 'gros' ? '200px' : taille === 'moyen' ? '150px' : '120px'
     html += `
-      <div style="background: #f0f0f0; width: 100%; height: ${imageHeight}; border-radius: 10px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; font-size: 50px; background-image: url('${objet.image_url || ''}'); background-size: contain; background-repeat: no-repeat; background-position: center;">
+      <div style="background: white; width: 100%; height: ${imageHeight}; border-radius: 10px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; font-size: 50px; background-image: url('${objet.image_url || ''}'); background-size: contain; background-repeat: no-repeat; background-position: center;">
         ${!objet.image_url ? '📸' : ''}
       </div>
     `
