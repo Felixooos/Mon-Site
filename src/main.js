@@ -41,12 +41,6 @@ document.querySelector('#btn-copy-password').addEventListener('click', () => {
   })
 })
 
-// Bouton aller à la connexion
-document.querySelector('#btn-go-login').addEventListener('click', () => {
-  // Passer à l'onglet connexion
-  tabConnu.click()
-})
-
 // ==================== LOGIQUE SUPABASE ====================
 
 const homeScreen = document.querySelector('#home-screen')
@@ -77,80 +71,136 @@ function setEcran(nom) {
   if (nom === 'welcome') welcomeScreen.classList.remove('hidden')
 }
 
-// ==================== 1. INSCRIPTION (Envoi du mail OTP) ====================
+// ==================== 1. INSCRIPTION (Tout sur une page) ====================
+let etapeInscription = 'email' // 'email', 'otp', 'complete'
+
 document.querySelector('#btn-send-otp').addEventListener('click', async () => {
+  const btnSendOtp = document.querySelector('#btn-send-otp')
   const email = document.querySelector('#email-inscription').value.trim().toLowerCase()
   
-  if (!email) {
-    afficherMessageNFC('⚠️', 'Email manquant', 'Entre ton email étudiant !', '#f39c12');
-    return
-  }
+  // ÉTAPE 1 : Envoi du code par email
+  if (etapeInscription === 'email') {
+    if (!email) {
+      afficherMessageNFC('⚠️', 'Email manquant', 'Entre ton email étudiant !', '#f39c12');
+      return
+    }
 
-  // Vérifier que l'email est d'une école autorisée
-  const domainesAutorises = ['centralelille.fr', 'iteem.centralelille.fr', 'enscl.centralelille.fr']
-  const domainEmail = email.split('@')[1]
+    // Vérifier que l'email est d'une école autorisée
+    const domainesAutorises = ['centralelille.fr', 'iteem.centralelille.fr', 'enscl.centralelille.fr']
+    const domainEmail = email.split('@')[1]
+    
+    if (!domainEmail || !domainesAutorises.includes(domainEmail)) {
+      afficherMessageNFC('⚠️', 'Email non autorisé', 'Tu dois utiliser ton email étudiant : centralelille.fr, iteem.centralelille.fr ou enscl.centralelille.fr', '#f39c12');
+      return
+    }
+
+    // Vérifier si le compte existe déjà
+    const { data: existant } = await supabase
+      .from('etudiants')
+      .select('email')
+      .eq('email', email)
+      .single()
+    
+    if (existant) {
+      afficherMessageNFC('⚠️', 'Compte existant', 'Ce compte existe déjà ! Clique sur "Se connecter".', '#f39c12');
+      return
+    }
+
+    // Créer le compte avec OTP
+    const { error } = await supabase.auth.signInWithOtp({ email })
+    if (error) {
+      afficherMessageNFC('❌', 'Erreur', error.message, '#e74c3c');
+      return
+    }
+    
+    // Stocker l'email temporairement
+    localStorage.setItem('emailTemp', email)
+    
+    // Afficher la zone OTP et désactiver l'email
+    document.querySelector('#email-inscription').disabled = true
+    document.querySelector('#otp-section').style.display = 'block'
+    btnSendOtp.textContent = 'Valider le code'
+    etapeInscription = 'otp'
+    
+  } 
+  // ÉTAPE 2 : Validation du code OTP
+  else if (etapeInscription === 'otp') {
+    const token = document.querySelector('#otp').value.trim()
+    
+    if (!token || token.length !== 8) {
+      afficherMessageNFC('⚠️', 'Code invalide', 'Le code doit contenir exactement 8 chiffres !', '#f39c12');
+      return
+    }
+
+    const { error, data } = await supabase.auth.verifyOtp({ email, token, type: 'email'})
+    
+    if (error) {
+      console.error("Erreur OTP:", error)
+      afficherMessageNFC('❌', 'Code incorrect', 'Code faux ! Vérifie tes mails.', '#e74c3c');
+      return
+    }
+
+    console.log("OTP vérifié, session créée:", data)
+    
+    // Créer le compte et afficher le mot de passe
+    await creerCompteEtAfficherMdp(email, token)
+    
+    // Afficher le mot de passe et changer le bouton
+    document.querySelector('#otp').disabled = true
+    btnSendOtp.textContent = 'Se connecter'
+    etapeInscription = 'complete'
+  }
+  // ÉTAPE 3 : Se connecter
+  else if (etapeInscription === 'complete') {
+    const password = document.querySelector('#generated-password').textContent
+    
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password
+    })
+
+    if (error) {
+      afficherMessageNFC('❌', 'Erreur', 'Erreur de connexion: ' + error.message, '#e74c3c');
+    } else {
+      checkSession()
+    }
+  }
+})
+
+// Fonction pour créer le compte et afficher le mot de passe
+async function creerCompteEtAfficherMdp(emailUser, codeOtp) {
+  console.log("Création du compte avec email:", emailUser, "code:", codeOtp)
   
-  if (!domainEmail || !domainesAutorises.includes(domainEmail)) {
-    afficherMessageNFC('⚠️', 'Email non autorisé', 'Tu dois utiliser ton email étudiant : centralelille.fr, iteem.centralelille.fr ou enscl.centralelille.fr', '#f39c12');
+  // Définir le mot de passe
+  const { error: errorUpdate } = await supabase.auth.updateUser({ password: codeOtp })
+  
+  if (errorUpdate) {
+    console.error("Erreur mot de passe:", errorUpdate)
+    afficherMessageNFC('❌', 'Erreur', 'Erreur lors de la création du compte: ' + errorUpdate.message, '#e74c3c');
     return
   }
 
-  // Vérifier si le compte existe déjà
-  const { data: existant } = await supabase
+  console.log("Mot de passe défini avec succès")
+
+  // Créer l'étudiant dans la base
+  const { data: nouveau, error: insertError } = await supabase
     .from('etudiants')
-    .select('email')
-    .eq('email', email)
+    .insert([{ email: emailUser, code_perso: codeOtp, solde: 0 }])
+    .select()
     .single()
-  
-  if (existant) {
-    afficherMessageNFC('⚠️', 'Compte existant', 'Ce compte existe déjà ! Utilise l\'onglet "J\'ai déjà un compte".', '#f39c12');
+
+  if (insertError) {
+    console.error("Erreur insertion étudiant:", insertError)
+    afficherMessageNFC('❌', 'Erreur', 'Erreur lors de l\'enregistrement', '#e74c3c');
     return
   }
-
-  // Créer le compte avec OTP
-  const { error } = await supabase.auth.signInWithOtp({ email })
-  if (error) {
-    afficherMessageNFC('❌', 'Erreur', error.message, '#e74c3c');
-    return
-  }
+    
+  console.log("Étudiant créé:", nouveau)
   
-  // Stocker l'email temporairement
-  localStorage.setItem('emailTemp', email)
-  
-  // Passer à l'écran OTP
-  setEcran('otp')
-})
-
-// ==================== 2. VALIDATION DU CODE REÇU PAR MAIL (Création du compte) ====================
-document.querySelector('#btn-verify').addEventListener('click', async () => {
-  const email = localStorage.getItem('emailTemp')
-  const token = document.querySelector('#otp').value.trim()
-  
-  if (!email) {
-    afficherMessageNFC('⚠️', 'Email manquant', 'Email introuvable !', '#f39c12');
-    return
-  }
-
-  if (!token || token.length !== 8) {
-    afficherMessageNFC('⚠️', 'Code invalide', 'Le code doit contenir exactement 8 chiffres !', '#f39c12');
-    return
-  }
-
-  const { error, data } = await supabase.auth.verifyOtp({ email, token, type: 'email'})
-  
-  if (error) {
-    console.error("Erreur OTP:", error)
-    afficherMessageNFC('❌', 'Code incorrect', 'Code faux ! Vérifie tes mails.', '#e74c3c');
-    return
-  }
-
-  console.log("OTP vérifié, session créée:", data)
-  
-  // Attendre que la session soit active puis créer le compte
-  setTimeout(() => {
-    checkSession()
-  }, 500)
-})
+  // Afficher le mot de passe dans l'interface
+  document.querySelector('#generated-password').textContent = codeOtp
+  document.querySelector('#password-display').style.display = 'block'
+}
 
 // ==================== 3. CONNEXION DIRECTE (Code uniquement) 🚀 ====================
 // Intercepter la soumission du formulaire de connexion
@@ -213,7 +263,7 @@ async function checkSession() {
   }
 }
 
-// ==================== 5. GESTION BASE DE DONNEES + MOT DE PASSE MAGIQUE ====================
+// ==================== 5. GESTION BASE DE DONNEES ====================
 async function gererEtudiant(emailUser) {
   console.log("gererEtudiant appelé pour:", emailUser)
   
@@ -224,55 +274,6 @@ async function gererEtudiant(emailUser) {
     .single()
 
   console.log("Recherche étudiant:", { etudiant, searchError })
-
-  // SI C'EST UN NOUVEAU (Première fois qu'il met son code mail)
-  if (!etudiant && searchError?.code === 'PGRST116') {
-    console.log("Création du compte...")
-    
-    let codeOtp = document.querySelector('#otp').value
-    
-    if (!codeOtp) {
-      codeOtp = Math.floor(100000 + Math.random() * 900000).toString()
-      console.warn("Code OTP vide, génération d'un code de secours:", codeOtp)
-    }
-
-    console.log("Code OTP utilisé:", codeOtp)
-
-    const { error: errorUpdate } = await supabase.auth.updateUser({ password: codeOtp })
-    
-    if (errorUpdate) {
-      console.error("Erreur mot de passe:", errorUpdate)
-      alert("Erreur lors de la création du compte: " + errorUpdate.message)
-      return
-    }
-
-    console.log("Mot de passe défini avec succès")
-
-    const { data: nouveau, error: insertError } = await supabase
-      .from('etudiants')
-      .insert([{ email: emailUser, code_perso: codeOtp, solde: 0 }])
-      .select()
-      .single()
-
-    if (insertError) {
-      console.error("Erreur insertion étudiant:", insertError)
-      alert("Erreur lors de l'enregistrement")
-      return
-    }
-      
-    etudiant = nouveau
-    console.log("Étudiant créé:", etudiant)
-    
-    // Afficher le mot de passe dans l'interface
-    document.querySelector('#generated-password').textContent = codeOtp
-    document.querySelector('#password-display').style.display = 'block'
-    document.querySelector('#btn-send-otp').style.display = 'none'
-    document.querySelector('#email-inscription').disabled = true
-    
-    // Stocker les infos pour la connexion
-    localStorage.setItem('newAccountEmail', emailUser)
-    localStorage.setItem('newAccountPassword', codeOtp)
-  }
 
   if (etudiant) {
     console.log("Affichage du profil, solde:", etudiant.solde)
@@ -434,8 +435,6 @@ function afficherClassement(users) {
 // ==================== BOUTONS ACCUEIL ====================
 document.querySelector('#btn-login').addEventListener('click', () => {
   // Afficher JUSTE la connexion (code uniquement), pas les onglets
-  tabNouveau.style.pointerEvents = 'none'
-  tabConnu.style.pointerEvents = 'none'
   document.querySelector('#tabs-container').style.display = 'none'
   formInscription.style.display = 'none'
   formConnexion.style.display = 'block'
@@ -443,9 +442,16 @@ document.querySelector('#btn-login').addEventListener('click', () => {
 })
 
 document.querySelector('#btn-register').addEventListener('click', () => {
-  // Afficher JUSTE l'inscription (email uniquement), pas les onglets
-  tabNouveau.style.pointerEvents = 'none'
-  tabConnu.style.pointerEvents = 'none'
+  // Réinitialiser le formulaire d'inscription
+  etapeInscription = 'email'
+  document.querySelector('#email-inscription').value = ''
+  document.querySelector('#email-inscription').disabled = false
+  document.querySelector('#otp').value = ''
+  document.querySelector('#otp-section').style.display = 'none'
+  document.querySelector('#password-display').style.display = 'none'
+  document.querySelector('#btn-send-otp').textContent = 'Recevoir mon code'
+  
+  // Afficher JUSTE l'inscription, pas les onglets
   document.querySelector('#tabs-container').style.display = 'none'
   formInscription.style.display = 'block'
   formConnexion.style.display = 'none'
@@ -454,20 +460,18 @@ document.querySelector('#btn-register').addEventListener('click', () => {
 
 // ==================== BOUTONS RETOUR ====================
 document.querySelector('#btn-back-login').addEventListener('click', () => {
-  // Réactiver les onglets et afficher les tabs-container
-  tabNouveau.style.pointerEvents = 'auto'
-  tabConnu.style.pointerEvents = 'auto'
-  document.querySelector('#tabs-container').style.display = 'flex'
+  // Réinitialiser tout
+  etapeInscription = 'email'
   document.querySelector('#email-inscription').value = ''
+  document.querySelector('#email-inscription').disabled = false
   document.querySelector('#code-connexion').value = ''
   document.querySelector('#otp').value = ''
+  document.querySelector('#otp').disabled = false
+  document.querySelector('#otp-section').style.display = 'none'
+  document.querySelector('#password-display').style.display = 'none'
+  document.querySelector('#btn-send-otp').textContent = 'Recevoir mon code'
   localStorage.removeItem('emailTemp')
   setEcran('home')
-})
-
-document.querySelector('#btn-back-otp').addEventListener('click', () => {
-  document.querySelector('#otp').value = ''
-  setEcran('login')
 })
 
 // ==================== BOUTON DECONNEXION ====================
