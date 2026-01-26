@@ -935,16 +935,13 @@ async function supprimerObjet(objetId, type) {
 window.confirmerAchat = async function(objetId, objetNom, objetPrix) {
   objetEnCoursAchat = { id: objetId, nom: objetNom, prix: objetPrix }
   
-  // Récupérer le solde actuel
-  const { data: etudiant } = await supabase
-    .from('etudiants')
-    .select('solde')
-    .eq('email', currentUserEmail)
-    .single()
+  // Récupérer le solde réel calculé depuis allUsers
+  const currentUser = allUsers.find(u => u.email === currentUserEmail)
+  const soldeReel = currentUser ? currentUser.solde_reel : 0
   
   document.querySelector('#achat-objet-nom').textContent = objetNom
   document.querySelector('#achat-objet-prix').textContent = objetPrix
-  document.querySelector('#achat-solde-actuel').textContent = etudiant.solde
+  document.querySelector('#achat-solde-actuel').textContent = soldeReel
   
   document.querySelector('#modal-confirmer-achat').classList.remove('hidden')
   document.body.style.overflow = 'hidden'
@@ -959,14 +956,11 @@ document.querySelector('#btn-cancel-achat').addEventListener('click', () => {
 document.querySelector('#btn-confirm-achat-final').addEventListener('click', async () => {
   if (!objetEnCoursAchat) return
   
-  // Vérifier le solde
-  const { data: etudiant } = await supabase
-    .from('etudiants')
-    .select('solde')
-    .eq('email', currentUserEmail)
-    .single()
+  // Vérifier le solde réel
+  const currentUser = allUsers.find(u => u.email === currentUserEmail)
+  const soldeReel = currentUser ? currentUser.solde_reel : 0
   
-  if (etudiant.solde < objetEnCoursAchat.prix) {
+  if (soldeReel < objetEnCoursAchat.prix) {
     alert('Solde insuffisant !')
     return
   }
