@@ -114,7 +114,7 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     btnSendOtp.textContent = 'Valider le code'
     etapeInscription = 'otp'
   }
-  // ÉTAPE 2 : Vérifier le code OTP et créer le compte
+  // ÉTAPE 2 : Vérifier le code OTP
   else if (etapeInscription === 'otp') {
     const codeOTP = document.querySelector('#otp').value.trim()
     
@@ -123,94 +123,38 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
       return
     }
     
-    console.log("Vérification du code OTP...")
+    console.log("Validation du code...")
     
-    // Vérifier le code OTP de Supabase
-    const { error: verifyError, data } = await supabase.auth.verifyOtp({ 
+    // 1. Vérifier le code OTP (crée la session)
+    const { error: verifyError } = await supabase.auth.verifyOtp({ 
       email: email, 
       token: codeOTP, 
       type: 'email'
     })
     
     if (verifyError) {
-      console.error("Erreur vérification OTP:", verifyError)
-      afficherMessageNFC('❌', 'Code incorrect', 'Le code ne correspond pas ! Vérifie tes mails.', '#e74c3c');
+      console.error("Erreur validation:", verifyError)
+      afficherMessageNFC('❌', 'Code incorrect', 'Code invalide ou expiré', '#e74c3c');
       return
     }
     
-    console.log("Code OTP vérifié ! Email confirmé")
+    console.log("Code validé ✓")
     
-    // Se déconnecter de la session OTP
-    await supabase.auth.signOut()
-    
-    // Créer un vrai compte avec le code comme mot de passe
-    const { error: signUpError } = await supabase.auth.signUp({
-      email: email,
-      password: codeOTP,
-      options: {
-        emailRedirectTo: window.location.origin,
-        data: {
-          email_confirmed: true
-        }
-      }
-    })
-    
-    if (signUpError) {
-      console.error("Erreur création compte:", signUpError)
-      afficherMessageNFC('❌', 'Erreur', signUpError.message, '#e74c3c');
-      return
-    }
-    
-    console.log("Compte créé avec succès")
-    
-    // Créer l'étudiant dans la base
-    const { data: nouveau, error: insertError } = await supabase
+    // 2. Créer l'étudiant dans la base
+    const { error: insertError } = await supabase
       .from('etudiants')
       .insert([{ email: email, code_perso: codeOTP, solde: 0 }])
-      .select()
-      .single()
 
-    if (insertError) {
-      console.error("Erreur insertion étudiant:", insertError)
-      afficherMessageNFC('❌', 'Erreur', 'Erreur lors de l\'enregistrement', '#e74c3c');
-      return
+    if (insertError && !insertError.message.includes('duplicate')) {
+      console.error("Erreur création:", insertError)
     }
     
-    console.log("Étudiant créé:", nouveau)
+    // 3. Succès - afficher le mot de passe et rediriger
+    afficherMessageNFC('✅', 'Compte créé !', `Ton mot de passe : <strong>${codeOTP}</strong>`, '#2ecc71');
     
-    // Changer pour l'étape connexion
-    etapeInscription = 'complete'
-    
-    // Soumettre le formulaire pour que Safari enregistre
     setTimeout(() => {
-      document.querySelector('#signup-form').requestSubmit()
-    }, 100)
-  }
-})
-
-// Intercepter la soumission du formulaire d'inscription pour Safari
-document.querySelector('#signup-form').addEventListener('submit', async (e) => {
-  e.preventDefault()
-  
-  // Si on est à l'étape "Connexion", se connecter avec le mot de passe
-  if (etapeInscription === 'complete') {
-    const email = document.querySelector('#email-inscription').value
-    const password = document.querySelector('#otp').value
-    
-    console.log("Connexion avec email:", email)
-    
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password
-    })
-
-    if (error) {
-      console.error("Erreur connexion:", error)
-      afficherMessageNFC('❌', 'Erreur', 'Erreur de connexion: ' + error.message, '#e74c3c');
-    } else {
-      console.log("Connexion réussie !")
       checkSession()
-    }
+    }, 1500)
   }
 })
 
