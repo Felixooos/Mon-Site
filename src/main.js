@@ -155,14 +155,14 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
       console.error("Erreur création:", insertError)
     }
     
-    // 3. Succès - rediriger et recharger pour Safari
+    // 3. Succès - rediriger vers l'accueil
     afficherMessageNFC('✅', 'Compte créé !', `Ton mot de passe : <strong>${codeOTP}</strong>`, '#2ecc71');
     
-    // Attendre puis rediriger
+    // Marquer pour refresh après connexion
+    localStorage.setItem('needsRefreshForSafari', 'true')
+    
     setTimeout(() => {
       checkSession()
-      // Recharger pour que Safari propose d'enregistrer
-      setTimeout(() => location.reload(), 300)
     }, 1200)
   }
 })
@@ -222,6 +222,12 @@ async function checkSession() {
     console.log("Session trouvée pour:", session.user.email)
     await gererEtudiant(session.user.email)
     setEcran('welcome')
+    
+    // Refresh pour Safari après être arrivé sur la page d'accueil
+    if (localStorage.getItem('needsRefreshForSafari') === 'true') {
+      localStorage.removeItem('needsRefreshForSafari')
+      setTimeout(() => location.reload(), 500)
+    }
   } else {
     console.log("Pas de session trouvée")
     setEcran('home')
