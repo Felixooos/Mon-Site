@@ -630,7 +630,7 @@ tabClassement.addEventListener('click', () => {
   classementScreen.style.display = 'block'
   boutiqueScreen.style.display = 'none'
   moiScreen.style.display = 'none'
-  tabClassement.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)'
+  tabClassement.style.background = 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'
   tabClassement.style.color = 'white'
   tabBoutique.style.background = 'white'
   tabBoutique.style.color = '#333'
@@ -644,7 +644,7 @@ tabBoutique.addEventListener('click', async () => {
   moiScreen.style.display = 'none'
   tabClassement.style.background = 'white'
   tabClassement.style.color = '#333'
-  tabBoutique.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)'
+  tabBoutique.style.background = 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'
   tabBoutique.style.color = 'white'
   tabMoi.style.background = 'white'
   tabMoi.style.color = '#333'
@@ -660,7 +660,7 @@ tabMoi.addEventListener('click', async () => {
   tabClassement.style.color = '#333'
   tabBoutique.style.background = 'white'
   tabBoutique.style.color = '#333'
-  tabMoi.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)'
+  tabMoi.style.background = 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'
   tabMoi.style.color = 'white'
   
   await chargerMesAchats()
