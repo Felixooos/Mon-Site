@@ -134,7 +134,7 @@
         display: none;
       }
       .modal-content {
-        background: white;
+        background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%);
         padding: 20px;
         border-radius: 10px;
         width: 90%;
@@ -284,7 +284,7 @@
       
       <!-- Écran d'accueil -->
       <div id="home-screen" class="container no-scroll">
-        <div style="background: white; padding: 30px 20px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+        <div style="background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 30px 20px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
           <img src="/logo.svg" alt="Logo Wild EMBER" style="width: 250px; height: auto; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;" />
           <h1 style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 32px; margin-bottom: 15px; font-family: 'Tribeca', sans-serif;">WILD EMBER</h1>
           <p style="color: #e74c3c; font-weight: 600; margin-bottom: 25px;">Gérez vos campagnes en toutes simplicités</p>
@@ -295,7 +295,7 @@
 
       <!-- Écran Login (deux onglets) -->
       <div id="login-screen" class="container no-scroll hidden">
-        <div style="background: white; padding: 30px 20px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+        <div style="background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 30px 20px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
           <div id="tabs-container" style="margin-bottom: 20px; display: flex; gap: 10px;">
             <button id="tab-nouveau" style="flex: 1; background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%); color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 10px rgba(255, 107, 53, 0.3);">C'est ma 1ère fois</button>
             <button id="tab-connu" style="flex: 1; background: #f0f0f0; color: #333; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">J'ai déjà un compte</button>
@@ -333,7 +333,7 @@
 
       <!-- Écran OTP (vérification du mail) -->
       <div id="otp-screen" class="container no-scroll hidden">
-        <div style="background: white; padding: 30px 20px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+        <div style="background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 30px 20px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
           <h1 style="color: #e74c3c; font-size: 28px; margin-bottom: 15px;">Vérification</h1>
           <p style="color: #666; margin-bottom: 20px;">Code envoyé ! Regarde tes mails.</p>
           <input type="text" id="otp" name="otp" autocomplete="one-time-code" placeholder="Code reçu (8 chiffres)" maxlength="8" inputmode="numeric" style="padding: 12px; width: 100%; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px;" />
@@ -346,7 +346,7 @@
       <!-- Écran Bienvenue (connecté) - Classement -->
       <div id="welcome-screen" class="container hidden" style="padding-top: 20px; position: relative;">
         <!-- Cadre solde en haut à droite -->
-        <div id="solde-header" style="position: absolute; top: 20px; right: 20px; background: white; padding: 10px 15px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 8px; z-index: 100;">
+        <div id="solde-header" style="position: absolute; top: 20px; right: 20px; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 10px 15px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 8px; z-index: 100;">
           <span id="solde-header-amount" style="font-size: 18px; font-weight: bold; color: #333;">0</span>
           <img src="/Wbuck.png" alt="Wbuck" style="width: 24px; height: 24px;" />
         </div>
@@ -355,9 +355,9 @@
         
         <!-- Onglets de navigation -->
         <div id="tabs-welcome" style="display: flex; gap: 8px; margin-bottom: 20px;">
-          <button id="tab-classement" style="flex: 1; background: linear-gradient(135deg, #D4A574 0%, #C19A6B 100%); color: white; padding: 12px; margin: 0; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 14px;">Classement</button>
-          <button id="tab-boutique" style="flex: 1; background: white; color: #333; padding: 12px; margin: 0; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 14px;">Boutique</button>
-          <button id="tab-moi" style="flex: 1; background: white; color: #333; padding: 12px; margin: 0; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 14px;">Moi</button>
+          <button id="tab-classement" style="flex: 1; background: linear-gradient(135deg, #B8956A 0%, #A67C52 100%); color: white; padding: 12px; margin: 0; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 14px;">Classement</button>
+          <button id="tab-boutique" style="flex: 1; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); color: #333; padding: 12px; margin: 0; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 14px;">Boutique</button>
+          <button id="tab-moi" style="flex: 1; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); color: #333; padding: 12px; margin: 0; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 14px;">Moi</button>
         </div>
         
         <div id="classement-screen">
@@ -391,7 +391,7 @@
 
         <!-- Écran Moi -->
         <div id="moi-screen" style="display: none;">
-          <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); margin-bottom: 20px;">
+          <div style="background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); margin-bottom: 20px;">
             <h3 style="margin-bottom: 15px; color: #e74c3c;">📦 Mes Achats</h3>
             <div id="liste-mes-achats" style="max-height: 400px; overflow-y: auto;">
               <!-- Les achats s'afficheront ici -->
@@ -427,9 +427,9 @@
           
           <label>Taille de l'objet</label>
           <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-            <button type="button" class="btn-taille" data-taille="petit" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: white; cursor: pointer; font-size: 14px;">📦 Petit</button>
-            <button type="button" class="btn-taille" data-taille="moyen" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: white; cursor: pointer; font-size: 14px;">📦📦 Moyen</button>
-            <button type="button" class="btn-taille" data-taille="gros" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: white; cursor: pointer; font-size: 14px;">📦📦📦 Gros</button>
+            <button type="button" class="btn-taille" data-taille="petit" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); cursor: pointer; font-size: 14px;">📦 Petit</button>
+            <button type="button" class="btn-taille" data-taille="moyen" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); cursor: pointer; font-size: 14px;">📦📦 Moyen</button>
+            <button type="button" class="btn-taille" data-taille="gros" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); cursor: pointer; font-size: 14px;">📦📦📦 Gros</button>
           </div>
           <input type="hidden" id="objet-taille" value="petit">
           

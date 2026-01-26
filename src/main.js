@@ -11,13 +11,13 @@ tabNouveau.addEventListener('click', () => {
   formInscription.style.display = 'block'
   formConnexion.style.display = 'none'
   tabNouveau.style.background = '#ddd'
-  tabConnu.style.background = 'white'
+  tabConnu.style.background = 'linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%)'
 })
 
 tabConnu.addEventListener('click', () => {
   formInscription.style.display = 'none'
   formConnexion.style.display = 'block'
-  tabNouveau.style.background = 'white'
+  tabNouveau.style.background = 'linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%)'
   tabConnu.style.background = '#ddd'
   
   // Pré-remplir si nouveau compte créé
@@ -376,12 +376,16 @@ async function displayWelcomeScreen(userEmail) {
     const userIndex = allUsers.findIndex(u => u.email === userEmail)
     if (userIndex >= 0) {
       const currentUser = allUsers[userIndex]
-      const displayName = userEmail.split('@')[0]
+      const rawName = userEmail.split('@')[0]
+      const formattedName = rawName
+        .split('.')
+        .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(' ')
       const rank = userIndex + 1
       const rankText = rank === 1 ? '1ère place' : rank === 2 ? '2ème place' : rank === 3 ? '3ème place' : `${rank}ème place`
       
       userRank.textContent = rankText
-      userName.textContent = displayName.toUpperCase()
+      userName.textContent = formattedName.toUpperCase()
       userSolde.innerHTML = `${currentUser.total_gains} <img src="/Wbuck.png" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;" />`
       
       const soldeHeader = document.querySelector('#solde-header-amount')
@@ -494,11 +498,18 @@ function afficherClassement(users) {
       gap: 12px;
     `
     
+    // Formater le nom : remplacer les points par des espaces et mettre en majuscule
+    const rawName = user.email.split('@')[0]
+    const formattedName = rawName
+      .split('.')
+      .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(' ')
+    
     userRow.innerHTML = `
       <div style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; overflow: hidden;">
         <span style="font-size: 18px; flex-shrink: 0;">${badge}</span>
         <div style="min-width: 0; overflow: hidden; flex: 1; cursor: ${jeSuisAdmin ? 'pointer' : 'default'};">
-          <p style="margin: 0; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">${user.email.split('@')[0]}</p>
+          <p style="margin: 0; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">${formattedName}</p>
         </div>
       </div>
       <div style="text-align: right; font-size: 15px; font-weight: bold; flex-shrink: 0; white-space: nowrap; padding-left: 8px; display: flex; align-items: center; gap: 5px;">
@@ -658,11 +669,11 @@ tabClassement.addEventListener('click', () => {
   classementScreen.style.display = 'block'
   boutiqueScreen.style.display = 'none'
   moiScreen.style.display = 'none'
-  tabClassement.style.background = 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'
+  tabClassement.style.background = 'linear-gradient(135deg, #B8956A 0%, #A67C52 100%)'
   tabClassement.style.color = 'white'
-  tabBoutique.style.background = 'white'
+  tabBoutique.style.background = 'linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%)'
   tabBoutique.style.color = '#333'
-  tabMoi.style.background = 'white'
+  tabMoi.style.background = 'linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%)'
   tabMoi.style.color = '#333'
 })
 
@@ -670,11 +681,11 @@ tabBoutique.addEventListener('click', async () => {
   classementScreen.style.display = 'none'
   boutiqueScreen.style.display = 'block'
   moiScreen.style.display = 'none'
-  tabClassement.style.background = 'white'
+  tabClassement.style.background = 'linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%)'
   tabClassement.style.color = '#333'
-  tabBoutique.style.background = 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'
+  tabBoutique.style.background = 'linear-gradient(135deg, #B8956A 0%, #A67C52 100%)'
   tabBoutique.style.color = 'white'
-  tabMoi.style.background = 'white'
+  tabMoi.style.background = 'linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%)'
   tabMoi.style.color = '#333'
   
   await chargerObjetsBoutique()
@@ -684,11 +695,11 @@ tabMoi.addEventListener('click', async () => {
   classementScreen.style.display = 'none'
   boutiqueScreen.style.display = 'none'
   moiScreen.style.display = 'block'
-  tabClassement.style.background = 'white'
+  tabClassement.style.background = 'linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%)'
   tabClassement.style.color = '#333'
-  tabBoutique.style.background = 'white'
+  tabBoutique.style.background = 'linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%)'
   tabBoutique.style.color = '#333'
-  tabMoi.style.background = 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'
+  tabMoi.style.background = 'linear-gradient(135deg, #B8956A 0%, #A67C52 100%)'
   tabMoi.style.color = 'white'
   
   await chargerMesAchats()
@@ -824,7 +835,7 @@ document.querySelectorAll('.btn-taille').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.btn-taille').forEach(b => {
       b.style.border = '2px solid #ddd'
-      b.style.background = 'white'
+      b.style.background = 'linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%)'
     })
     btn.style.border = '2px solid #e74c3c'
     btn.style.background = '#ffe6e6'
@@ -894,7 +905,7 @@ function ouvrirModalAjout(type = null) {
   // Sélectionner la taille "petit" par défaut
   document.querySelectorAll('.btn-taille').forEach(b => {
     b.style.border = '2px solid #ddd'
-    b.style.background = 'white'
+    b.style.background = 'linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%)'
   })
   document.querySelector('.btn-taille[data-taille="petit"]').style.border = '2px solid #e74c3c'
   document.querySelector('.btn-taille[data-taille="petit"]').style.background = '#ffe6e6'
@@ -1180,7 +1191,7 @@ document.querySelector('#btn-menu-modifier').addEventListener('click', () => {
   const taille = objetEnCoursMenu.taille || 'petit'
   document.querySelectorAll('.btn-taille').forEach(b => {
     b.style.border = '2px solid #ddd'
-    b.style.background = 'white'
+    b.style.background = 'linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%)'
   })
   const btnTaille = document.querySelector(`.btn-taille[data-taille="${taille}"]`)
   if (btnTaille) {
