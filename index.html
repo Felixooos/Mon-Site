@@ -342,7 +342,13 @@
       </div>
 
       <!-- Écran Bienvenue (connecté) - Classement -->
-      <div id="welcome-screen" class="container hidden" style="padding-top: 20px;">
+      <div id="welcome-screen" class="container hidden" style="padding-top: 20px; position: relative;">
+        <!-- Cadre solde en haut à droite -->
+        <div id="solde-header" style="position: absolute; top: 20px; right: 20px; background: white; padding: 10px 15px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 8px; z-index: 100;">
+          <span id="solde-header-amount" style="font-size: 18px; font-weight: bold; color: #333;">0</span>
+          <img src="/Wbuck.png" alt="Wbuck" style="width: 24px; height: 24px;" />
+        </div>
+        
         <h1 style="margin-bottom: 20px; color: #e74c3c; text-shadow: 3px 3px 6px rgba(231, 76, 60, 0.5), 0 0 20px rgba(231, 76, 60, 0.3); font-weight: 900; letter-spacing: 2px; font-family: 'Tribeca', sans-serif;">Les Wild</h1>
         
         <!-- Onglets de navigation -->

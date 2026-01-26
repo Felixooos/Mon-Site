@@ -348,7 +348,11 @@ async function displayWelcomeScreen(userEmail) {
       
       userRank.textContent = rankText
       userName.textContent = displayName.toUpperCase()
-      userSolde.textContent = `${currentUser.solde} points`
+      userSolde.innerHTML = `${currentUser.solde} <img src="/Wbuck.png" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;" />`
+      
+      // Mettre à jour le cadre en haut à droite
+      const soldeHeader = document.querySelector('#solde-header-amount')
+      if (soldeHeader) soldeHeader.textContent = currentUser.solde
     }
     
     afficherClassement(allUsers)
@@ -464,8 +468,8 @@ function afficherClassement(users) {
           <p style="margin: 0; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">${user.email.split('@')[0]}</p>
         </div>
       </div>
-      <div style="text-align: right; font-size: 15px; font-weight: bold; flex-shrink: 0; white-space: nowrap; padding-left: 8px;">
-        ${user.solde} pts
+      <div style="text-align: right; font-size: 15px; font-weight: bold; flex-shrink: 0; white-space: nowrap; padding-left: 8px; display: flex; align-items: center; gap: 5px;">
+        ${user.solde} <img src="/Wbuck.png" style="width: 16px; height: 16px;" />
       </div>
     `
     
@@ -732,7 +736,7 @@ async function chargerObjetsBoutique() {
     html += `<h3 style="margin: 10px 0; font-size: ${fontSize}; color: #333;">${objet.nom}</h3>`
     
     // Prix
-    html += `<p style="font-size: 20px; font-weight: bold; color: #e74c3c; margin: 8px 0;">💰 ${objet.prix} pts</p>`
+    html += `<p style="font-size: 20px; font-weight: bold; color: #e74c3c; margin: 8px 0; display: flex; align-items: center; gap: 8px;">${objet.prix} <img src="/Wbuck.png" style="width: 20px; height: 20px;" /></p>`
     
     // Stock
     html += `<p style="font-size: 14px; margin: 8px 0; color: ${estEpuise ? '#e74c3c' : '#666'};">${estEpuise ? 'Épuisé' : `Quantité : ${objet.quantite}`}</p>`
