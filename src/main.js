@@ -1031,6 +1031,17 @@ document.querySelector('#btn-confirm-modifier').addEventListener('click', async 
 
 // ==================== GESTION NFC / QR CODE ====================
 
+// Fonction helper pour afficher un beau message
+function afficherMessageNFC(emoji, titre, message, couleur = '#e74c3c') {
+  document.querySelector('#nfc-info-emoji').textContent = emoji;
+  document.querySelector('#nfc-info-titre').textContent = titre;
+  document.querySelector('#nfc-info-titre').style.color = couleur;
+  document.querySelector('#nfc-info-message').textContent = message;
+  document.querySelector('#nfc-info-modal .modal-content').style.border = `3px solid ${couleur}`;
+  document.querySelector('#btn-close-nfc-info').style.background = couleur;
+  document.querySelector('#nfc-info-modal').classList.remove('hidden');
+}
+
 // 1. Fonction lancée au chargement de la page
 async function verifierTagUrl() {
   const params = new URLSearchParams(window.location.search);
@@ -1050,7 +1061,7 @@ async function verifierTagUrl() {
   if (!session) {
     // Si pas connecté, on sauvegarde le tag pour après le login
     localStorage.setItem('pendingTag', tagCode);
-    alert("Connecte-toi vite pour récupérer tes points !");
+    afficherMessageNFC('🔒', 'Connexion requise', 'Connecte-toi vite pour récupérer tes points !', '#f39c12');
     return;
   }
 
@@ -1068,7 +1079,7 @@ async function scannerTag(code, emailUser) {
     .single();
 
   if (!tagInfo || !tagInfo.active) {
-    alert("❌ Ce tag est invalide ou désactivé.");
+    afficherMessageNFC('❌', 'Tag invalide', 'Ce tag est invalide ou désactivé.', '#e74c3c');
     return;
   }
 
@@ -1081,7 +1092,7 @@ async function scannerTag(code, emailUser) {
     .single();
 
   if (dejaScanne) {
-    alert(`⚠️ Tu as déjà scanné le tag "${code}" ! Pas de triche !`);
+    afficherMessageNFC('⚠️', 'Déjà scanné', `Tu as déjà scanné le tag "${code}" ! Pas de triche !`, '#f39c12');
     return;
   }
 
@@ -1115,9 +1126,13 @@ async function scannerTag(code, emailUser) {
   }
 }
 
-// Bouton pour fermer la fenêtre
+// Boutons pour fermer les fenêtres
 document.querySelector('#btn-close-nfc').addEventListener('click', () => {
   document.querySelector('#nfc-success-modal').classList.add('hidden');
+});
+
+document.querySelector('#btn-close-nfc-info').addEventListener('click', () => {
+  document.querySelector('#nfc-info-modal').classList.add('hidden');
 });
 
 checkSession()
