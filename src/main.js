@@ -1,5 +1,89 @@
 import './style.css'
+import './sections.css'
 import { supabase } from './supabaseClient'
+
+// ==================== GESTION DE LA SIDEBAR ====================
+const hamburgerMenu = document.querySelector('#hamburger-menu')
+const sidebar = document.querySelector('#sidebar')
+const sidebarOverlay = document.querySelector('#sidebar-overlay')
+const sidebarItems = document.querySelectorAll('.sidebar-item')
+
+let sidebarOpen = false
+
+function toggleSidebar() {
+  sidebarOpen = !sidebarOpen
+  
+  if (sidebarOpen) {
+    sidebar.style.left = '0'
+    sidebarOverlay.style.opacity = '1'
+    sidebarOverlay.style.visibility = 'visible'
+    hamburgerMenu.style.left = '340px'
+    hamburgerMenu.classList.add('active')
+  } else {
+    sidebar.style.left = '-350px'
+    sidebarOverlay.style.opacity = '0'
+    sidebarOverlay.style.visibility = 'hidden'
+    hamburgerMenu.style.left = '20px'
+    hamburgerMenu.classList.remove('active')
+  }
+}
+
+// Ouvrir/fermer au clic sur le hamburger
+hamburgerMenu.addEventListener('click', toggleSidebar)
+
+// Fermer au clic sur l'overlay
+sidebarOverlay.addEventListener('click', toggleSidebar)
+
+// Gérer les clics sur les items de la sidebar
+sidebarItems.forEach(item => {
+  item.addEventListener('click', (e) => {
+    e.preventDefault()
+    
+    // Retirer la classe active de tous les items
+    sidebarItems.forEach(i => {
+      i.style.background = 'transparent'
+      i.style.borderLeft = '4px solid transparent'
+    })
+    
+    // Ajouter la classe active à l'item cliqué
+    item.style.background = 'rgba(231, 76, 60, 0.1)'
+    item.style.borderLeft = '4px solid #e74c3c'
+    
+    // Récupérer la section
+    const section = item.getAttribute('data-section')
+    
+    // Ici on peut gérer l'affichage des différentes sections
+    console.log('Section sélectionnée:', section)
+    
+    // Fermer la sidebar après sélection
+    toggleSidebar()
+    
+    // TODO: Gérer l'affichage des différentes sections
+    handleSectionChange(section)
+  })
+})
+
+// Fonction pour gérer le changement de section
+function handleSectionChange(section) {
+  // Masquer toutes les sections
+  const sections = document.querySelectorAll('.section-content')
+  sections.forEach(s => s.classList.remove('active'))
+  
+  // Afficher la section demandée
+  const targetSection = document.querySelector(`#section-${section}`)
+  if (targetSection) {
+    targetSection.classList.add('active')
+  }
+  
+  // Masquer les écrans boutique et moi qui ne font pas partie du système de sections
+  const boutiqueScreen = document.querySelector('#boutique-screen')
+  const moiScreen = document.querySelector('#moi-screen')
+  
+  if (boutiqueScreen) boutiqueScreen.style.display = 'none'
+  if (moiScreen) moiScreen.style.display = 'none'
+  
+  console.log('Section affichée:', section)
+}
 
 // ==================== GESTION DES ONGLETS DU MENU ====================
 const formInscription = document.querySelector('#form-inscription')
@@ -53,10 +137,24 @@ function setEcran(nom) {
   otpScreen.classList.add('hidden')
   welcomeScreen.classList.add('hidden')
   
-  if (nom === 'home') homeScreen.classList.remove('hidden')
-  if (nom === 'login') loginScreen.classList.remove('hidden')
-  if (nom === 'otp') otpScreen.classList.remove('hidden')
-  if (nom === 'welcome') welcomeScreen.classList.remove('hidden')
+  if (nom === 'home') {
+    homeScreen.classList.remove('hidden')
+    hamburgerMenu.style.display = 'none'
+  }
+  if (nom === 'login') {
+    loginScreen.classList.remove('hidden')
+    hamburgerMenu.style.display = 'none'
+  }
+  if (nom === 'otp') {
+    otpScreen.classList.remove('hidden')
+    hamburgerMenu.style.display = 'none'
+  }
+  if (nom === 'welcome') {
+    welcomeScreen.classList.remove('hidden')
+    hamburgerMenu.style.display = 'block'
+    // Afficher la section campagne par défaut lors de la connexion
+    handleSectionChange('campagne')
+  }
 }
 
 // ==================== 1. INSCRIPTION (email → code email → validation → mot de passe → connexion) ====================
@@ -674,6 +772,9 @@ tabClassement.addEventListener('click', () => {
   tabBoutique.style.color = '#333'
   tabMoi.style.background = 'linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%)'
   tabMoi.style.color = '#333'
+  
+  // Afficher la section campagne par défaut
+  handleSectionChange('campagne')
 })
 
 tabBoutique.addEventListener('click', async () => {
