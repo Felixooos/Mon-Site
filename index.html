@@ -1009,11 +1009,11 @@
       <div id="member-modal" class="modal hidden">
         <div class="modal-content" style="max-width: 500px; padding: 0; overflow: hidden;">
           <div id="member-photo-container" style="width: 100%; height: 300px; background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%); position: relative; overflow: hidden;">
-            <img id="member-photo" src="" alt="" style="width: 100%; height: 100%; object-fit: cover;">
-            <div id="member-photo-placeholder" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 100px; position: absolute; top: 0; left: 0;">
+            <img id="member-photo" src="" alt="" style="width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 1;">
+            <div id="member-photo-placeholder" style="width: 100%; height: 100%; display: none; align-items: center; justify-content: center; font-size: 100px; position: absolute; top: 0; left: 0; z-index: 0;">
               👤
             </div>
-            <div style="position: absolute; top: 15px; right: 15px; background: rgba(231, 76, 60, 0.9); color: white; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 14px;" id="member-role-badge"></div>
+            <div style="position: absolute; top: 15px; right: 15px; background: rgba(231, 76, 60, 0.9); color: white; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 14px; z-index: 2;" id="member-role-badge"></div>
           </div>
           <div style="padding: 30px;">
             <h2 id="member-name" style="color: #e74c3c; font-size: 28px; font-weight: 800; margin: 0 0 10px 0;"></h2>
