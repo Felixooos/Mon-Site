@@ -1135,6 +1135,36 @@ async function chargerObjetsBoutique() {
     grid.appendChild(div)
   })
   
+  // Ajouter des cartes décoratives pour remplir les espaces vides
+  const cartesDecoratives = [
+    { emoji: '🔥', text: 'Wild Ember', color: 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)' },
+    { emoji: '🌴', text: 'Aventure', color: 'linear-gradient(135deg, #F7931E 0%, #FFB84D 100%)' },
+    { emoji: '⚡', text: 'Énergie', color: 'linear-gradient(135deg, #D2042D 0%, #E74C3C 100%)' }
+  ]
+  
+  for (let i = 0; i < 2; i++) {
+    const deco = cartesDecoratives[i % cartesDecoratives.length]
+    const divDeco = document.createElement('div')
+    divDeco.style.cssText = `
+      grid-column: span 1;
+      background: ${deco.color};
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+      gap: 15px;
+    `
+    divDeco.innerHTML = `
+      <div style="font-size: 60px;">${deco.emoji}</div>
+      <div style="color: white; font-weight: bold; font-size: 18px; text-align: center;">${deco.text}</div>
+    `
+    grid.appendChild(divDeco)
+  }
+  
   // Ajouter listeners sur les boutons acheter
   document.querySelectorAll('.btn-acheter').forEach(btn => {
     btn.addEventListener('click', (e) => {
