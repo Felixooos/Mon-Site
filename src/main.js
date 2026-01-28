@@ -1523,11 +1523,17 @@ window.toggleSection = function(section) {
   const liste = document.querySelector(`#liste-mes-${section}`)
   const arrow = document.querySelector(`#arrow-${section}`)
   
-  if (liste.style.display === 'none') {
-    liste.style.display = 'block'
+  if (liste.style.maxHeight === '0px' || !liste.style.maxHeight) {
+    // Ouvrir la section
+    liste.style.maxHeight = '400px'
+    liste.style.padding = '0 20px 20px 20px'
+    liste.style.overflowY = 'auto'
     arrow.style.transform = 'rotate(0deg)'
   } else {
-    liste.style.display = 'none'
+    // Fermer la section
+    liste.style.maxHeight = '0px'
+    liste.style.padding = '0 20px'
+    liste.style.overflowY = 'hidden'
     arrow.style.transform = 'rotate(-90deg)'
   }
 }
