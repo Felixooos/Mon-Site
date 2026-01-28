@@ -845,7 +845,7 @@
           </div>
           
           <!-- Bouton flottant pour ajouter (admin seulement) -->
-          <button id="btn-ajouter-objet-flottant" class="hidden" style="position: fixed; bottom: 80px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background: #e74c3c; color: white; border: none; font-size: 30px; cursor: pointer; box-shadow: 0 4px 15px rgba(231,76,60,0.4); z-index: 100;">➕</button>
+          <button id="btn-ajouter-objet-flottant" class="hidden" style="position: fixed; bottom: 80px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background: #e74c3c; color: white; border: none; font-size: 30px; cursor: pointer; box-shadow: 0 4px 15px rgba(231,76,60,0.4); z-index: 100; display: flex; align-items: center; justify-content: center; line-height: 1;">+</button>
         </div>
 
         <!-- Écran Moi -->
@@ -885,10 +885,11 @@
           <h3 id="modal-titre-objet">➕ Ajouter un Objet</h3>
           
           <label>Taille de l'objet</label>
-          <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-            <button type="button" class="btn-taille" data-taille="petit" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); cursor: pointer; font-size: 14px;">📦 Petit</button>
-            <button type="button" class="btn-taille" data-taille="moyen" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); cursor: pointer; font-size: 14px;">📦📦 Moyen</button>
-            <button type="button" class="btn-taille" data-taille="gros" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); cursor: pointer; font-size: 14px;">📦📦📦 Gros</button>
+          <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+            <button type="button" class="btn-taille" data-taille="petit" style="flex: 1; min-width: 120px; padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); cursor: pointer; font-size: 14px;">📦 Petit</button>
+            <button type="button" class="btn-taille" data-taille="large" style="flex: 1; min-width: 120px; padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); cursor: pointer; font-size: 14px;">📦📦 Large</button>
+            <button type="button" class="btn-taille" data-taille="moyen" style="flex: 1; min-width: 120px; padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); cursor: pointer; font-size: 14px;">📦📦 Moyen</button>
+            <button type="button" class="btn-taille" data-taille="gros" style="flex: 1; min-width: 120px; padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); cursor: pointer; font-size: 14px;">📦📦📦 Gros</button>
           </div>
           <input type="hidden" id="objet-taille" value="petit">
           
