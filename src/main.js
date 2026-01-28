@@ -1025,6 +1025,18 @@ tabBoutique.addEventListener('click', async () => {
   tabMoi.style.color = '#333'
   
   await chargerObjetsBoutique()
+  
+  // Écouter les changements en temps réel sur la boutique
+  supabase
+    .channel('boutique-changes')
+    .on('postgres_changes', 
+      { event: '*', schema: 'public', table: 'objets_boutique' },
+      () => {
+        console.log('Changement détecté dans la boutique, rechargement...')
+        chargerObjetsBoutique()
+      }
+    )
+    .subscribe()
 })
 
 tabMoi.addEventListener('click', async () => {
@@ -1056,10 +1068,13 @@ async function chargerObjetsBoutique() {
   
   // Afficher le bouton d'ajout si gestionnaire
   const btnAjout = document.querySelector('#btn-ajouter-objet-flottant')
+  const btnActualiser = document.querySelector('#btn-actualiser-boutique')
   if (jeSuisBoutiqueManager) {
     btnAjout.classList.remove('hidden')
+    btnActualiser.classList.remove('hidden')
   } else {
     btnAjout.classList.add('hidden')
+    btnActualiser.classList.add('hidden')
   }
   
   // Créer la grille
@@ -1168,6 +1183,30 @@ async function chargerObjetsBoutique() {
 // Bouton flottant pour ajouter un objet
 document.querySelector('#btn-ajouter-objet-flottant').addEventListener('click', () => {
   ouvrirModalAjout()
+})
+
+// Bouton actualiser boutique (admin)
+document.querySelector('#btn-actualiser-boutique').addEventListener('click', async () => {
+  const confirmation1 = confirm('⚠️ Voulez-vous forcer l\'actualisation de la boutique pour tous les utilisateurs ?')
+  if (!confirmation1) return
+  
+  const confirmation2 = confirm('⚠️ Êtes-vous vraiment sûr ? Cela va recharger la boutique pour tous les utilisateurs connectés.')
+  if (!confirmation2) return
+  
+  // Forcer un rechargement en mettant à jour tous les objets
+  const { data: objets } = await supabase
+    .from('objets_boutique')
+    .select('id')
+  
+  if (objets && objets.length > 0) {
+    // Mettre à jour le premier objet pour déclencher le Realtime
+    await supabase
+      .from('objets_boutique')
+      .update({ updated_at: new Date().toISOString() })
+      .eq('id', objets[0].id)
+  }
+  
+  afficherMessageNFC('', 'Succès', 'Boutique actualisée pour tous !', '#2a9d8f')
 })
 
 // Gestion du choix de taille dans le modal
