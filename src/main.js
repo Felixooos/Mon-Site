@@ -1087,7 +1087,7 @@ async function chargerObjetsBoutique() {
       border: 2px solid ${estEpuise ? '#ddd' : '#e74c3c'};
       display: flex;
       flex-direction: column;
-      min-height: 350px;
+      min-height: 200px;
     `
     
     let html = ''
