@@ -1056,10 +1056,16 @@ tabMoi.addEventListener('click', async () => {
 // ==================== FONCTIONS BOUTIQUE ====================
 
 async function chargerObjetsBoutique() {
-  const { data: objets, error } = await supabase
+  // Les admins voient tout, les autres ne voient que les objets publiés
+  let query = supabase
     .from('objets_boutique')
     .select('*')
-    .order('created_at', { ascending: true })
+  
+  if (!jeSuisBoutiqueManager) {
+    query = query.eq('is_published', true)
+  }
+  
+  const { data: objets, error } = await query.order('created_at', { ascending: true })
   
   if (error) {
     console.error('Erreur chargement objets:', error)
@@ -1193,20 +1199,20 @@ document.querySelector('#btn-actualiser-boutique').addEventListener('click', asy
   const confirmation2 = confirm('⚠️ Êtes-vous vraiment sûr ? Cela va recharger la boutique pour tous les utilisateurs connectés.')
   if (!confirmation2) return
   
-  // Forcer un rechargement en mettant à jour tous les objets
-  const { data: objets } = await supabase
+  // Publier tous les objets en attente
+  const { error } = await supabase
     .from('objets_boutique')
-    .select('id')
+    .update({ is_published: true })
+    .eq('is_published', false)
   
-  if (objets && objets.length > 0) {
-    // Mettre à jour le premier objet pour déclencher le Realtime
-    await supabase
-      .from('objets_boutique')
-      .update({ updated_at: new Date().toISOString() })
-      .eq('id', objets[0].id)
+  if (error) {
+    afficherMessageNFC('', 'Erreur', 'Erreur lors de la publication', '#e74c3c')
+    console.error(error)
+    return
   }
   
-  afficherMessageNFC('', 'Succès', 'Boutique actualisée pour tous !', '#2a9d8f')
+  afficherMessageNFC('', 'Succès', 'Boutique actualisée et publiée pour tous !', '#2a9d8f')
+  await chargerObjetsBoutique()
 })
 
 // Gestion du choix de taille dans le modal
@@ -1505,7 +1511,8 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
         prix,
         quantite,
         image_url: finalImageUrl || null,
-        taille
+        taille,
+        is_published: false
       })
       .eq('id', parseInt(objetIdEdit))
     
@@ -1525,7 +1532,8 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
         prix,
         quantite,
         image_url: finalImageUrl || null,
-        taille
+        taille,
+        is_published: false
       })
     
     if (error) {
