@@ -11,12 +11,16 @@ const sidebarItems = document.querySelectorAll('.sidebar-item')
 let sidebarOpen = false
 
 function toggleSidebar() {
+  console.log('Toggle sidebar called, current state:', sidebarOpen)
   sidebarOpen = !sidebarOpen
   
   const isMobile = window.innerWidth <= 600
+  console.log('Is mobile:', isMobile, 'Window width:', window.innerWidth)
   
   if (sidebarOpen) {
+    console.log('Opening sidebar')
     sidebar.style.left = '0px'
+    sidebar.style.transform = 'translateX(0)'
     sidebarOverlay.style.opacity = '1'
     sidebarOverlay.style.visibility = 'visible'
     
@@ -29,11 +33,14 @@ function toggleSidebar() {
     }
     hamburgerMenu.classList.add('active')
   } else {
+    console.log('Closing sidebar')
     if (isMobile) {
       sidebar.style.left = 'calc(-85vw - 10px)'
+      sidebar.style.transform = 'translateX(0)'
       hamburgerMenu.style.left = '12px'
     } else {
       sidebar.style.left = '-350px'
+      sidebar.style.transform = 'translateX(0)'
       hamburgerMenu.style.left = '20px'
     }
     sidebarOverlay.style.opacity = '0'
@@ -42,11 +49,22 @@ function toggleSidebar() {
   }
 }
 
-// Ouvrir/fermer au clic sur le hamburger
-hamburgerMenu.addEventListener('click', toggleSidebar)
+// Ouvrir/fermer au clic sur le hamburger (click + touch pour mobile)
+hamburgerMenu.addEventListener('click', (e) => {
+  e.preventDefault()
+  console.log('Hamburger clicked')
+  toggleSidebar()
+})
+
+hamburgerMenu.addEventListener('touchstart', (e) => {
+  e.preventDefault()
+  console.log('Hamburger touched')
+  toggleSidebar()
+}, { passive: false })
 
 // Fermer au clic sur l'overlay
 sidebarOverlay.addEventListener('click', toggleSidebar)
+sidebarOverlay.addEventListener('touchstart', toggleSidebar, { passive: true })
 
 // Gérer les clics sur les items de la sidebar
 sidebarItems.forEach(item => {
@@ -174,6 +192,9 @@ function setEcran(nom) {
   if (nom === 'welcome') {
     welcomeScreen.classList.remove('hidden')
     hamburgerMenu.style.display = 'block'
+    hamburgerMenu.style.pointerEvents = 'auto'
+    console.log('Menu hamburger affiché, display:', hamburgerMenu.style.display)
+    console.log('Menu hamburger visible:', hamburgerMenu.offsetWidth > 0)
     // Afficher la section campagne par défaut lors de la connexion
     handleSectionChange('campagne')
   }

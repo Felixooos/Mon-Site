@@ -116,6 +116,15 @@
         transform: scale(1.05);
       }
       
+      /* Assurer que le menu hamburger est cliquable */
+      #hamburger-menu {
+        pointer-events: auto;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+      
       #hamburger-menu.active div:nth-child(1) {
         transform: rotate(-45deg) translate(-6px, 6px);
       }
