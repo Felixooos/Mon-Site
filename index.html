@@ -197,6 +197,20 @@
         display: none !important;
       }
 
+      /* Media queries pour agrandir les textes sur ordinateur */
+      @media (min-width: 768px) {
+        #titre-wild {
+          font-size: 6rem !important;
+        }
+        .titre-page {
+          font-size: 2.5rem !important;
+        }
+        .btn-onglet {
+          font-size: 18px !important;
+          padding: 16px 35px !important;
+        }
+      }
+
       .modal {
         position: fixed;
         top: 0;
@@ -812,12 +826,12 @@
           <img src="/Wbuck.png" alt="Wbuck" style="width: 24px; height: 24px;" />
         </div>
         
-        <h1 style="margin-top: 50px; margin-bottom: 20px; color: #3E2723; font-size: 3.5rem; text-shadow: 3px 3px 6px rgba(62, 39, 35, 0.5), 0 0 20px rgba(62, 39, 35, 0.3); font-weight: 900; letter-spacing: 2px; font-family: 'Tribeca', sans-serif;">Les Wild</h1>
+        <h1 id="titre-wild" style="margin-top: 50px; margin-bottom: 20px; color: #3E2723; font-size: 3.5rem; text-shadow: 3px 3px 6px rgba(62, 39, 35, 0.5), 0 0 20px rgba(62, 39, 35, 0.3); font-weight: 900; letter-spacing: 2px; font-family: 'Tribeca', sans-serif;">Les Wild</h1>
         
         <!-- Onglets de navigation -->
         <div id="tabs-welcome" style="display: flex; gap: 8px; margin-bottom: 20px;">
-          <button id="tab-classement" style="flex: 1; background: linear-gradient(135deg, #B8956A 0%, #A67C52 100%); color: white; padding: 12px; margin: 0; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 14px;">Classement</button>
-          <button id="tab-boutique" style="flex: 1; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); color: #333; padding: 12px; margin: 0; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 14px;">Boutique</button>
+          <button id="tab-classement" class="btn-onglet" style="flex: 1; background: linear-gradient(135deg, #B8956A 0%, #A67C52 100%); color: white; padding: 12px; margin: 0; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 14px;">Classement</button>
+          <button id="tab-boutique" class="btn-onglet" style="flex: 1; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); color: #333; padding: 12px; margin: 0; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 14px;">Boutique</button>
           <button id="tab-moi" style="flex: 1; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); color: #333; padding: 12px; margin: 0; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 14px;">Moi</button>
         </div>
         
@@ -845,7 +859,7 @@
             🔄 Actualiser la boutique pour tous
           </button>
           
-          <h2 style="text-align: center; margin-bottom: 20px;">Notre Boutique</h2>
+          <h2 class="titre-page" style="text-align: center; margin-bottom: 20px; font-size: 1.5rem;">Notre Boutique</h2>
           
           <!-- Grille flexible pour les objets -->
           <div id="objets-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; margin-bottom: 80px; grid-auto-flow: dense;">
