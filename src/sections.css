@@ -194,13 +194,17 @@
     margin-bottom: 50px;
   }
   
-  .pole-image {
+  .pole-left .pole-image,
+  .pole-right .pole-image {
+    order: 1;
     flex: 0 0 250px;
     height: 250px;
     transform: rotate(0deg) !important;
   }
   
-  .pole-content {
+  .pole-left .pole-content,
+  .pole-right .pole-content {
+    order: 2;
     margin: 0 !important;
     padding: 20px !important;
   }
