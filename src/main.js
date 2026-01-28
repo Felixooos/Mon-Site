@@ -12,6 +12,7 @@ let sidebarOpen = false
 
 function toggleSidebar() {
   console.log('Toggle sidebar called, current state:', sidebarOpen)
+  console.log('Window width:', window.innerWidth)
   sidebarOpen = !sidebarOpen
   
   if (sidebarOpen) {
@@ -23,13 +24,20 @@ function toggleSidebar() {
     hamburgerMenu.classList.add('active')
     // Descendre le compteur Wbuck uniquement sur mobile
     if (window.innerWidth < 768) {
-      const soldeHeader = document.querySelector('#solde-header')
-      if (soldeHeader) {
-        console.log('Mobile: Moving soldeHeader down to 80px')
-        soldeHeader.style.top = '80px'
-      } else {
-        console.log('soldeHeader not found!')
-      }
+      setTimeout(() => {
+        const soldeHeader = document.querySelector('#solde-header')
+        console.log('Trying to find soldeHeader:', soldeHeader)
+        if (soldeHeader) {
+          console.log('Mobile: Moving soldeHeader down to 80px')
+          console.log('Current top value:', soldeHeader.style.top)
+          soldeHeader.style.top = '80px'
+          soldeHeader.style.transition = 'top 0.3s ease'
+          console.log('New top value:', soldeHeader.style.top)
+        } else {
+          console.error('soldeHeader not found!')
+          console.log('All elements with id containing "solde":', document.querySelectorAll('[id*="solde"]'))
+        }
+      }, 100)
     }
   } else {
     console.log('Closing sidebar')
