@@ -226,21 +226,39 @@
       /* RESPONSIVE - Mobile First */
       @media (max-width: 600px) {
         #hamburger-menu {
-          top: 15px !important;
-          left: 15px !important;
-          padding: 10px !important;
+          top: 12px !important;
+          left: 12px !important;
+          padding: 8px !important;
+          z-index: 2001 !important;
         }
         
         #hamburger-menu div {
-          width: 25px !important;
+          width: 22px !important;
           height: 2.5px !important;
-          margin: 5px 0 !important;
+          margin: 4px 0 !important;
         }
         
         #sidebar {
-          width: 280px !important;
-          left: -300px !important;
+          width: 85% !important;
+          max-width: 300px !important;
+          left: -100% !important;
           padding-top: 70px !important;
+        }
+        
+        #solde-header {
+          top: 12px !important;
+          right: 12px !important;
+          padding: 8px 12px !important;
+          font-size: 14px !important;
+        }
+        
+        #solde-header img {
+          width: 20px !important;
+          height: 20px !important;
+        }
+        
+        #solde-header-amount {
+          font-size: 16px !important;
         }
         
         .sidebar-item {
@@ -635,7 +653,7 @@
         <!-- Section Campagne (contenu existant) -->
         <div id="section-campagne" class="section-content active">
         <!-- Cadre solde en haut à droite -->
-        <div id="solde-header" style="position: absolute; top: 20px; right: 20px; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 10px 15px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 8px; z-index: 100;">
+        <div id="solde-header" style="position: fixed; top: 20px; right: 20px; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 10px 15px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 8px; z-index: 2000;">
           <span id="solde-header-amount" style="font-size: 18px; font-weight: bold; color: #333;">0</span>
           <img src="/Wbuck.png" alt="Wbuck" style="width: 24px; height: 24px;" />
         </div>

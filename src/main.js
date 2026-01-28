@@ -14,16 +14,21 @@ function toggleSidebar() {
   sidebarOpen = !sidebarOpen
   
   if (sidebarOpen) {
+    // Calculer la largeur de la sidebar selon la taille d'écran
+    const sidebarWidth = window.innerWidth <= 600 
+      ? Math.min(window.innerWidth * 0.85, 300) 
+      : 320
+    
     sidebar.style.left = '0'
     sidebarOverlay.style.opacity = '1'
     sidebarOverlay.style.visibility = 'visible'
-    hamburgerMenu.style.left = '340px'
+    hamburgerMenu.style.left = (sidebarWidth + 20) + 'px'
     hamburgerMenu.classList.add('active')
   } else {
-    sidebar.style.left = '-350px'
+    sidebar.style.left = window.innerWidth <= 600 ? '-100%' : '-350px'
     sidebarOverlay.style.opacity = '0'
     sidebarOverlay.style.visibility = 'hidden'
-    hamburgerMenu.style.left = '20px'
+    hamburgerMenu.style.left = window.innerWidth <= 600 ? '12px' : '20px'
     hamburgerMenu.classList.remove('active')
   }
 }
