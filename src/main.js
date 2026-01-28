@@ -7,7 +7,6 @@ const hamburgerMenu = document.querySelector('#hamburger-menu')
 const sidebar = document.querySelector('#sidebar')
 const sidebarOverlay = document.querySelector('#sidebar-overlay')
 const sidebarItems = document.querySelectorAll('.sidebar-item')
-const soldeHeader = document.querySelector('#solde-header')
 
 let sidebarOpen = false
 
@@ -22,9 +21,15 @@ function toggleSidebar() {
     sidebarOverlay.style.opacity = '1'
     sidebarOverlay.style.visibility = 'visible'
     hamburgerMenu.classList.add('active')
-    // Descendre le compteur Wbuck
-    if (soldeHeader) {
-      soldeHeader.style.top = '80px'
+    // Descendre le compteur Wbuck uniquement sur mobile
+    if (window.innerWidth < 768) {
+      const soldeHeader = document.querySelector('#solde-header')
+      if (soldeHeader) {
+        console.log('Mobile: Moving soldeHeader down to 80px')
+        soldeHeader.style.top = '80px'
+      } else {
+        console.log('soldeHeader not found!')
+      }
     }
   } else {
     console.log('Closing sidebar')
@@ -33,9 +38,13 @@ function toggleSidebar() {
     sidebarOverlay.style.opacity = '0'
     sidebarOverlay.style.visibility = 'hidden'
     hamburgerMenu.classList.remove('active')
-    // Remonter le compteur Wbuck
-    if (soldeHeader) {
-      soldeHeader.style.top = '20px'
+    // Remonter le compteur Wbuck uniquement sur mobile
+    if (window.innerWidth < 768) {
+      const soldeHeader = document.querySelector('#solde-header')
+      if (soldeHeader) {
+        console.log('Mobile: Moving soldeHeader up to 20px')
+        soldeHeader.style.top = '20px'
+      }
     }
   }
 }
