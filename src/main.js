@@ -124,7 +124,7 @@ const membersData = {
     role: 'Vice-Président·e',
     pole: 'Le Bureau',
     description: 'En étroite collaboration avec la présidence, j\'assure le bon déroulement des opérations et prends le relais quand nécessaire. Toujours à l\'écoute et disponible pour vous !',
-    photo: '/team/vice-president.jpg',
+    photo: '/team/lilaok.png',
     contact: []
   },
   'tresorier': {
