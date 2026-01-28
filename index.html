@@ -101,6 +101,24 @@
       }
       
       /* STYLES POUR LA SIDEBAR */
+      #sidebar {
+        position: fixed;
+        top: 0;
+        left: -350px;
+        width: 320px;
+        height: 100vh;
+        background: linear-gradient(180deg, #F5E6D3 0%, #E8D4BA 100%);
+        box-shadow: 5px 0 25px rgba(0,0,0,0.3);
+        z-index: 1999;
+        transition: left 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        overflow-y: auto;
+        padding-top: 80px;
+      }
+      
+      #sidebar.open {
+        left: 0 !important;
+      }
+      
       .sidebar-item:hover {
         background: rgba(231, 76, 60, 0.15) !important;
         transform: translateX(5px);
@@ -241,6 +259,10 @@
           z-index: 2001 !important;
         }
         
+        #hamburger-menu.sidebar-open {
+          left: calc(85vw + 12px) !important;
+        }
+        
         #hamburger-menu div {
           width: 22px !important;
           height: 2.5px !important;
@@ -250,8 +272,11 @@
         #sidebar {
           width: 85vw !important;
           max-width: 300px !important;
-          left: calc(-85vw - 10px) !important;
-          padding-top: 70px !important;
+          left: -100vw !important;
+        }
+        
+        #sidebar.open {
+          left: 0 !important;
         }
         
         #solde-header {
@@ -390,7 +415,7 @@
     </div>
 
     <!-- Sidebar Navigation -->
-    <div id="sidebar" style="position: fixed; top: 0; left: -350px; width: 320px; height: 100vh; background: linear-gradient(180deg, #F5E6D3 0%, #E8D4BA 100%); box-shadow: 5px 0 25px rgba(0,0,0,0.3); z-index: 1999; transition: left 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); overflow-y: auto; padding-top: 80px;">
+    <div id="sidebar">
       
       <!-- Logo dans la sidebar -->
       <div style="text-align: center; padding: 0 20px 30px 20px; border-bottom: 2px solid rgba(231, 76, 60, 0.2);">

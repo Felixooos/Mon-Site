@@ -14,35 +14,17 @@ function toggleSidebar() {
   console.log('Toggle sidebar called, current state:', sidebarOpen)
   sidebarOpen = !sidebarOpen
   
-  const isMobile = window.innerWidth <= 600
-  console.log('Is mobile:', isMobile, 'Window width:', window.innerWidth)
-  
   if (sidebarOpen) {
     console.log('Opening sidebar')
-    sidebar.style.left = '0px'
-    sidebar.style.transform = 'translateX(0)'
+    sidebar.classList.add('open')
+    hamburgerMenu.classList.add('sidebar-open')
     sidebarOverlay.style.opacity = '1'
     sidebarOverlay.style.visibility = 'visible'
-    
-    if (isMobile) {
-      // Sur mobile, déplacer le hamburger avec la sidebar
-      const sidebarWidth = sidebar.offsetWidth
-      hamburgerMenu.style.left = (sidebarWidth + 12) + 'px'
-    } else {
-      hamburgerMenu.style.left = '340px'
-    }
     hamburgerMenu.classList.add('active')
   } else {
     console.log('Closing sidebar')
-    if (isMobile) {
-      sidebar.style.left = 'calc(-85vw - 10px)'
-      sidebar.style.transform = 'translateX(0)'
-      hamburgerMenu.style.left = '12px'
-    } else {
-      sidebar.style.left = '-350px'
-      sidebar.style.transform = 'translateX(0)'
-      hamburgerMenu.style.left = '20px'
-    }
+    sidebar.classList.remove('open')
+    hamburgerMenu.classList.remove('sidebar-open')
     sidebarOverlay.style.opacity = '0'
     sidebarOverlay.style.visibility = 'hidden'
     hamburgerMenu.classList.remove('active')
@@ -52,19 +34,21 @@ function toggleSidebar() {
 // Ouvrir/fermer au clic sur le hamburger (click + touch pour mobile)
 hamburgerMenu.addEventListener('click', (e) => {
   e.preventDefault()
+  e.stopPropagation()
   console.log('Hamburger clicked')
   toggleSidebar()
 })
 
-hamburgerMenu.addEventListener('touchstart', (e) => {
+hamburgerMenu.addEventListener('touchend', (e) => {
   e.preventDefault()
+  e.stopPropagation()
   console.log('Hamburger touched')
   toggleSidebar()
 }, { passive: false })
 
 // Fermer au clic sur l'overlay
 sidebarOverlay.addEventListener('click', toggleSidebar)
-sidebarOverlay.addEventListener('touchstart', toggleSidebar, { passive: true })
+sidebarOverlay.addEventListener('touchend', toggleSidebar, { passive: true })
 
 // Gérer les clics sur les items de la sidebar
 sidebarItems.forEach(item => {
