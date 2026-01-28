@@ -13,22 +13,31 @@ let sidebarOpen = false
 function toggleSidebar() {
   sidebarOpen = !sidebarOpen
   
+  const isMobile = window.innerWidth <= 600
+  
   if (sidebarOpen) {
-    // Calculer la largeur de la sidebar selon la taille d'écran
-    const sidebarWidth = window.innerWidth <= 600 
-      ? Math.min(window.innerWidth * 0.85, 300) 
-      : 320
-    
-    sidebar.style.left = '0'
+    sidebar.style.left = '0px'
     sidebarOverlay.style.opacity = '1'
     sidebarOverlay.style.visibility = 'visible'
-    hamburgerMenu.style.left = (sidebarWidth + 20) + 'px'
+    
+    if (isMobile) {
+      // Sur mobile, déplacer le hamburger avec la sidebar
+      const sidebarWidth = sidebar.offsetWidth
+      hamburgerMenu.style.left = (sidebarWidth + 12) + 'px'
+    } else {
+      hamburgerMenu.style.left = '340px'
+    }
     hamburgerMenu.classList.add('active')
   } else {
-    sidebar.style.left = window.innerWidth <= 600 ? '-100%' : '-350px'
+    if (isMobile) {
+      sidebar.style.left = 'calc(-85vw - 10px)'
+      hamburgerMenu.style.left = '12px'
+    } else {
+      sidebar.style.left = '-350px'
+      hamburgerMenu.style.left = '20px'
+    }
     sidebarOverlay.style.opacity = '0'
     sidebarOverlay.style.visibility = 'hidden'
-    hamburgerMenu.style.left = window.innerWidth <= 600 ? '12px' : '20px'
     hamburgerMenu.classList.remove('active')
   }
 }
@@ -89,6 +98,14 @@ function handleSectionChange(section) {
   
   console.log('Section affichée:', section)
 }
+
+// Gérer le redimensionnement de la fenêtre
+window.addEventListener('resize', () => {
+  if (sidebarOpen) {
+    // Si la sidebar est ouverte, la refermer lors du resize pour éviter les bugs
+    toggleSidebar()
+  }
+})
 
 // ==================== GESTION DES ONGLETS DU MENU ====================
 const formInscription = document.querySelector('#form-inscription')
