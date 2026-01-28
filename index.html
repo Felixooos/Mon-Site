@@ -110,9 +110,10 @@
         background: linear-gradient(180deg, #F5E6D3 0%, #E8D4BA 100%);
         box-shadow: 5px 0 25px rgba(0,0,0,0.3);
         z-index: 1999;
-        transition: left 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        transition: left 0.3s ease-out;
         overflow-y: auto;
         padding-top: 80px;
+        will-change: left;
       }
       
       #sidebar.open {
@@ -141,10 +142,15 @@
         user-select: none;
         -webkit-user-select: none;
         touch-action: manipulation;
+        transition: left 0.3s ease-out;
+      }
+      
+      #hamburger-menu div {
+        transition: all 0.3s ease;
       }
       
       #hamburger-menu.active div:nth-child(1) {
-        transform: rotate(-45deg) translate(-6px, 6px);
+        transform: translateY(9px) rotate(45deg);
       }
       
       #hamburger-menu.active div:nth-child(2) {
@@ -152,7 +158,7 @@
       }
       
       #hamburger-menu.active div:nth-child(3) {
-        transform: rotate(45deg) translate(-6px, -6px);
+        transform: translateY(-9px) rotate(-45deg);
       }
       
       /* Smooth scrollbar pour la sidebar */
@@ -257,6 +263,7 @@
           left: 12px !important;
           padding: 8px !important;
           z-index: 2001 !important;
+          transition: left 0.3s ease-out !important;
         }
         
         #hamburger-menu.sidebar-open {
@@ -269,10 +276,19 @@
           margin: 4px 0 !important;
         }
         
+        #hamburger-menu.active div:nth-child(1) {
+          transform: translateY(6.5px) rotate(45deg) !important;
+        }
+        
+        #hamburger-menu.active div:nth-child(3) {
+          transform: translateY(-6.5px) rotate(-45deg) !important;
+        }
+        
         #sidebar {
           width: 85vw !important;
           max-width: 300px !important;
           left: -100vw !important;
+          transition: left 0.3s ease-out !important;
         }
         
         #sidebar.open {
