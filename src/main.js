@@ -27,7 +27,7 @@ function toggleSidebar() {
         const soldeHeader = document.querySelector('#solde-header')
         if (soldeHeader) {
           console.log('Moving soldeHeader down')
-          soldeHeader.style.setProperty('top', '80px', 'important')
+          soldeHeader.style.setProperty('top', '65px', 'important')
         }
       }, 50)
     }
