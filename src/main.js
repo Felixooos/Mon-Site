@@ -1079,7 +1079,7 @@ async function chargerObjetsBoutique() {
     const div = document.createElement('div')
     div.style.cssText = `
       grid-column: ${gridColumn};
-      background: white;
+      background: #f5f5f5;
       border-radius: 12px;
       padding: 15px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.1);
