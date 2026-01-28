@@ -1101,8 +1101,8 @@ async function chargerObjetsBoutique() {
     html += `
       <div style="background: white; width: fit-content; border-radius: 10px; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 10px;">
         ${objet.image_url 
-          ? `<img src="${objet.image_url}" style="width: 100%; max-width: 200px; height: auto; display: block; border-radius: 10px;" />`
-          : `<div style="width: 200px; min-height: 200px; display: flex; align-items: center; justify-content: center; font-size: 50px;">📸</div>`
+          ? `<img src="${objet.image_url}" style="width: 180px; height: auto; display: block; border-radius: 10px;" />`
+          : `<div style="width: 180px; min-height: 180px; display: flex; align-items: center; justify-content: center; font-size: 50px;">📸</div>`
         }
       </div>
     `
