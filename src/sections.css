@@ -196,7 +196,7 @@
   
   .pole-left .pole-image,
   .pole-right .pole-image {
-    order: 1;
+    order: 1 !important;
     flex: 0 0 250px;
     height: 250px;
     transform: rotate(0deg) !important;
@@ -204,7 +204,7 @@
   
   .pole-left .pole-content,
   .pole-right .pole-content {
-    order: 2;
+    order: 2 !important;
     margin: 0 !important;
     padding: 20px !important;
   }
@@ -219,6 +219,25 @@
   
   .pole-title {
     font-size: 22px;
+  }
+}
+
+/* S'assurer que l'ordre est normal sur desktop */
+@media (min-width: 769px) {
+  .pole-left .pole-image {
+    order: 0;
+  }
+  
+  .pole-left .pole-content {
+    order: 0;
+  }
+  
+  .pole-right .pole-image {
+    order: 0;
+  }
+  
+  .pole-right .pole-content {
+    order: 0;
   }
 }
 
