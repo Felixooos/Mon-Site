@@ -1445,14 +1445,14 @@ async function chargerMesAchats() {
             <p style="margin: 0; font-size: 13px; color: #999;">📅 ${dateStr} à ${heureStr}</p>
           </div>
           <!-- Colonne droite : prix en haut, photo en bas -->
-          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px; min-width: 80px;">
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px; min-width: 90px;">
             <!-- Prix en haut -->
             <div style="display: flex; align-items: center; gap: 6px;">
               <p style="margin: 0; font-size: 28px; font-weight: bold; color: #e74c3c; line-height: 1; text-shadow: 0 2px 4px rgba(231,76,60,0.2); white-space: nowrap;">-${achat.prix_paye}</p>
               <img src="/Wbuck.png" style="width: 28px; height: 28px;" />
             </div>
             <!-- Photo en bas -->
-            <div style="width: 50px; height: 50px; background: ${objet.image_url ? `url('${objet.image_url}')` : '#ddd'}; background-size: cover; background-position: center; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 3px 8px rgba(0,0,0,0.15);">${!objet.image_url ? '📦' : ''}</div>
+            <div style="width: 85px; height: 85px; background: ${objet.image_url ? `url('${objet.image_url}')` : '#ddd'}; background-size: cover; background-position: center; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">${!objet.image_url ? '📦' : ''}</div>
           </div>
         </div>
       </div>
@@ -1501,14 +1501,14 @@ async function chargerMesGains() {
             <p style="margin: 0; font-size: 13px; color: #999;">📅 ${dateStr} à ${heureStr}</p>
           </div>
           <!-- Colonne droite : prix en haut, photo en bas -->
-          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px; min-width: 80px;">
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px; min-width: 90px;">
             <!-- Prix en haut -->
             <div style="display: flex; align-items: center; gap: 6px;">
               <p style="margin: 0; font-size: 28px; font-weight: bold; color: ${borderColor}; line-height: 1; text-shadow: 0 2px 4px rgba(0,0,0,0.2); white-space: nowrap;">${signe}${gain.montant}</p>
               <img src="/Wbuck.png" style="width: 28px; height: 28px;" />
             </div>
             <!-- Photo en bas -->
-            <div style="width: 50px; height: 50px; background: ${borderColor}; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 26px; color: white; box-shadow: 0 3px 8px rgba(0,0,0,0.15);">${isPositif ? '💰' : '💸'}</div>
+            <div style="width: 85px; height: 85px; background: ${borderColor}; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">${isPositif ? '💰' : '💸'}</div>
           </div>
         </div>
       </div>
