@@ -1099,7 +1099,7 @@ async function chargerObjetsBoutique() {
     
     // Image (prend l'espace disponible) 
     html += `
-      <div style="background: white; width: fit-content; border-radius: 10px; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 10px;">
+      <div style="background: white; width: fit-content; border-radius: 10px; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 3px;">
         ${objet.image_url 
           ? `<img src="${objet.image_url}" style="width: 180px; height: auto; display: block; border-radius: 10px;" />`
           : `<div style="width: 180px; min-height: 180px; display: flex; align-items: center; justify-content: center; font-size: 50px;">📸</div>`
