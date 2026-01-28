@@ -1073,6 +1073,7 @@ async function chargerObjetsBoutique() {
     // Définir le nombre de colonnes occupées
     let gridColumn = ''
     if (taille === 'gros') gridColumn = 'span 3'
+    else if (taille === 'large') gridColumn = 'span 2'
     else if (taille === 'moyen') gridColumn = 'span 2'
     else gridColumn = 'span 1'
     
@@ -1087,7 +1088,8 @@ async function chargerObjetsBoutique() {
       border: 2px solid ${estEpuise ? '#ddd' : '#e74c3c'};
       display: flex;
       flex-direction: column;
-      min-height: 200px;
+      justify-content: space-between;
+      min-height: 300px;
     `
     
     let html = ''
@@ -1097,12 +1099,12 @@ async function chargerObjetsBoutique() {
       html += `<button class="btn-menu-3pts" data-objet-id="${objet.id}" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">⋮</button>`
     }
     
-    // Image avec cadre blanc minimal
+    // Image avec cadre blanc minimal - alignée en haut
     html += `
-      <div style="width: 100%; margin-bottom: 12px; display: flex; align-items: center; justify-content: center;">
+      <div style="width: 100%; display: flex; align-items: flex-start; justify-content: center; flex-shrink: 0;">
         ${objet.image_url 
-          ? `<div style="background: white; border-radius: 8px; padding: 2px; display: inline-block; max-width: 95%;"><img src="${objet.image_url}" style="width: 100%; height: auto; display: block; border-radius: 6px;" /></div>`
-          : `<div style="width: 95%; min-height: 200px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 50px;">📸</div>`
+          ? `<div style="background: white; border-radius: 8px; padding: 2px; display: inline-block; max-width: 60%;"><img src="${objet.image_url}" style="width: 100%; height: auto; display: block; border-radius: 6px;" /></div>`
+          : `<div style="width: 60%; min-height: 150px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 50px;">📸</div>`
         }
       </div>
     `
@@ -1134,36 +1136,6 @@ async function chargerObjetsBoutique() {
     div.dataset.objetTaille = taille
     grid.appendChild(div)
   })
-  
-  // Ajouter des cartes décoratives pour remplir les espaces vides
-  const cartesDecoratives = [
-    { emoji: '🔥', text: 'Wild Ember', color: 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)' },
-    { emoji: '🌴', text: 'Aventure', color: 'linear-gradient(135deg, #F7931E 0%, #FFB84D 100%)' },
-    { emoji: '⚡', text: 'Énergie', color: 'linear-gradient(135deg, #D2042D 0%, #E74C3C 100%)' }
-  ]
-  
-  for (let i = 0; i < 2; i++) {
-    const deco = cartesDecoratives[i % cartesDecoratives.length]
-    const divDeco = document.createElement('div')
-    divDeco.style.cssText = `
-      grid-column: span 1;
-      background: ${deco.color};
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 200px;
-      gap: 15px;
-    `
-    divDeco.innerHTML = `
-      <div style="font-size: 60px;">${deco.emoji}</div>
-      <div style="color: white; font-weight: bold; font-size: 18px; text-align: center;">${deco.text}</div>
-    `
-    grid.appendChild(divDeco)
-  }
   
   // Ajouter listeners sur les boutons acheter
   document.querySelectorAll('.btn-acheter').forEach(btn => {
