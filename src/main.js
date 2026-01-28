@@ -1424,7 +1424,7 @@ async function chargerMesAchats() {
   const listeMesAchats = document.querySelector('#liste-mes-achats')
   
   if (achats.length === 0) {
-    listeMesAchats.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">Aucun achat pour le moment</p>'
+    listeMesAchats.innerHTML = '<p style="color: rgba(255,255,255,0.7); text-align: center; padding: 30px; font-size: 16px;">🛍️ Aucun achat pour le moment</p>'
     return
   }
   
@@ -1435,14 +1435,20 @@ async function chargerMesAchats() {
     const dateStr = date.toLocaleDateString('fr-FR')
     const heureStr = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
     html += `
-      <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
-        <div style="display: flex; gap: 15px; align-items: center;">
-          <div style="width: 60px; height: 60px; background: #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; background-image: url('${objet.image_url || ''}'); background-size: cover;">${!objet.image_url ? '📦' : ''}</div>
-          <div style="flex: 1;">
-            <h4 style="margin: 0 0 5px 0; color: #333;">${objet.nom}</h4>
-            <p style="margin: 0; font-size: 14px; color: #666;">Quantité : 1</p>
-            <p style="margin: 0; font-size: 14px; color: #666;">Événement : Achat boutique</p>
-            <p style="margin: 0; font-size: 14px; color: #666;">${dateStr} à ${heureStr} · -${achat.prix_paye} points</p>
+      <div style="background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%); padding: 20px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid #e74c3c; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateX(5px)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'">
+        <div style="display: flex; gap: 15px; align-items: center; justify-content: space-between;">
+          <div style="display: flex; gap: 15px; align-items: center; flex: 1;">
+            <div style="width: 65px; height: 65px; background: ${objet.image_url ? `url('${objet.image_url}')` : '#ddd'}; background-size: cover; background-position: center; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); flex-shrink: 0;">${!objet.image_url ? '📦' : ''}</div>
+            <div style="flex: 1; min-width: 0;">
+              <h4 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 18px; font-weight: bold;">${objet.nom}</h4>
+              <p style="margin: 0 0 3px 0; font-size: 14px; color: #666;">Quantité : 1</p>
+              <p style="margin: 0 0 3px 0; font-size: 14px; color: #666;">Événement : Achat boutique</p>
+              <p style="margin: 0; font-size: 13px; color: #999;">📅 ${dateStr} à ${heureStr}</p>
+            </div>
+          </div>
+          <div style="text-align: right; padding-left: 15px; flex-shrink: 0;">
+            <p style="margin: 0; font-size: 36px; font-weight: bold; color: #e74c3c; line-height: 1; text-shadow: 0 2px 4px rgba(231,76,60,0.2);">-${achat.prix_paye}</p>
+            <p style="margin: 4px 0 0 0; font-size: 14px; color: #e74c3c; font-weight: 600;">points</p>
           </div>
         </div>
       </div>
@@ -1467,7 +1473,7 @@ async function chargerMesGains() {
   const listeMesGains = document.querySelector('#liste-mes-gains')
   
   if (gains.length === 0) {
-    listeMesGains.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">Aucun gain pour le moment</p>'
+    listeMesGains.innerHTML = '<p style="color: rgba(255,255,255,0.7); text-align: center; padding: 30px; font-size: 16px;">🎉 Aucun gain pour le moment</p>'
     return
   }
   
@@ -1477,18 +1483,25 @@ async function chargerMesGains() {
     const dateStr = date.toLocaleDateString('fr-FR')
     const heureStr = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
     const isPositif = gain.montant > 0
-    const couleur = isPositif ? '#2ecc71' : '#e74c3c'
+    const gradient = isPositif ? 'linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%)' : 'linear-gradient(135deg, #ffffff 0%, #fef2f2 100%)'
+    const borderColor = isPositif ? '#2ecc71' : '#e74c3c'
     const signe = isPositif ? '+' : ''
     
     html += `
-      <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
-        <div style="display: flex; gap: 15px; align-items: center;">
-          <div style="width: 60px; height: 60px; background: ${couleur}; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white;">${isPositif ? '💰' : '💸'}</div>
-          <div style="flex: 1;">
-            <h4 style="margin: 0 0 5px 0; color: #333;">${gain.raison || 'Transaction'}</h4>
-            <p style="margin: 0; font-size: 14px; color: #666;">Quantité : ${signe}${gain.montant} points</p>
-            <p style="margin: 0; font-size: 14px; color: #666;">Événement : ${gain.raison || 'Transaction'}</p>
-            <p style="margin: 0; font-size: 14px; color: #666;">${dateStr} à ${heureStr}</p>
+      <div style="background: ${gradient}; padding: 20px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid ${borderColor}; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateX(5px)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'">
+        <div style="display: flex; gap: 15px; align-items: center; justify-content: space-between;">
+          <div style="display: flex; gap: 15px; align-items: center; flex: 1;">
+            <div style="width: 65px; height: 65px; background: ${borderColor}; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.15); flex-shrink: 0;">${isPositif ? '💰' : '💸'}</div>
+            <div style="flex: 1; min-width: 0;">
+              <h4 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 18px; font-weight: bold;">${gain.raison || 'Transaction'}</h4>
+              <p style="margin: 0 0 3px 0; font-size: 14px; color: #666;">Quantité : ${signe}${gain.montant} points</p>
+              <p style="margin: 0 0 3px 0; font-size: 14px; color: #666;">Événement : ${gain.raison || 'Transaction'}</p>
+              <p style="margin: 0; font-size: 13px; color: #999;">📅 ${dateStr} à ${heureStr}</p>
+            </div>
+          </div>
+          <div style="text-align: right; padding-left: 15px; flex-shrink: 0;">
+            <p style="margin: 0; font-size: 36px; font-weight: bold; color: ${borderColor}; line-height: 1; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">${signe}${gain.montant}</p>
+            <p style="margin: 4px 0 0 0; font-size: 14px; color: ${borderColor}; font-weight: 600;">points</p>
           </div>
         </div>
       </div>
