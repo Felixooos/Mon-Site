@@ -1026,16 +1026,17 @@ tabBoutique.addEventListener('click', async () => {
   
   await chargerObjetsBoutique()
   
-  // Écouter les changements en temps réel sur la boutique
+  // Écouter les changements en temps réel UNIQUEMENT pour les objets publiés (sauf admin)
+  const realtimeFilter = jeSuisBoutiqueManager 
+    ? { event: '*', schema: 'public', table: 'objets_boutique' }
+    : { event: '*', schema: 'public', table: 'objets_boutique', filter: 'is_published=eq.true' }
+  
   supabase
     .channel('boutique-changes')
-    .on('postgres_changes', 
-      { event: '*', schema: 'public', table: 'objets_boutique' },
-      () => {
-        console.log('Changement détecté dans la boutique, rechargement...')
-        chargerObjetsBoutique()
-      }
-    )
+    .on('postgres_changes', realtimeFilter, () => {
+      console.log('Changement détecté dans la boutique, rechargement...')
+      chargerObjetsBoutique()
+    })
     .subscribe()
 })
 
