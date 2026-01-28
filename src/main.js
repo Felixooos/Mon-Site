@@ -59,6 +59,17 @@ hamburgerMenu.addEventListener('click', (e) => {
   toggleSidebar()
 })
 
+// Fermer au clic/touch sur l'overlay
+sidebarOverlay.addEventListener('click', (e) => {
+  e.preventDefault()
+  toggleSidebar()
+})
+
+sidebarOverlay.addEventListener('touchstart', (e) => {
+  e.preventDefault()
+  toggleSidebar()
+})
+
 hamburgerMenu.addEventListener('touchend', (e) => {
   e.preventDefault()
   e.stopPropagation()
@@ -1133,6 +1144,10 @@ async function chargerObjetsBoutique() {
       flex-direction: column;
       justify-content: space-between;
       min-height: 300px;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
     `
     
     let html = ''
