@@ -1560,7 +1560,7 @@ window.toggleSection = function(section) {
   if (liste.style.maxHeight === '0px' || !liste.style.maxHeight) {
     // Ouvrir la section
     liste.style.maxHeight = '400px'
-    liste.style.padding = '0 20px 20px 20px'
+    liste.style.padding = '20px 20px 20px 20px'
     liste.style.overflowY = 'auto'
     arrow.style.transform = 'rotate(0deg)'
   } else {
