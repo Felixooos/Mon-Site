@@ -12,7 +12,6 @@ let sidebarOpen = false
 
 function toggleSidebar() {
   console.log('Toggle sidebar called, current state:', sidebarOpen)
-  console.log('Window width:', window.innerWidth)
   sidebarOpen = !sidebarOpen
   
   if (sidebarOpen) {
@@ -22,22 +21,15 @@ function toggleSidebar() {
     sidebarOverlay.style.opacity = '1'
     sidebarOverlay.style.visibility = 'visible'
     hamburgerMenu.classList.add('active')
-    // Descendre le compteur Wbuck uniquement sur mobile
+    // Descendre le compteur Wbuck sur mobile
     if (window.innerWidth < 768) {
       setTimeout(() => {
         const soldeHeader = document.querySelector('#solde-header')
-        console.log('Trying to find soldeHeader:', soldeHeader)
         if (soldeHeader) {
-          console.log('Mobile: Moving soldeHeader down to 80px')
-          console.log('Current top value:', soldeHeader.style.top)
-          soldeHeader.style.top = '80px'
-          soldeHeader.style.transition = 'top 0.3s ease'
-          console.log('New top value:', soldeHeader.style.top)
-        } else {
-          console.error('soldeHeader not found!')
-          console.log('All elements with id containing "solde":', document.querySelectorAll('[id*="solde"]'))
+          console.log('Moving soldeHeader down')
+          soldeHeader.style.setProperty('top', '80px', 'important')
         }
-      }, 100)
+      }, 50)
     }
   } else {
     console.log('Closing sidebar')
@@ -46,13 +38,15 @@ function toggleSidebar() {
     sidebarOverlay.style.opacity = '0'
     sidebarOverlay.style.visibility = 'hidden'
     hamburgerMenu.classList.remove('active')
-    // Remonter le compteur Wbuck uniquement sur mobile
+    // Remonter le compteur Wbuck sur mobile
     if (window.innerWidth < 768) {
-      const soldeHeader = document.querySelector('#solde-header')
-      if (soldeHeader) {
-        console.log('Mobile: Moving soldeHeader up to 20px')
-        soldeHeader.style.top = '20px'
-      }
+      setTimeout(() => {
+        const soldeHeader = document.querySelector('#solde-header')
+        if (soldeHeader) {
+          console.log('Moving soldeHeader up')
+          soldeHeader.style.setProperty('top', '20px', 'important')
+        }
+      }, 50)
     }
   }
 }
