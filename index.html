@@ -891,12 +891,28 @@
 
         <!-- Écran Moi -->
         <div id="moi-screen" style="display: none;">
+          <!-- Section Gains -->
           <div style="background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); margin-bottom: 20px;">
-            <h3 style="margin-bottom: 15px; color: #e74c3c;">📦 Mes Achats</h3>
-            <div id="liste-mes-achats" style="max-height: 400px; overflow-y: auto;">
+            <div id="header-gains" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="toggleSection('gains')">
+              <h3 style="margin: 0; color: #2ecc71;">💰 Mes Gains</h3>
+              <span id="arrow-gains" style="font-size: 24px; transition: transform 0.3s;">▼</span>
+            </div>
+            <div id="liste-mes-gains" style="max-height: 400px; overflow-y: auto; margin-top: 15px;">
+              <!-- Les gains s'afficheront ici -->
+            </div>
+          </div>
+
+          <!-- Section Achats -->
+          <div style="background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); margin-bottom: 20px;">
+            <div id="header-achats" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="toggleSection('achats')">
+              <h3 style="margin: 0; color: #e74c3c;">📦 Mes Achats</h3>
+              <span id="arrow-achats" style="font-size: 24px; transition: transform 0.3s;">▼</span>
+            </div>
+            <div id="liste-mes-achats" style="max-height: 400px; overflow-y: auto; margin-top: 15px;">
               <!-- Les achats s'afficheront ici -->
             </div>
           </div>
+
           <button id="btn-logout" style="background: #c0392b; width: 100%;">Se déconnecter</button>
         </div>
       </div>

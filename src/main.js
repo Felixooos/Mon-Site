@@ -1052,6 +1052,7 @@ tabMoi.addEventListener('click', async () => {
   tabMoi.style.color = 'white'
   
   await chargerMesAchats()
+  await chargerMesGains()
 })
 
 // ==================== FONCTIONS BOUTIQUE ====================
@@ -1139,7 +1140,7 @@ async function chargerObjetsBoutique() {
     html += `<h3 style="margin: 10px 0; font-size: ${fontSize}; color: #333;">${objet.nom}</h3>`
     
     // Prix
-    html += `<p style="font-size: 20px; font-weight: bold; color: #e74c3c; margin: 8px 0; display: flex; align-items: center; justify-content: center; gap: 8px;">${objet.prix} <img src="/Wbuck.png" style="width: 20px; height: 20px;" /></p>`
+    html += `<p style="font-size: 28px; font-weight: bold; color: #e74c3c; margin: 8px 0; display: flex; align-items: center; justify-content: center; gap: 8px;">${objet.prix} <img src="/Wbuck.png" style="width: 28px; height: 28px;" /></p>`
     
     // Stock
     html += `<p style="font-size: 14px; margin: 8px 0; color: ${estEpuise ? '#e74c3c' : '#666'};">${estEpuise ? 'Épuisé' : `Quantité : ${objet.quantite}`}</p>`
@@ -1430,19 +1431,85 @@ async function chargerMesAchats() {
   let html = ''
   achats.forEach(achat => {
     const objet = achat.objets_boutique
-    const date = new Date(achat.created_at).toLocaleDateString('fr-FR')
+    const date = new Date(achat.created_at)
+    const dateStr = date.toLocaleDateString('fr-FR')
+    const heureStr = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
     html += `
-      <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 10px; display: flex; gap: 15px; align-items: center;">
-        <div style="width: 60px; height: 60px; background: #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; background-image: url('${objet.image_url || ''}'); background-size: cover;">${!objet.image_url ? '📦' : ''}</div>
-        <div style="flex: 1;">
-          <h4 style="margin: 0 0 5px 0; color: #333;">${objet.nom}</h4>
-          <p style="margin: 0; font-size: 14px; color: #666;">${achat.prix_paye} points - ${date}</p>
+      <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+        <div style="display: flex; gap: 15px; align-items: center;">
+          <div style="width: 60px; height: 60px; background: #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; background-image: url('${objet.image_url || ''}'); background-size: cover;">${!objet.image_url ? '📦' : ''}</div>
+          <div style="flex: 1;">
+            <h4 style="margin: 0 0 5px 0; color: #333;">${objet.nom}</h4>
+            <p style="margin: 0; font-size: 14px; color: #666;">Quantité : 1</p>
+            <p style="margin: 0; font-size: 14px; color: #666;">Événement : Achat boutique</p>
+            <p style="margin: 0; font-size: 14px; color: #666;">${dateStr} à ${heureStr} · -${achat.prix_paye} points</p>
+          </div>
         </div>
       </div>
     `
   })
   
   listeMesAchats.innerHTML = html
+}
+
+async function chargerMesGains() {
+  const { data: gains, error } = await supabase
+    .from('transactions')
+    .select('id, montant, raison, created_at')
+    .eq('destinataire_email', currentUserEmail)
+    .order('created_at', { ascending: false })
+  
+  if (error) {
+    console.error('Erreur chargement gains:', error)
+    return
+  }
+  
+  const listeMesGains = document.querySelector('#liste-mes-gains')
+  
+  if (gains.length === 0) {
+    listeMesGains.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">Aucun gain pour le moment</p>'
+    return
+  }
+  
+  let html = ''
+  gains.forEach(gain => {
+    const date = new Date(gain.created_at)
+    const dateStr = date.toLocaleDateString('fr-FR')
+    const heureStr = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+    const isPositif = gain.montant > 0
+    const couleur = isPositif ? '#2ecc71' : '#e74c3c'
+    const signe = isPositif ? '+' : ''
+    
+    html += `
+      <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+        <div style="display: flex; gap: 15px; align-items: center;">
+          <div style="width: 60px; height: 60px; background: ${couleur}; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white;">${isPositif ? '💰' : '💸'}</div>
+          <div style="flex: 1;">
+            <h4 style="margin: 0 0 5px 0; color: #333;">${gain.raison || 'Transaction'}</h4>
+            <p style="margin: 0; font-size: 14px; color: #666;">Quantité : ${signe}${gain.montant} points</p>
+            <p style="margin: 0; font-size: 14px; color: #666;">Événement : ${gain.raison || 'Transaction'}</p>
+            <p style="margin: 0; font-size: 14px; color: #666;">${dateStr} à ${heureStr}</p>
+          </div>
+        </div>
+      </div>
+    `
+  })
+  
+  listeMesGains.innerHTML = html
+}
+
+// ==================== TOGGLE SECTIONS MOI ====================
+window.toggleSection = function(section) {
+  const liste = document.querySelector(`#liste-mes-${section}`)
+  const arrow = document.querySelector(`#arrow-${section}`)
+  
+  if (liste.style.display === 'none') {
+    liste.style.display = 'block'
+    arrow.style.transform = 'rotate(0deg)'
+  } else {
+    liste.style.display = 'none'
+    arrow.style.transform = 'rotate(-90deg)'
+  }
 }
 
 // ==================== GESTION MODAL AJOUT OBJET ====================
