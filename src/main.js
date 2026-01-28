@@ -1070,12 +1070,12 @@ async function chargerObjetsBoutique() {
     const estEpuise = objet.quantite <= 0
     const taille = objet.taille || 'petit'
     
-    // Définir le nombre de colonnes occupées
+    // Définir le nombre de colonnes occupées (grille de 6)
     let gridColumn = ''
-    if (taille === 'gros') gridColumn = 'span 3'
-    else if (taille === 'large') gridColumn = 'span 2'
-    else if (taille === 'moyen') gridColumn = 'span 2'
-    else gridColumn = 'span 1'
+    if (taille === 'gros') gridColumn = 'span 6'        // 1 par ligne
+    else if (taille === 'moyen') gridColumn = 'span 4'  // ~2/3 de ligne
+    else if (taille === 'large') gridColumn = 'span 3'  // 1/2 ligne (2 par ligne)
+    else gridColumn = 'span 2'                          // 1/3 ligne (3 par ligne)
     
     const div = document.createElement('div')
     div.style.cssText = `
