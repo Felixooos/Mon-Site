@@ -565,9 +565,9 @@
                     L'équipe dirigeante qui orchestre l'ensemble de la campagne. Prise de décision stratégique, coordination des pôles et vision globale du projet.
                   </p>
                   <div class="pole-members">
-                    <span class="member-tag">Président·e</span>
-                    <span class="member-tag">Vice-Président·e</span>
-                    <span class="member-tag">Trésorier·ère</span>
+                    <span class="member-tag" data-member="president">Président·e</span>
+                    <span class="member-tag" data-member="vice-president">Vice-Président·e</span>
+                    <span class="member-tag" data-member="tresorier">Trésorier·ère</span>
                   </div>
                 </div>
               </div>
@@ -581,9 +581,9 @@
                     Nos experts en communication gèrent l'image de la campagne, créent du contenu percutant et animent nos réseaux sociaux pour maximiser notre visibilité.
                   </p>
                   <div class="pole-members">
-                    <span class="member-tag">Community Manager</span>
-                    <span class="member-tag">Graphiste</span>
-                    <span class="member-tag">Rédacteur·ice</span>
+                    <span class="member-tag" data-member="community-manager">Community Manager</span>
+                    <span class="member-tag" data-member="graphiste">Graphiste</span>
+                    <span class="member-tag" data-member="redacteur">Rédacteur·ice</span>
                   </div>
                 </div>
                 <div class="pole-image">
@@ -607,9 +607,9 @@
                     Les architectes de vos moments mémorables ! Ils conçoivent et orchestrent tous les événements qui rythment la campagne et créent du lien.
                   </p>
                   <div class="pole-members">
-                    <span class="member-tag">Chef·fe de projet</span>
-                    <span class="member-tag">Logistique</span>
-                    <span class="member-tag">Animation</span>
+                    <span class="member-tag" data-member="chef-projet-event">Chef·fe de projet</span>
+                    <span class="member-tag" data-member="logistique">Logistique</span>
+                    <span class="member-tag" data-member="animation">Animation</span>
                   </div>
                 </div>
               </div>
@@ -623,9 +623,9 @@
                     Sur le terrain au quotidien, ils vont à votre rencontre, écoutent vos préoccupations et créent du lien direct avec les électeurs.
                   </p>
                   <div class="pole-members">
-                    <span class="member-tag">Porte-parole</span>
-                    <span class="member-tag">Ambassadeur·ice</span>
-                    <span class="member-tag">Médiateur·ice</span>
+                    <span class="member-tag" data-member="porte-parole">Porte-parole</span>
+                    <span class="member-tag" data-member="ambassadeur">Ambassadeur·ice</span>
+                    <span class="member-tag" data-member="mediateur">Médiateur·ice</span>
                   </div>
                 </div>
                 <div class="pole-image">
@@ -649,9 +649,9 @@
                     Les gardiens de notre empreinte écologique. Ils veillent à ce que notre campagne soit responsable et proposent des initiatives durables.
                   </p>
                   <div class="pole-members">
-                    <span class="member-tag">Référent·e DD</span>
-                    <span class="member-tag">Chargé·e de projet</span>
-                    <span class="member-tag">Sensibilisation</span>
+                    <span class="member-tag" data-member="referent-dd">Référent·e DD</span>
+                    <span class="member-tag" data-member="charge-projet-dd">Chargé·e de projet</span>
+                    <span class="member-tag" data-member="sensibilisation">Sensibilisation</span>
                   </div>
                 </div>
               </div>
@@ -665,9 +665,9 @@
                     Les créatifs qui donnent vie à nos idées ! Vidéos, visuels, goodies... ils concrétisent la campagne avec talent et originalité.
                   </p>
                   <div class="pole-members">
-                    <span class="member-tag">Vidéaste</span>
-                    <span class="member-tag">Designer</span>
-                    <span class="member-tag">Photographe</span>
+                    <span class="member-tag" data-member="videaste">Vidéaste</span>
+                    <span class="member-tag" data-member="designer">Designer</span>
+                    <span class="member-tag" data-member="photographe">Photographe</span>
                   </div>
                 </div>
                 <div class="pole-image">
@@ -999,6 +999,26 @@
           </p>
 
           <button id="btn-close-nfc-info" style="background: #e74c3c; width: 100%;">OK</button>
+        </div>
+      </div>
+
+      <!-- Modal Détails Membre -->
+      <div id="member-modal" class="modal hidden">
+        <div class="modal-content" style="max-width: 500px; padding: 0; overflow: hidden;">
+          <div id="member-photo-container" style="width: 100%; height: 300px; background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%); position: relative; overflow: hidden;">
+            <img id="member-photo" src="" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+            <div id="member-photo-placeholder" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 100px; position: absolute; top: 0; left: 0;">
+              👤
+            </div>
+            <div style="position: absolute; top: 15px; right: 15px; background: rgba(231, 76, 60, 0.9); color: white; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 14px;" id="member-role-badge"></div>
+          </div>
+          <div style="padding: 30px;">
+            <h2 id="member-name" style="color: #e74c3c; font-size: 28px; font-weight: 800; margin: 0 0 10px 0;"></h2>
+            <p id="member-pole" style="color: #666; font-size: 16px; font-weight: 600; margin: 0 0 20px 0;"></p>
+            <p id="member-description" style="color: #555; font-size: 15px; line-height: 1.7; margin-bottom: 20px;"></p>
+            <div id="member-contact" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;"></div>
+            <button id="btn-close-member" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">Fermer</button>
+          </div>
         </div>
       </div>
 

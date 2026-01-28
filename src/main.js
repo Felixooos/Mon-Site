@@ -109,6 +109,215 @@ window.addEventListener('resize', () => {
   }
 })
 
+// ==================== GESTION DES MEMBRES DE L'ÉQUIPE ====================
+const membersData = {
+  'president': {
+    name: 'Prénom Nom',
+    role: 'Président·e',
+    pole: 'Le Bureau',
+    description: 'Passionné·e par la vie étudiante, je coordonne l\'ensemble des actions de Wild Ember et veille à la cohérence de notre projet. Mon objectif : créer une campagne qui vous ressemble et répond à vos besoins.',
+    photo: '/team/president.jpg',
+    contact: ['📧 email@exemple.fr']
+  },
+  'vice-president': {
+    name: 'Prénom Nom',
+    role: 'Vice-Président·e',
+    pole: 'Le Bureau',
+    description: 'En étroite collaboration avec la présidence, j\'assure le bon déroulement des opérations et prends le relais quand nécessaire. Toujours à l\'écoute et disponible pour vous !',
+    photo: '/team/vice-president.jpg',
+    contact: []
+  },
+  'tresorier': {
+    name: 'Prénom Nom',
+    role: 'Trésorier·ère',
+    pole: 'Le Bureau',
+    description: 'Je gère le budget de la campagne avec rigueur et transparence. Chaque euro compte et je veille à optimiser nos ressources pour maximiser notre impact.',
+    photo: '/team/tresorier.jpg',
+    contact: []
+  },
+  'community-manager': {
+    name: 'Prénom Nom',
+    role: 'Community Manager',
+    pole: 'Pôle Communication',
+    description: 'Créateur·ice de contenu et animateur·ice de nos réseaux sociaux, je vous tiens informés de toutes nos actualités avec créativité et engagement.',
+    photo: '/team/cm.jpg',
+    contact: ['📱 Instagram: @wildember']
+  },
+  'graphiste': {
+    name: 'Prénom Nom',
+    role: 'Graphiste',
+    pole: 'Pôle Communication',
+    description: 'Je donne vie à l\'identité visuelle de Wild Ember : affiches, visuels, logo... Chaque création raconte notre histoire avec style.',
+    photo: '/team/graphiste.jpg',
+    contact: []
+  },
+  'redacteur': {
+    name: 'Prénom Nom',
+    role: 'Rédacteur·ice',
+    pole: 'Pôle Communication',
+    description: 'Les mots sont ma spécialité ! Je rédige nos communiqués, articles et messages pour communiquer clairement notre vision et nos actions.',
+    photo: '/team/redacteur.jpg',
+    contact: []
+  },
+  'chef-projet-event': {
+    name: 'Prénom Nom',
+    role: 'Chef·fe de projet',
+    pole: 'Pôle Événementiel',
+    description: 'J\'orchestre tous nos événements de A à Z : conception, planification, coordination. Mon but : créer des moments inoubliables pour vous !',
+    photo: '/team/chef-event.jpg',
+    contact: []
+  },
+  'logistique': {
+    name: 'Prénom Nom',
+    role: 'Logistique',
+    pole: 'Pôle Événementiel',
+    description: 'Derrière chaque événement réussi, il y a une logistique parfaite ! Je m\'occupe du matériel, des réservations et de l\'organisation pratique.',
+    photo: '/team/logistique.jpg',
+    contact: []
+  },
+  'animation': {
+    name: 'Prénom Nom',
+    role: 'Animation',
+    pole: 'Pôle Événementiel',
+    description: 'L\'ambiance, c\'est moi ! J\'anime nos événements avec énergie et bonne humeur pour que vous passiez des moments mémorables.',
+    photo: '/team/animation.jpg',
+    contact: []
+  },
+  'porte-parole': {
+    name: 'Prénom Nom',
+    role: 'Porte-parole',
+    pole: 'Pôle Démarche',
+    description: 'Voix de Wild Ember, je représente notre campagne dans les différentes instances et porte vos messages avec conviction.',
+    photo: '/team/porte-parole.jpg',
+    contact: []
+  },
+  'ambassadeur': {
+    name: 'Prénom Nom',
+    role: 'Ambassadeur·ice',
+    pole: 'Pôle Démarche',
+    description: 'Je vais à votre rencontre sur le campus pour échanger, écouter vos idées et créer du lien entre vous et notre équipe.',
+    photo: '/team/ambassadeur.jpg',
+    contact: []
+  },
+  'mediateur': {
+    name: 'Prénom Nom',
+    role: 'Médiateur·ice',
+    pole: 'Pôle Démarche',
+    description: 'À l\'écoute de toutes les voix, je facilite le dialogue et m\'assure que chacun·e puisse s\'exprimer et être entendu·e.',
+    photo: '/team/mediateur.jpg',
+    contact: []
+  },
+  'referent-dd': {
+    name: 'Prénom Nom',
+    role: 'Référent·e DD',
+    pole: 'Pôle Développement Durable',
+    description: 'Convaincu·e que nous devons agir maintenant, je pilote notre stratégie écologique et veille à l\'impact environnemental de nos actions.',
+    photo: '/team/referent-dd.jpg',
+    contact: []
+  },
+  'charge-projet-dd': {
+    name: 'Prénom Nom',
+    role: 'Chargé·e de projet DD',
+    pole: 'Pôle Développement Durable',
+    description: 'Je concrétise nos initiatives durables : recyclage, réduction des déchets, partenariats éco-responsables... L\'action avant tout !',
+    photo: '/team/charge-dd.jpg',
+    contact: []
+  },
+  'sensibilisation': {
+    name: 'Prénom Nom',
+    role: 'Sensibilisation',
+    pole: 'Pôle Développement Durable',
+    description: 'J\'organise des ateliers et actions de sensibilisation pour partager les bonnes pratiques écologiques et inspirer le changement.',
+    photo: '/team/sensibilisation.jpg',
+    contact: []
+  },
+  'videaste': {
+    name: 'Prénom Nom',
+    role: 'Vidéaste',
+    pole: 'Pôle Production',
+    description: 'Caméra en main, je capture les moments forts de la campagne et crée des vidéos percutantes pour raconter notre histoire.',
+    photo: '/team/videaste.jpg',
+    contact: []
+  },
+  'designer': {
+    name: 'Prénom Nom',
+    role: 'Designer',
+    pole: 'Pôle Production',
+    description: 'Je conçois nos supports visuels avec créativité : goodies, affiches, merchandising... Chaque design a du sens et du style.',
+    photo: '/team/designer.jpg',
+    contact: []
+  },
+  'photographe': {
+    name: 'Prénom Nom',
+    role: 'Photographe',
+    pole: 'Pôle Production',
+    description: 'Je capture l\'essence de Wild Ember en images. Chaque photo raconte une partie de notre aventure et de nos valeurs.',
+    photo: '/team/photographe.jpg',
+    contact: []
+  }
+}
+
+// Modale membre
+const memberModal = document.querySelector('#member-modal')
+const memberPhoto = document.querySelector('#member-photo')
+const memberPhotoPlaceholder = document.querySelector('#member-photo-placeholder')
+const memberName = document.querySelector('#member-name')
+const memberRoleBadge = document.querySelector('#member-role-badge')
+const memberPole = document.querySelector('#member-pole')
+const memberDescription = document.querySelector('#member-description')
+const memberContact = document.querySelector('#member-contact')
+const btnCloseMember = document.querySelector('#btn-close-member')
+
+// Gérer les clics sur les tags de membres
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('member-tag')) {
+    const memberId = e.target.getAttribute('data-member')
+    const member = membersData[memberId]
+    
+    if (member) {
+      // Remplir la modale
+      memberName.textContent = member.name
+      memberRoleBadge.textContent = member.role
+      memberPole.textContent = member.pole
+      memberDescription.textContent = member.description
+      
+      // Photo
+      memberPhoto.src = member.photo
+      memberPhoto.onerror = () => {
+        memberPhoto.style.display = 'none'
+        memberPhotoPlaceholder.style.display = 'flex'
+      }
+      memberPhoto.onload = () => {
+        memberPhoto.style.display = 'block'
+        memberPhotoPlaceholder.style.display = 'none'
+      }
+      
+      // Contact
+      memberContact.innerHTML = ''
+      member.contact.forEach(contact => {
+        const contactTag = document.createElement('span')
+        contactTag.style.cssText = 'background: rgba(231, 76, 60, 0.1); color: #e74c3c; padding: 6px 12px; border-radius: 15px; font-size: 13px; font-weight: 600;'
+        contactTag.textContent = contact
+        memberContact.appendChild(contactTag)
+      })
+      
+      // Afficher la modale
+      memberModal.classList.remove('hidden')
+    }
+  }
+})
+
+// Fermer la modale
+btnCloseMember.addEventListener('click', () => {
+  memberModal.classList.add('hidden')
+})
+
+memberModal.addEventListener('click', (e) => {
+  if (e.target === memberModal) {
+    memberModal.classList.add('hidden')
+  }
+})
+
 // ==================== GESTION DES ONGLETS DU MENU ====================
 const formInscription = document.querySelector('#form-inscription')
 const formConnexion = document.querySelector('#form-connexion')
