@@ -1436,19 +1436,23 @@ async function chargerMesAchats() {
     const heureStr = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
     html += `
       <div style="background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%); padding: 20px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid #e74c3c; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease; cursor: pointer; overflow: hidden;" onmouseover="this.style.transform='translateX(5px)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'">
-        <div style="display: flex; gap: 15px; align-items: center; justify-content: space-between;">
-          <div style="display: flex; gap: 15px; align-items: center; flex: 1; min-width: 0;">
-            <div style="width: 65px; height: 65px; background: ${objet.image_url ? `url('${objet.image_url}')` : '#ddd'}; background-size: cover; background-position: center; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); flex-shrink: 0;">${!objet.image_url ? '📦' : ''}</div>
-            <div style="flex: 1; min-width: 0; overflow: hidden;">
-              <h4 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 18px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${objet.nom}</h4>
-              <p style="margin: 0 0 3px 0; font-size: 14px; color: #666;">Quantité : 1</p>
-              <p style="margin: 0 0 3px 0; font-size: 14px; color: #666;">Événement : Achat boutique</p>
-              <p style="margin: 0; font-size: 13px; color: #999;">📅 ${dateStr} à ${heureStr}</p>
-            </div>
+        <div style="display: flex; gap: 15px; justify-content: space-between;">
+          <!-- Colonne gauche : infos textuelles -->
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
+            <h4 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 18px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${objet.nom}</h4>
+            <p style="margin: 0 0 3px 0; font-size: 14px; color: #666;">Quantité : 1</p>
+            <p style="margin: 0 0 3px 0; font-size: 14px; color: #666;">Événement : Achat boutique</p>
+            <p style="margin: 0; font-size: 13px; color: #999;">📅 ${dateStr} à ${heureStr}</p>
           </div>
-          <div style="text-align: right; padding-left: 10px; flex-shrink: 0; min-width: 70px;">
-            <p style="margin: 0; font-size: 28px; font-weight: bold; color: #e74c3c; line-height: 1; text-shadow: 0 2px 4px rgba(231,76,60,0.2); white-space: nowrap;">-${achat.prix_paye}</p>
-            <p style="margin: 4px 0 0 0; font-size: 12px; color: #e74c3c; font-weight: 600;">pts</p>
+          <!-- Colonne droite : prix en haut, photo en bas -->
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px; min-width: 80px;">
+            <!-- Prix en haut -->
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <p style="margin: 0; font-size: 28px; font-weight: bold; color: #e74c3c; line-height: 1; text-shadow: 0 2px 4px rgba(231,76,60,0.2); white-space: nowrap;">-${achat.prix_paye}</p>
+              <img src="/Wbuck.png" style="width: 28px; height: 28px;" />
+            </div>
+            <!-- Photo en bas -->
+            <div style="width: 50px; height: 50px; background: ${objet.image_url ? `url('${objet.image_url}')` : '#ddd'}; background-size: cover; background-position: center; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 3px 8px rgba(0,0,0,0.15);">${!objet.image_url ? '📦' : ''}</div>
           </div>
         </div>
       </div>
@@ -1489,18 +1493,22 @@ async function chargerMesGains() {
     
     html += `
       <div style="background: ${gradient}; padding: 20px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid ${borderColor}; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease; cursor: pointer; overflow: hidden;" onmouseover="this.style.transform='translateX(5px)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'">
-        <div style="display: flex; gap: 15px; align-items: center; justify-content: space-between;">
-          <div style="display: flex; gap: 15px; align-items: center; flex: 1; min-width: 0;">
-            <div style="width: 65px; height: 65px; background: ${borderColor}; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.15); flex-shrink: 0;">${isPositif ? '💰' : '💸'}</div>
-            <div style="flex: 1; min-width: 0; overflow: hidden;">
-              <h4 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 18px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${gain.raison || 'Transaction'}</h4>
-              <p style="margin: 0 0 3px 0; font-size: 14px; color: #666;">Événement : ${gain.raison || 'Transaction'}</p>
-              <p style="margin: 0; font-size: 13px; color: #999;">📅 ${dateStr} à ${heureStr}</p>
-            </div>
+        <div style="display: flex; gap: 15px; justify-content: space-between;">
+          <!-- Colonne gauche : infos textuelles -->
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
+            <h4 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 18px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${gain.raison || 'Transaction'}</h4>
+            <p style="margin: 0 0 3px 0; font-size: 14px; color: #666;">Événement : ${gain.raison || 'Transaction'}</p>
+            <p style="margin: 0; font-size: 13px; color: #999;">📅 ${dateStr} à ${heureStr}</p>
           </div>
-          <div style="text-align: right; padding-left: 10px; flex-shrink: 0; min-width: 70px;">
-            <p style="margin: 0; font-size: 28px; font-weight: bold; color: ${borderColor}; line-height: 1; text-shadow: 0 2px 4px rgba(0,0,0,0.2); white-space: nowrap;">${signe}${gain.montant}</p>
-            <p style="margin: 4px 0 0 0; font-size: 12px; color: ${borderColor}; font-weight: 600;">pts</p>
+          <!-- Colonne droite : prix en haut, photo en bas -->
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px; min-width: 80px;">
+            <!-- Prix en haut -->
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <p style="margin: 0; font-size: 28px; font-weight: bold; color: ${borderColor}; line-height: 1; text-shadow: 0 2px 4px rgba(0,0,0,0.2); white-space: nowrap;">${signe}${gain.montant}</p>
+              <img src="/Wbuck.png" style="width: 28px; height: 28px;" />
+            </div>
+            <!-- Photo en bas -->
+            <div style="width: 50px; height: 50px; background: ${borderColor}; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 26px; color: white; box-shadow: 0 3px 8px rgba(0,0,0,0.15);">${isPositif ? '💰' : '💸'}</div>
           </div>
         </div>
       </div>
