@@ -61,13 +61,16 @@ hamburgerMenu.addEventListener('click', (e) => {
 
 // Fermer au clic/touch sur l'overlay
 sidebarOverlay.addEventListener('click', (e) => {
-  e.preventDefault()
-  toggleSidebar()
+  if (sidebarOpen) {
+    toggleSidebar()
+  }
 })
 
-sidebarOverlay.addEventListener('touchstart', (e) => {
-  e.preventDefault()
-  toggleSidebar()
+sidebarOverlay.addEventListener('touchend', (e) => {
+  if (sidebarOpen) {
+    e.preventDefault()
+    toggleSidebar()
+  }
 })
 
 hamburgerMenu.addEventListener('touchend', (e) => {
