@@ -1097,7 +1097,7 @@ async function chargerObjetsBoutique() {
       html += `<button class="btn-menu-3pts" data-objet-id="${objet.id}" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">⋮</button>`
     }
     
-    // Image (prend l'espace disponible)
+    // Image (prend l'espace disponible) 
     html += `
       <div style="background: white; width: fit-content; border-radius: 10px; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 10px;">
         ${objet.image_url 
