@@ -1099,11 +1099,11 @@ async function chargerObjetsBoutique() {
       html += `<button class="btn-menu-3pts" data-objet-id="${objet.id}" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">⋮</button>`
     }
     
-    // Image avec cadre blanc minimal - alignée en haut
+    // Image alignée en haut sans cadre blanc pour images transparentes
     html += `
       <div style="width: 100%; display: flex; align-items: flex-start; justify-content: center; flex-shrink: 0;">
         ${objet.image_url 
-          ? `<div style="background: white; border-radius: 8px; padding: 2px; display: inline-block; max-width: 90%;"><img src="${objet.image_url}" style="width: 100%; height: auto; display: block; border-radius: 6px;" /></div>`
+          ? `<img src="${objet.image_url}" style="width: 90%; height: auto; display: block; border-radius: 6px;" />`
           : `<div style="width: 90%; min-height: 150px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 50px;">📸</div>`
         }
       </div>
@@ -1254,6 +1254,7 @@ function ouvrirModalAjout(type = null) {
   document.querySelector('#modal-titre-objet').textContent = '➕ Ajouter un Objet'
   document.querySelector('#btn-confirm-objet').textContent = 'Ajouter'
   document.querySelector('#modal-ajouter-objet').classList.remove('hidden')
+  document.body.style.overflow = 'hidden'
 }
 
 // Ouvrir menu 3 points pour un objet
