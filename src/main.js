@@ -165,60 +165,60 @@ const membersData = {
     photo: '/photos/compresse/EnekioCarre.jpg',
     contact: []
   },
-  'community-manager': {
-    name: 'Prénom Nom',
-    role: 'Community Manager',
-    pole: 'Pôle Communication',
+  'secretaire': {
+    name: 'Camille Gommane',
+    role: 'Secrétaire',
+    pole: 'Le Bureau',
     description: 'Créateur·ice de contenu et animateur·ice de nos réseaux sociaux, je vous tiens informés de toutes nos actualités avec créativité et engagement.',
-    photo: '/team/cm.jpg',
-    contact: ['📱 Instagram: @wildember']
-  },
-  'graphiste': {
-    name: 'Prénom Nom',
-    role: 'Graphiste',
-    pole: 'Pôle Communication',
-    description: 'Je donne vie à l\'identité visuelle de Wild Ember : affiches, visuels, logo... Chaque création raconte notre histoire avec style.',
-    photo: '/team/graphiste.jpg',
+    photo: '/photos/compresse/CamilleCarre.jpg',
     contact: []
   },
-  'redacteur': {
-    name: 'Prénom Nom',
-    role: 'Rédacteur·ice',
+  'respolog': {
+    name: 'Andréas Deléage',
+    role: 'Respo Log',
+    pole: 'Log/Dem',
+    description: 'Je donne vie à l\'identité visuelle de Wild Ember : affiches, visuels, logo... Chaque création raconte notre histoire avec style.',
+    photo: '/photos/compresse/AndreasCarre.jpg',
+    contact: []
+  },
+  'respocomm': {
+    name: 'Félix Perrier',
+    role: 'Respo Comm',
     pole: 'Pôle Communication',
     description: 'Les mots sont ma spécialité ! Je rédige nos communiqués, articles et messages pour communiquer clairement notre vision et nos actions.',
-    photo: '/team/redacteur.jpg',
+    photo: '/photos/compresse/FelixCarre.jpg',
     contact: []
   },
-  'chef-projet-event': {
-    name: 'Prénom Nom',
-    role: 'Chef·fe de projet',
-    pole: 'Pôle Événementiel',
+  'corespocomm': {
+    name: 'Margaux Regnault',
+    role: 'Co Respo Comm',
+    pole: 'Pôle Communication',
     description: 'J\'orchestre tous nos événements de A à Z : conception, planification, coordination. Mon but : créer des moments inoubliables pour vous !',
-    photo: '/team/chef-event.jpg',
+    photo: '/photos/compresse/MargauxCarre.jpg',
     contact: []
   },
-  'logistique': {
-    name: 'Prénom Nom',
-    role: 'Logistique',
-    pole: 'Pôle Événementiel',
+  'comm1': {
+    name: '?Nathanaël Fontaine',
+    role: 'Comm',
+    pole: 'Pôle Communication',
     description: 'Derrière chaque événement réussi, il y a une logistique parfaite ! Je m\'occupe du matériel, des réservations et de l\'organisation pratique.',
-    photo: '/team/logistique.jpg',
+    photo: '/photos/compresse/NathanaelCarre.jpg',
     contact: []
   },
-  'animation': {
-    name: 'Prénom Nom',
-    role: 'Animation',
-    pole: 'Pôle Événementiel',
+  'comm2': {
+    name: 'Léa Bouquet',
+    role: 'Comm',
+    pole: 'Pôle Communication',
     description: 'L\'ambiance, c\'est moi ! J\'anime nos événements avec énergie et bonne humeur pour que vous passiez des moments mémorables.',
-    photo: '/team/animation.jpg',
+    photo: '/photos/compresse/LeaCarre.jpg',
     contact: []
   },
-  'porte-parole': {
-    name: 'Prénom Nom',
-    role: 'Porte-parole',
-    pole: 'Pôle Démarche',
+  'comm3': {
+    name: 'Ethan Nesen',
+    role: 'Comm',
+    pole: 'Pôle Communication',
     description: 'Voix de Wild Ember, je représente notre campagne dans les différentes instances et porte vos messages avec conviction.',
-    photo: '/team/porte-parole.jpg',
+    photo: '/photos/compresse/EthanCarre.jpg',
     contact: []
   },
   'ambassadeur': {
