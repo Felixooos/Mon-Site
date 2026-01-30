@@ -145,7 +145,7 @@ const membersData = {
     name: 'Victor Lavieville',
     role: 'Président',
     pole: 'Le Bureau',
-    description: 'Passionné·e par la vie étudiante, je coordonne l\'ensemble des actions de Wild Ember et veille à la cohérence de notre projet. Mon objectif : créer une campagne qui vous ressemble et répond à vos besoins.',
+    description: 'Parti de 0, je suis passé par respo évent, trèz, puis vice-prez pendant 1 mois, pour au final devenir Président de Wild Ember. ',
     photo: '/photos/compresse/Victor.jpg',
     contact: []
   },
