@@ -217,8 +217,96 @@ const membersData = {
     name: 'Ethan Nesen',
     role: 'Comm',
     pole: 'Pôle Communication',
-    description: 'Voix de Wild Ember, je représente notre campagne dans les différentes instances et porte vos messages avec conviction.',
+    description: 'Voix of Wild Ember, je représente notre campagne dans les différentes instances et porte vos messages avec conviction.',
     photo: '/photos/compresse/EthanCarre.jpg',
+    contact: []
+  },
+  'respoevent': {
+    name: 'Louis Moinard',
+    role: 'Respo Event',
+    pole: 'Pôle Événementiel',
+    description: 'J\'orchestre tous nos événements de A à Z : conception, planification, coordination. Mon but : créer des moments inoubliables pour vous !',
+    photo: '/photos/compresse/LouisCarre.jpg',
+    contact: []
+  },
+  'event1': {
+    name: 'Jeanne',
+    role: 'Event',
+    pole: 'Pôle Événementiel',
+    description: 'Je participe à l\'organisation des événements pour vous offrir des moments mémorables !',
+    photo: '/team/event1.jpg',
+    contact: []
+  },
+  'event2': {
+    name: 'Sacha Bouzidi',
+    role: 'Event',
+    pole: 'Pôle Événementiel',
+    description: 'Passionné par l\'animation, je contribue à créer une ambiance exceptionnelle lors de nos événements.',
+    photo: '/photos/compresse/SachaCarre.jpg',
+    contact: []
+  },
+  'event3': {
+    name: 'Soline',
+    role: 'Event',
+    pole: 'Pôle Événementiel',
+    description: 'Je m\'occupe de la logistique et de l\'organisation pour que chaque événement soit parfait.',
+    photo: '/team/event3.jpg',
+    contact: []
+  },
+  'event4': {
+    name: 'Max',
+    role: 'Event',
+    pole: 'Pôle Événementiel',
+    description: 'Créatif et dynamique, j\'apporte mon énergie à chaque événement de Wild Ember.',
+    photo: '/photos/compresse/MaxCarre.jpg',
+    contact: []
+  },
+  'respodem': {
+    name: 'Lucas Guignand',
+    role: 'Respo Dém',
+    pole: 'Pôle Démarche',
+    description: 'Je négocie nos partenariats et développe notre réseau pour vous offrir toujours plus d\'avantages !',
+    photo: '/photos/compresse/LucasCarre.jpg',
+    contact: []
+  },
+  'dem1': {
+    name: 'Joseph Robert',
+    role: 'Dém',
+    pole: 'Pôle Démarche',
+    description: 'Je vais à votre rencontre sur le campus pour échanger, écouter vos idées et créer du lien entre vous et notre équipe.',
+    photo: '/photos/compresse/JosephCarre.jpg',
+    contact: []
+  },
+  'respodd': {
+    name: 'Max',
+    role: 'Respo DD',
+    pole: 'Pôle Développement Durable',
+    description: 'Convaincu que nous devons agir maintenant, je pilote notre stratégie écologique et veille à l\'impact environnemental de nos actions.',
+    photo: '/photos/compresse/MaxCarre.jpg',
+    contact: []
+  },
+  'respofilm': {
+    name: 'Félix Perrier',
+    role: 'Respo Film',
+    pole: 'Pôle Production',
+    description: 'Caméra en main, je capture les moments forts de la campagne et crée des vidéos percutantes pour raconter notre histoire.',
+    photo: '/photos/compresse/FelixCarre.jpg',
+    contact: []
+  },
+  'respomusique': {
+    name: 'Ethan Nesen',
+    role: 'Respo Musique',
+    pole: 'Pôle Production',
+    description: 'Je crée l\'ambiance musicale de Wild Ember et coordonne toutes nos créations audio.',
+    photo: '/photos/compresse/EthanCarre.jpg',
+    contact: []
+  },
+  'resposite': {
+    name: 'Félix Perrier',
+    role: 'Respo Site',
+    pole: 'Pôle Production',
+    description: 'Je développe et maintiens notre présence web pour vous tenir informés de toutes nos actions.',
+    photo: '/photos/compresse/FelixCarre.jpg',
     contact: []
   },
   'ambassadeur': {
