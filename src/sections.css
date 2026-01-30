@@ -22,12 +22,14 @@
 
 /* Banderole pour le titre "Notre Équipe" */
 .team-header-banner {
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%);
   padding: 20px 40px;
   margin: 0 -20px 20px -20px;
-  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+  box-shadow: 0 4px 15px rgba(62, 39, 35, 0.3);
   position: relative;
   overflow: hidden;
+  border-top: 2px solid rgba(62, 39, 35, 0.1);
+  border-bottom: 2px solid rgba(62, 39, 35, 0.1);
 }
 
 .team-header-banner::before {
@@ -37,7 +39,7 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
   animation: shine 3s infinite;
 }
 
@@ -47,19 +49,26 @@
 }
 
 .team-header-banner .section-title {
-  color: white !important;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  margin: 0 !important;
+  font-family: 'Tribeca', sans-serif;
   font-size: 2.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #3E2723 0%, #8B4513 50%, #D2691E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 !important;
+  text-align: center;
   position: relative;
   z-index: 1;
+  letter-spacing: 1px;
 }
 
 /* Section Nous (Équipe) - Design Timeline */
 .team-section {
-  padding: 40px 20px;
+  padding: 0 20px 40px 20px;
   max-width: 1200px;
   margin: 0 auto;
+  background: transparent;
 }
 
 .team-timeline {

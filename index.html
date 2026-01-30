@@ -596,10 +596,6 @@
             <!-- Photo de groupe en dessous du sous-titre -->
             <div class="hero-group-photo">
               <div class="group-photo-container">
-                <div class="floating-ember floating-ember-1">🔥</div>
-                <div class="floating-ember floating-ember-2">✨</div>
-                <div class="floating-ember floating-ember-3">🔥</div>
-                <div class="floating-ember floating-ember-4">✨</div>
                 <img src="/photos/compresse/Grouupe.jpg" alt="Wild Ember - Photo de groupe" class="group-photo-img">
                 <div class="group-photo-overlay">
                   <h1 class="group-photo-title">WILD EMBER</h1>
@@ -874,10 +870,11 @@
         </div>
         
         <div id="classement-screen">
-          <div id="user-profile" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
-          <p id="user-rank" style="font-size: 18px; margin: 0; color: white; font-weight: bold;"></p>
-          <p id="user-name" style="font-size: 28px; font-weight: bold; margin: 8px 0 12px 0; color: white;"></p>
-          <p id="user-solde" style="font-size: 22px; margin: 0; color: white; font-weight: bold;"></p>
+          <div id="user-profile" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);">
+          <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.15) 50%, transparent 70%); animation: shine 3s infinite;"></div>
+          <p id="user-rank" style="font-size: 18px; margin: 0; color: white; font-weight: bold; position: relative; z-index: 1;"></p>
+          <p id="user-name" style="font-size: 28px; font-weight: bold; margin: 8px 0 12px 0; color: white; position: relative; z-index: 1;"></p>
+          <p id="user-solde" style="font-size: 22px; margin: 0; color: white; font-weight: bold; position: relative; z-index: 1;"></p>
         </div>
         
         <div style="margin-bottom: 20px;">
