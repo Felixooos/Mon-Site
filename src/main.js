@@ -147,7 +147,7 @@ const membersData = {
     pole: 'Le Bureau',
     description: 'Passionné·e par la vie étudiante, je coordonne l\'ensemble des actions de Wild Ember et veille à la cohérence de notre projet. Mon objectif : créer une campagne qui vous ressemble et répond à vos besoins.',
     photo: '/photos/compresse/VictorCarre.jpg',
-    contact: ['📧 email@exemple.fr']
+    contact: []
   },
   'vice-president': {
     name: 'Lila Beckaert',
