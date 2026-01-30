@@ -25,6 +25,7 @@
   background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%);
   padding: 20px 40px;
   margin: 0 -20px 20px -20px;
+  width: calc(100% + 40px);
   box-shadow: 0 4px 15px rgba(62, 39, 35, 0.3);
   position: relative;
   overflow: hidden;
@@ -69,6 +70,8 @@
   max-width: 1200px;
   margin: 0 auto;
   background: transparent;
+  position: relative;
+  z-index: 1;
 }
 
 .team-timeline {
