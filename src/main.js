@@ -146,7 +146,7 @@ const membersData = {
     role: 'Président',
     pole: 'Le Bureau',
     description: 'Passionné·e par la vie étudiante, je coordonne l\'ensemble des actions de Wild Ember et veille à la cohérence de notre projet. Mon objectif : créer une campagne qui vous ressemble et répond à vos besoins.',
-    photo: '/photos/compresse/victorcarre.jpg',
+    photo: '/photos/compresse/VictorCarre.jpg',
     contact: ['📧 email@exemple.fr']
   },
   'vice-president': {
@@ -154,7 +154,7 @@ const membersData = {
     role: 'Vice-Présidente',
     pole: 'Le Bureau',
     description: 'En étroite collaboration avec la présidence, j\'assure le bon déroulement des opérations et prends le relais quand nécessaire. Toujours à l\'écoute et disponible pour vous !',
-    photo: '/photos/compresse/lilacarre.jpg',
+    photo: '/photos/compresse/LilaCarre.jpg',
     contact: []
   },
   'tresorier': {
@@ -162,7 +162,7 @@ const membersData = {
     role: 'Trésorier',
     pole: 'Le Bureau',
     description: 'Je gère le budget de la campagne avec rigueur et transparence. Chaque euro compte et je veille à optimiser nos ressources pour maximiser notre impact.',
-    photo: '/photos/compresse/enekiocarre.jpg',
+    photo: '/photos/compresse/EnekioCarre.jpg',
     contact: []
   },
   'community-manager': {
