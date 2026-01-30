@@ -436,6 +436,34 @@ memberModal.addEventListener('click', (e) => {
   }
 })
 
+// ==================== GESTION CLIC SUR PHOTOS DE PÔLES ====================
+const polePhotoModal = document.querySelector('#pole-photo-modal')
+const polePhotoLarge = document.querySelector('#pole-photo-large')
+const btnClosePolePhoto = document.querySelector('#btn-close-pole-photo')
+
+// Ajouter événement de clic sur toutes les photos de pôles
+document.addEventListener('click', (e) => {
+  const poleImage = e.target.closest('.pole-image')
+  if (poleImage) {
+    const img = poleImage.querySelector('img')
+    if (img && img.src && !img.src.includes('placeholder')) {
+      polePhotoLarge.src = img.src
+      polePhotoModal.classList.remove('hidden')
+    }
+  }
+})
+
+// Fermer la modale photo
+btnClosePolePhoto.addEventListener('click', () => {
+  polePhotoModal.classList.add('hidden')
+})
+
+polePhotoModal.addEventListener('click', (e) => {
+  if (e.target === polePhotoModal || e.target === polePhotoLarge) {
+    polePhotoModal.classList.add('hidden')
+  }
+})
+
 // ==================== GESTION DES ONGLETS DU MENU ====================
 const formInscription = document.querySelector('#form-inscription')
 const formConnexion = document.querySelector('#form-connexion')
