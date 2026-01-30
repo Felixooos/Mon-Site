@@ -124,7 +124,7 @@ button:focus-visible {
 
 .group-photo-container {
   position: relative;
-  max-width: 800px;
+  max-width: 95%;
   width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 25px;
@@ -272,11 +272,12 @@ button:focus-visible {
 @media (max-width: 768px) {
   .hero-group-photo {
     margin-bottom: 20px;
-    padding: 15px;
+    padding: 10px;
   }
   
   .group-photo-container {
     border-radius: 15px;
+    max-width: 95%;
   }
   
   .group-photo-title {
@@ -298,6 +299,17 @@ button:focus-visible {
 }
 
 @media (max-width: 480px) {
+  .hero-group-photo {
+    padding: 5px;
+  }
+  
+  .group-photo-container {
+    max-width: 98%;
+    border: 4px solid rgba(255, 255, 255, 0.9);
+    outline: 4px solid rgba(231, 76, 60, 0.3);
+    outline-offset: 4px;
+  }
+  
   .group-photo-title {
     font-size: 1.4rem;
   }

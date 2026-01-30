@@ -153,7 +153,7 @@ const membersData = {
     name: 'Lila Beckaert',
     role: 'Vice-Présidente',
     pole: 'Le Bureau',
-    description: 'En étroite collaboration avec la présidence, j\'assure le bon déroulement des opérations et prends le relais quand nécessaire. Toujours à l\'écoute et disponible pour vous !',
+    description: 'J\'ai raté pas mal de réunions j\'ai le sommeil un peu lourd, mais je suis extrèmemet heureuse et motivé d\'être vice présidente!! ',
     photo: '/photos/compresse/Lila.jpg',
     contact: []
   },
@@ -161,7 +161,7 @@ const membersData = {
     name: 'Enekio Olhagaray',
     role: 'Trésorier',
     pole: 'Le Bureau',
-    description: 'Je gère le budget de la campagne avec rigueur et transparence. Chaque euro compte et je veille à optimiser nos ressources pour maximiser notre impact.',
+    description: ' Si j\'ai un seul truc à dire,c\'est merci Boursobank pour vos parrainages sinon on était cook!!',
     photo: '/photos/compresse/Enekio.jpg',
     contact: []
   },

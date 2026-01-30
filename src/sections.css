@@ -238,7 +238,7 @@
 }
 
 /* Responsive pour la section Nous */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .team-pole {
     flex-direction: column !important;
     margin-bottom: 50px;
