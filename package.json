@@ -7,9 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "sync": "git add -A && git commit -m \"Mise à jour rapide\" && git push"
+    "sync": "git add -A && git commit -m \"Mise à jour rapide\" && git push",
+    "compress": "node compress-images.js"
   },
   "devDependencies": {
+    "sharp": "^0.34.5",
     "vite": "^7.2.4"
   },
   "dependencies": {

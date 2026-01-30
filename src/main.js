@@ -142,27 +142,27 @@ window.addEventListener('resize', () => {
 // ==================== GESTION DES MEMBRES DE L'ÉQUIPE ====================
 const membersData = {
   'president': {
-    name: 'Prénom Nom',
-    role: 'Président·e',
+    name: 'Victor Lavieville',
+    role: 'Président',
     pole: 'Le Bureau',
     description: 'Passionné·e par la vie étudiante, je coordonne l\'ensemble des actions de Wild Ember et veille à la cohérence de notre projet. Mon objectif : créer une campagne qui vous ressemble et répond à vos besoins.',
-    photo: '/team/president.jpg',
+    photo: '/photos/compresse/victorcarre.jpg',
     contact: ['📧 email@exemple.fr']
   },
   'vice-president': {
-    name: 'Prénom Nom',
-    role: 'Vice-Président·e',
+    name: 'Lila Beckaert',
+    role: 'Vice-Présidente',
     pole: 'Le Bureau',
     description: 'En étroite collaboration avec la présidence, j\'assure le bon déroulement des opérations et prends le relais quand nécessaire. Toujours à l\'écoute et disponible pour vous !',
-    photo: '/team/lilaok.png',
+    photo: '/photos/compresse/lilacarre.jpg',
     contact: []
   },
   'tresorier': {
-    name: 'Prénom Nom',
-    role: 'Trésorier·ère',
+    name: 'Enekio Olhagaray',
+    role: 'Trésorier',
     pole: 'Le Bureau',
     description: 'Je gère le budget de la campagne avec rigueur et transparence. Chaque euro compte et je veille à optimiser nos ressources pour maximiser notre impact.',
-    photo: '/team/tresorier.jpg',
+    photo: '/photos/compresse/enekiocarre.jpg',
     contact: []
   },
   'community-manager': {
