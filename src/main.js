@@ -222,7 +222,7 @@ const membersData = {
     contact: []
   },
   'respoevent': {
-    name: 'Louis Moinard',
+    name: 'Louis Raclin',
     role: 'Respo Event',
     pole: 'Pôle Événementiel',
     description: 'J\'orchestre tous nos événements de A à Z : conception, planification, coordination. Mon but : créer des moments inoubliables pour vous !',
@@ -230,15 +230,15 @@ const membersData = {
     contact: []
   },
   'event1': {
-    name: 'Jeanne',
+    name: 'Jeanne Portail',
     role: 'Event',
     pole: 'Pôle Événementiel',
     description: 'Je participe à l\'organisation des événements pour vous offrir des moments mémorables !',
-    photo: '/team/event1.jpg',
+    photo: '/photos/compresse/event1.jpg',
     contact: []
   },
   'event2': {
-    name: 'Sacha Bouzidi',
+    name: 'Sacha Lepers',
     role: 'Event',
     pole: 'Pôle Événementiel',
     description: 'Passionné par l\'animation, je contribue à créer une ambiance exceptionnelle lors de nos événements.',
@@ -246,15 +246,15 @@ const membersData = {
     contact: []
   },
   'event3': {
-    name: 'Soline',
+    name: 'Soline Zanatta',
     role: 'Event',
     pole: 'Pôle Événementiel',
     description: 'Je m\'occupe de la logistique et de l\'organisation pour que chaque événement soit parfait.',
-    photo: '/team/event3.jpg',
+    photo: '/photos/compresse/event3.jpg',
     contact: []
   },
   'event4': {
-    name: 'Max',
+    name: 'Max Hareng',
     role: 'Event',
     pole: 'Pôle Événementiel',
     description: 'Créatif et dynamique, j\'apporte mon énergie à chaque événement de Wild Ember.',
@@ -262,7 +262,7 @@ const membersData = {
     contact: []
   },
   'respodem': {
-    name: 'Lucas Guignand',
+    name: 'Lucas Bels',
     role: 'Respo Dém',
     pole: 'Pôle Démarche',
     description: 'Je négocie nos partenariats et développe notre réseau pour vous offrir toujours plus d\'avantages !',
@@ -270,7 +270,7 @@ const membersData = {
     contact: []
   },
   'dem1': {
-    name: 'Joseph Robert',
+    name: 'Joseph Simon',
     role: 'Dém',
     pole: 'Pôle Démarche',
     description: 'Je vais à votre rencontre sur le campus pour échanger, écouter vos idées et créer du lien entre vous et notre équipe.',
@@ -278,7 +278,7 @@ const membersData = {
     contact: []
   },
   'respodd': {
-    name: 'Max',
+    name: 'Max Hareng',
     role: 'Respo DD',
     pole: 'Pôle Développement Durable',
     description: 'Convaincu que nous devons agir maintenant, je pilote notre stratégie écologique et veille à l\'impact environnemental de nos actions.',
@@ -314,7 +314,7 @@ const membersData = {
     role: 'Ambassadeur·ice',
     pole: 'Pôle Démarche',
     description: 'Je vais à votre rencontre sur le campus pour échanger, écouter vos idées et créer du lien entre vous et notre équipe.',
-    photo: '/team/ambassadeur.jpg',
+    photo: '/photos/compresse/FelixCarre.jpg',
     contact: []
   },
   'mediateur': {
@@ -322,7 +322,7 @@ const membersData = {
     role: 'Médiateur·ice',
     pole: 'Pôle Démarche',
     description: 'À l\'écoute de toutes les voix, je facilite le dialogue et m\'assure que chacun·e puisse s\'exprimer et être entendu·e.',
-    photo: '/team/mediateur.jpg',
+    photo: '/photos/compresse/mediateur.jpg',
     contact: []
   },
   'referent-dd': {
@@ -330,7 +330,7 @@ const membersData = {
     role: 'Référent·e DD',
     pole: 'Pôle Développement Durable',
     description: 'Convaincu·e que nous devons agir maintenant, je pilote notre stratégie écologique et veille à l\'impact environnemental de nos actions.',
-    photo: '/team/referent-dd.jpg',
+    photo: '/photos/compresse/referent-dd.jpg',
     contact: []
   },
   'charge-projet-dd': {
@@ -338,7 +338,7 @@ const membersData = {
     role: 'Chargé·e de projet DD',
     pole: 'Pôle Développement Durable',
     description: 'Je concrétise nos initiatives durables : recyclage, réduction des déchets, partenariats éco-responsables... L\'action avant tout !',
-    photo: '/team/charge-dd.jpg',
+    photo: '/photos/compresse/charge-dd.jpg',
     contact: []
   },
   'sensibilisation': {
@@ -346,7 +346,7 @@ const membersData = {
     role: 'Sensibilisation',
     pole: 'Pôle Développement Durable',
     description: 'J\'organise des ateliers et actions de sensibilisation pour partager les bonnes pratiques écologiques et inspirer le changement.',
-    photo: '/team/sensibilisation.jpg',
+    photo: '/photos/compresse/sensibilisation.jpg',
     contact: []
   },
   'videaste': {
@@ -354,7 +354,7 @@ const membersData = {
     role: 'Vidéaste',
     pole: 'Pôle Production',
     description: 'Caméra en main, je capture les moments forts de la campagne et crée des vidéos percutantes pour raconter notre histoire.',
-    photo: '/team/videaste.jpg',
+    photo: '/photos/compresse/videaste.jpg',
     contact: []
   },
   'designer': {
@@ -362,7 +362,7 @@ const membersData = {
     role: 'Designer',
     pole: 'Pôle Production',
     description: 'Je conçois nos supports visuels avec créativité : goodies, affiches, merchandising... Chaque design a du sens et du style.',
-    photo: '/team/designer.jpg',
+    photo: '/photos/compresse/designer.jpg',
     contact: []
   },
   'photographe': {
@@ -370,7 +370,7 @@ const membersData = {
     role: 'Photographe',
     pole: 'Pôle Production',
     description: 'Je capture l\'essence de Wild Ember en images. Chaque photo raconte une partie de notre aventure et de nos valeurs.',
-    photo: '/team/photographe.jpg',
+    photo: '/photos/compresse/photographe.jpg',
     contact: []
   }
 }
