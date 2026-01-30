@@ -451,6 +451,16 @@ document.addEventListener('click', (e) => {
       polePhotoModal.classList.remove('hidden')
     }
   }
+  
+  // Clic sur la photo de groupe
+  const groupPhotoContainer = e.target.closest('.group-photo-container')
+  if (groupPhotoContainer) {
+    const img = groupPhotoContainer.querySelector('.group-photo-img')
+    if (img && img.src) {
+      polePhotoLarge.src = img.src
+      polePhotoModal.classList.remove('hidden')
+    }
+  }
 })
 
 // Fermer la modale photo
