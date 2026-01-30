@@ -146,7 +146,7 @@ const membersData = {
     role: 'Président',
     pole: 'Le Bureau',
     description: 'Passionné·e par la vie étudiante, je coordonne l\'ensemble des actions de Wild Ember et veille à la cohérence de notre projet. Mon objectif : créer une campagne qui vous ressemble et répond à vos besoins.',
-    photo: '/photos/compresse/VictorCarre.jpg',
+    photo: '/photos/compresse/Victor.jpg',
     contact: []
   },
   'vice-president': {
@@ -154,7 +154,7 @@ const membersData = {
     role: 'Vice-Présidente',
     pole: 'Le Bureau',
     description: 'En étroite collaboration avec la présidence, j\'assure le bon déroulement des opérations et prends le relais quand nécessaire. Toujours à l\'écoute et disponible pour vous !',
-    photo: '/photos/compresse/LilaCarre.jpg',
+    photo: '/photos/compresse/Lila.jpg',
     contact: []
   },
   'tresorier': {
@@ -162,7 +162,7 @@ const membersData = {
     role: 'Trésorier',
     pole: 'Le Bureau',
     description: 'Je gère le budget de la campagne avec rigueur et transparence. Chaque euro compte et je veille à optimiser nos ressources pour maximiser notre impact.',
-    photo: '/photos/compresse/EnekioCarre.jpg',
+    photo: '/photos/compresse/Enekio.jpg',
     contact: []
   },
   'secretaire': {
@@ -170,7 +170,7 @@ const membersData = {
     role: 'Secrétaire',
     pole: 'Le Bureau',
     description: 'Créateur·ice de contenu et animateur·ice de nos réseaux sociaux, je vous tiens informés de toutes nos actualités avec créativité et engagement.',
-    photo: '/photos/compresse/CamilleCarre.jpg',
+    photo: '/photos/compresse/Camille.jpg',
     contact: []
   },
   'respolog': {
@@ -178,7 +178,7 @@ const membersData = {
     role: 'Respo Log',
     pole: 'Log/Dem',
     description: 'Je donne vie à l\'identité visuelle de Wild Ember : affiches, visuels, logo... Chaque création raconte notre histoire avec style.',
-    photo: '/photos/compresse/AndreasCarre.jpg',
+    photo: '/photos/compresse/Andreas.jpg',
     contact: []
   },
   'respocomm': {
@@ -186,7 +186,7 @@ const membersData = {
     role: 'Respo Comm',
     pole: 'Pôle Communication',
     description: 'Les mots sont ma spécialité ! Je rédige nos communiqués, articles et messages pour communiquer clairement notre vision et nos actions.',
-    photo: '/photos/compresse/FelixCarre.jpg',
+    photo: '/photos/compresse/Felix.jpg',
     contact: []
   },
   'corespocomm': {
@@ -194,7 +194,7 @@ const membersData = {
     role: 'Co Respo Comm',
     pole: 'Pôle Communication',
     description: 'J\'orchestre tous nos événements de A à Z : conception, planification, coordination. Mon but : créer des moments inoubliables pour vous !',
-    photo: '/photos/compresse/MargauxCarre.jpg',
+    photo: '/photos/compresse/Margaux.jpg',
     contact: []
   },
   'comm1': {
@@ -202,7 +202,7 @@ const membersData = {
     role: 'Comm',
     pole: 'Pôle Communication',
     description: 'Derrière chaque événement réussi, il y a une logistique parfaite ! Je m\'occupe du matériel, des réservations et de l\'organisation pratique.',
-    photo: '/photos/compresse/NathanaelCarre.jpg',
+    photo: '/photos/compresse/Nathanael.jpg',
     contact: []
   },
   'comm2': {
@@ -210,7 +210,7 @@ const membersData = {
     role: 'Comm',
     pole: 'Pôle Communication',
     description: 'L\'ambiance, c\'est moi ! J\'anime nos événements avec énergie et bonne humeur pour que vous passiez des moments mémorables.',
-    photo: '/photos/compresse/LeaCarre.jpg',
+    photo: '/photos/compresse/Lea.jpg',
     contact: []
   },
   'comm3': {
@@ -218,7 +218,7 @@ const membersData = {
     role: 'Comm',
     pole: 'Pôle Communication',
     description: 'Voix of Wild Ember, je représente notre campagne dans les différentes instances et porte vos messages avec conviction.',
-    photo: '/photos/compresse/EthanCarre.jpg',
+    photo: '/photos/compresse/Ethan.jpg',
     contact: []
   },
   'respoevent': {
@@ -226,7 +226,7 @@ const membersData = {
     role: 'Respo Event',
     pole: 'Pôle Événementiel',
     description: 'J\'orchestre tous nos événements de A à Z : conception, planification, coordination. Mon but : créer des moments inoubliables pour vous !',
-    photo: '/photos/compresse/LouisCarre.jpg',
+    photo: '/photos/compresse/Louis.jpg',
     contact: []
   },
   'event1': {
@@ -242,7 +242,7 @@ const membersData = {
     role: 'Event',
     pole: 'Pôle Événementiel',
     description: 'Passionné par l\'animation, je contribue à créer une ambiance exceptionnelle lors de nos événements.',
-    photo: '/photos/compresse/SachaCarre.jpg',
+    photo: '/photos/compresse/Sacha.jpg',
     contact: []
   },
   'event3': {
@@ -258,7 +258,7 @@ const membersData = {
     role: 'Event',
     pole: 'Pôle Événementiel',
     description: 'Créatif et dynamique, j\'apporte mon énergie à chaque événement de Wild Ember.',
-    photo: '/photos/compresse/MaxCarre.jpg',
+    photo: '/photos/compresse/Max.jpg',
     contact: []
   },
   'respodem': {
@@ -266,7 +266,7 @@ const membersData = {
     role: 'Respo Dém',
     pole: 'Pôle Démarche',
     description: 'Je négocie nos partenariats et développe notre réseau pour vous offrir toujours plus d\'avantages !',
-    photo: '/photos/compresse/LucasCarre.jpg',
+    photo: '/photos/compresse/Lucas.jpg',
     contact: []
   },
   'dem1': {
@@ -274,7 +274,7 @@ const membersData = {
     role: 'Dém',
     pole: 'Pôle Démarche',
     description: 'Je vais à votre rencontre sur le campus pour échanger, écouter vos idées et créer du lien entre vous et notre équipe.',
-    photo: '/photos/compresse/JosephCarre.jpg',
+    photo: '/photos/compresse/Joseph.jpg',
     contact: []
   },
   'respodd': {
@@ -282,7 +282,7 @@ const membersData = {
     role: 'Respo DD',
     pole: 'Pôle Développement Durable',
     description: 'Convaincu que nous devons agir maintenant, je pilote notre stratégie écologique et veille à l\'impact environnemental de nos actions.',
-    photo: '/photos/compresse/MaxCarre.jpg',
+    photo: '/photos/compresse/Max.jpg',
     contact: []
   },
   'respofilm': {
@@ -290,7 +290,7 @@ const membersData = {
     role: 'Respo Film',
     pole: 'Pôle Production',
     description: 'Caméra en main, je capture les moments forts de la campagne et crée des vidéos percutantes pour raconter notre histoire.',
-    photo: '/photos/compresse/FelixCarre.jpg',
+    photo: '/photos/compresse/Felix.jpg',
     contact: []
   },
   'respomusique': {
@@ -298,7 +298,7 @@ const membersData = {
     role: 'Respo Musique',
     pole: 'Pôle Production',
     description: 'Je crée l\'ambiance musicale de Wild Ember et coordonne toutes nos créations audio.',
-    photo: '/photos/compresse/EthanCarre.jpg',
+    photo: '/photos/compresse/Ethan.jpg',
     contact: []
   },
   'resposite': {
@@ -306,7 +306,7 @@ const membersData = {
     role: 'Respo Site',
     pole: 'Pôle Production',
     description: 'Je développe et maintiens notre présence web pour vous tenir informés de toutes nos actions.',
-    photo: '/photos/compresse/FelixCarre.jpg',
+    photo: '/photos/compresse/Felix.jpg',
     contact: []
   },
   'ambassadeur': {
@@ -314,7 +314,7 @@ const membersData = {
     role: 'Ambassadeur·ice',
     pole: 'Pôle Démarche',
     description: 'Je vais à votre rencontre sur le campus pour échanger, écouter vos idées et créer du lien entre vous et notre équipe.',
-    photo: '/photos/compresse/FelixCarre.jpg',
+    photo: '/photos/compresse/Felix.jpg',
     contact: []
   },
   'mediateur': {
