@@ -245,39 +245,37 @@
     position: relative;
   }
   
-  .pole-left .pole-content,
-  .pole-right .pole-content {
-    order: 1 !important;
-    margin: 0 !important;
-    padding: 25px 20px 140px 20px !important;
-    position: relative;
-    z-index: 1;
-  }
-  
   .pole-left .pole-image,
   .pole-right .pole-image {
-    order: 2 !important;
-    flex: 0 0 200px;
-    height: 200px;
-    position: absolute;
-    bottom: -30px;
+    order: 1 !important;
+    flex: 0 0 320px;
+    height: 320px;
+    margin-bottom: 20px;
     box-shadow: 0 12px 35px rgba(231, 76, 60, 0.35);
   }
   
   .pole-left .pole-image {
-    right: 15px;
-    transform: rotate(-3deg) !important;
+    transform: rotate(-2deg) !important;
   }
   
   .pole-right .pole-image {
-    left: 15px;
-    transform: rotate(3deg) !important;
+    transform: rotate(2deg) !important;
   }
   
   .pole-left .pole-image:hover,
-  .pole-right .pole-image:hover {
-    transform: rotate(0deg) scale(1.08) !important;
+  .pole-right .pole-image:hover,
+  .pole-left .pole-image:active,
+  .pole-right .pole-image:active {
+    transform: rotate(0deg) scale(1.05) !important;
     box-shadow: 0 15px 45px rgba(231, 76, 60, 0.5);
+  }
+  
+  .pole-left .pole-content,
+  .pole-right .pole-content {
+    order: 2 !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    position: relative;
   }
   
   .pole-title {
