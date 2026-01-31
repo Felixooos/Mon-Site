@@ -37,11 +37,18 @@ function createEcocup3D(containerId, textureUrl) {
     alpha: false,
     powerPreference: 'high-performance'
   });
-  const size = Math.max(container.offsetWidth, 250);
+  // Forcer un rendu carré pour éviter l'écrasement
+  const size = Math.max(container.offsetWidth, 300);
   renderer.setSize(size, size);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   container.innerHTML = '';
   container.appendChild(renderer.domElement);
+  
+  // Assurer que le canvas reste carré
+  renderer.domElement.style.width = '100%';
+  renderer.domElement.style.height = '100%';
+  renderer.domElement.style.objectFit = 'contain';
+  
   console.log('Canvas ajouté au container');
 
   // 4. Lumière
@@ -98,10 +105,10 @@ function createEcocup3D(containerId, textureUrl) {
 
   // Redimensionnement
   window.addEventListener('resize', () => {
-    const newSize = Math.max(container.offsetWidth, 250);
+    const newSize = Math.max(container.offsetWidth, 300);
     renderer.setSize(newSize, newSize);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    camera.aspect = 1;
+    camera.aspect = 1; // Toujours garder un ratio 1:1
     camera.updateProjectionMatrix();
   });
 }

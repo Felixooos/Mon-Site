@@ -380,16 +380,101 @@
   background: transparent !important;
   position: relative;
   overflow: hidden;
+  min-height: 350px !important;
+  height: 350px !important;
+  width: 100%;
+  aspect-ratio: 1 / 1 !important;
 }
 
 .merch-3d-container canvas {
   width: 100% !important;
   height: 100% !important;
   display: block;
+  object-fit: contain !important;
 }
 
 .ecocup-3d-item .merch-image {
   background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%) !important;
+  height: auto !important;
+  aspect-ratio: 1 / 1 !important;
+}
+
+/* Stickers avec effet 3D léger */
+.sticker-container {
+  background: linear-gradient(135deg, #FFF5E6 0%, #FFE8D6 100%) !important;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.sticker-img {
+  width: 65%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 16px rgba(231, 76, 60, 0.3));
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: stickerFloat 3s ease-in-out infinite;
+}
+
+.sticker-item:hover .sticker-img {
+  transform: scale(1.05) rotate(3deg);
+  filter: drop-shadow(0 12px 24px rgba(231, 76, 60, 0.5));
+}
+
+@keyframes stickerFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+/* Sticker pixelisé mystère */
+.sticker-pixelated {
+  filter: blur(15px) drop-shadow(0 8px 16px rgba(231, 76, 60, 0.3)) !important;
+  opacity: 0.7;
+}
+
+/* Empêcher le hover de révéler le sticker légendaire */
+.sticker-item:hover .sticker-pixelated {
+  filter: blur(15px) drop-shadow(0 8px 16px rgba(231, 76, 60, 0.3)) !important;
+  transform: scale(1) rotate(0deg) !important;
+}
+
+.mystery-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
+
+.mystery-text {
+  font-size: 72px;
+  font-weight: 900;
+  color: white;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  animation: mysteryPulse 2s ease-in-out infinite;
+}
+
+@keyframes mysteryPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
 }
 
 /* Section Programme */
