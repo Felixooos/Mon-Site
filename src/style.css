@@ -145,14 +145,6 @@ button:focus-visible {
   outline-offset: 6px;
 }
 
-.group-photo-container:hover {
-  transform: scale(1.02);
-  box-shadow: 
-    0 25px 80px rgba(0, 0, 0, 0.4),
-    0 0 0 8px rgba(255, 255, 255, 0.9),
-    0 0 0 16px rgba(231, 76, 60, 0.4);
-}
-
 @keyframes float {
   0%, 100% {
     transform: translateY(0px);

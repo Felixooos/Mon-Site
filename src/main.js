@@ -169,15 +169,15 @@ const membersData = {
     name: 'Camille Gommane',
     role: 'Secrétaire',
     pole: 'Le Bureau',
-    description: 'Créateur·ice de contenu et animateur·ice de nos réseaux sociaux, je vous tiens informés de toutes nos actualités avec créativité et engagement.',
+    description: 'J\'ai passé 5 mois à concevoir le planning du torcho car d\'après les happenings prévus par louis il faudrait 36 staffeurs (help)!! ',
     photo: '/photos/compresse/Camille.jpg',
     contact: []
   },
   'respolog': {
     name: 'Andréas Deléage',
     role: 'Respo Log',
-    pole: 'Log/Dem',
-    description: 'Je donne vie à l\'identité visuelle de Wild Ember : affiches, visuels, logo... Chaque création raconte notre histoire avec style.',
+    pole: 'Pôle L3D',
+    description: 'Fini pour moi les poissons et le peppermint, cet année je suis respo log et j\'organise des merveilleux WEL!!',
     photo: '/photos/compresse/Andreas.jpg',
     contact: []
   },
@@ -185,7 +185,7 @@ const membersData = {
     name: 'Félix Perrier',
     role: 'Respo Comm',
     pole: 'Pôle Communication',
-    description: 'Les mots sont ma spécialité ! Je rédige nos communiqués, articles et messages pour communiquer clairement notre vision et nos actions.',
+    description: 'Anciennement connu comme le plus gros paresseux dans le pôle com des Pearls, j\'ai redoublé de travail pour proposer une Comm à la hauteur de Wild Ember !',
     photo: '/photos/compresse/Felix.jpg',
     contact: []
   },
@@ -193,7 +193,7 @@ const membersData = {
     name: 'Margaux Regnault',
     role: 'Co Respo Comm',
     pole: 'Pôle Communication',
-    description: 'J\'orchestre tous nos événements de A à Z : conception, planification, coordination. Mon but : créer des moments inoubliables pour vous !',
+    description: 'Définitivement l\'IE1 la plus boosté,j\ai entièrement conçu le feed insta des WILD EMBER en y cachant un maximum de référence pour vous régaler!',
     photo: '/photos/compresse/Margaux.jpg',
     contact: []
   },
@@ -201,7 +201,7 @@ const membersData = {
     name: '?Nathanaël Fontaine',
     role: 'Comm',
     pole: 'Pôle Communication',
-    description: 'Derrière chaque événement réussi, il y a une logistique parfaite ! Je m\'occupe du matériel, des réservations et de l\'organisation pratique.',
+    description: 'La Comm n\'étant définitivement pas faites pour moi, je suis partie aider mon ami Enekio dans sa récolte obscur d\'argents!!',
     photo: '/photos/compresse/Nathanael.jpg',
     contact: []
   },
@@ -209,7 +209,7 @@ const membersData = {
     name: 'Léa Bouquet',
     role: 'Comm',
     pole: 'Pôle Communication',
-    description: 'L\'ambiance, c\'est moi ! J\'anime nos événements avec énergie et bonne humeur pour que vous passiez des moments mémorables.',
+    description: 'Bien qu\'ayant un emploie du temps ministre, j\'ai su aider mon pôle comm par ma créativité débordante et mon énergie inépuisable !!',
     photo: '/photos/compresse/Lea.jpg',
     contact: []
   },
@@ -217,7 +217,7 @@ const membersData = {
     name: 'Ethan Nesen',
     role: 'Comm',
     pole: 'Pôle Communication',
-    description: 'Voix of Wild Ember, je représente notre campagne dans les différentes instances et porte vos messages avec conviction.',
+    description: 'Je n\'ai pas trop la vision en comm, donc j\'ai préféré batir à coté mon propre pôle musique pour amabiancer les Wilds!!',
     photo: '/photos/compresse/Ethan.jpg',
     contact: []
   },
@@ -225,7 +225,7 @@ const membersData = {
     name: 'Louis Raclin',
     role: 'Respo Event',
     pole: 'Pôle Événementiel',
-    description: 'J\'orchestre tous nos événements de A à Z : conception, planification, coordination. Mon but : créer des moments inoubliables pour vous !',
+    description: 'Je suis un gros bébé qui mange pas mais j\' organisé des événements plus que mémorable pour nos campagnes BDI!!',
     photo: '/photos/compresse/Louis.jpg',
     contact: []
   },
@@ -233,7 +233,7 @@ const membersData = {
     name: 'Jeanne Portail',
     role: 'Event',
     pole: 'Pôle Événementiel',
-    description: 'Je participe à l\'organisation des événements pour vous offrir des moments mémorables !',
+    description: 'Jongleuse entre la Comm, l\'event, j\'ai finalement trouvé ma place en tant que Respo déco!!',
     photo: '/photos/compresse/event1.jpg',
     contact: []
   },
@@ -241,7 +241,7 @@ const membersData = {
     name: 'Sacha Lepers',
     role: 'Event',
     pole: 'Pôle Événementiel',
-    description: 'Passionné par l\'animation, je contribue à créer une ambiance exceptionnelle lors de nos événements.',
+    description: 'Acteur important du film des Wilds, y a pas grand chose enfaite de plus c\'est déjà bien ...',
     photo: '/photos/compresse/Sacha.jpg',
     contact: []
   },
@@ -249,39 +249,40 @@ const membersData = {
     name: 'Soline Zanatta',
     role: 'Event',
     pole: 'Pôle Événementiel',
-    description: 'Je m\'occupe de la logistique et de l\'organisation pour que chaque événement soit parfait.',
+    description: 'Ils ont voulu m\'appeler "Paff ou Puff", alors que je veux juste les Puffs...',
     photo: '/photos/compresse/event3.jpg',
     contact: []
   },
   'event4': {
-    name: 'Max Hareng',
+    name: 'Antoine Jouillerot',
     role: 'Event',
     pole: 'Pôle Événementiel',
-    description: 'Créatif et dynamique, j\'apporte mon énergie à chaque événement de Wild Ember.',
-    photo: '/photos/compresse/Max.jpg',
+    description: 'Travailleur la journée et charmeur la nuit, je sais alterné entre mes deux seules qualités...',
+    photo: '/photos/compresse/Antoine.jpg',
     contact: []
   },
+ 
   'respodem': {
     name: 'Lucas Bels',
     role: 'Respo Dém',
-    pole: 'Pôle Démarche',
-    description: 'Je négocie nos partenariats et développe notre réseau pour vous offrir toujours plus d\'avantages !',
+    pole: 'Pôle L3D',
+    description: 'Pour moi pas de réu sans avoir bu, la vodka m\'aide à réflechir j\'y peux rien!!',
     photo: '/photos/compresse/Lucas.jpg',
     contact: []
   },
   'dem1': {
     name: 'Joseph Simon',
     role: 'Dém',
-    pole: 'Pôle Démarche',
-    description: 'Je vais à votre rencontre sur le campus pour échanger, écouter vos idées et créer du lien entre vous et notre équipe.',
+    pole: 'Pôle L3D',
+    description: 'Le mec chill de la liste, je suis présent aux réunions mais je pars aux ski la veille des campagnes parce que pourquoi pas.',
     photo: '/photos/compresse/Joseph.jpg',
     contact: []
   },
   'respodd': {
     name: 'Max Hareng',
     role: 'Respo DD',
-    pole: 'Pôle Développement Durable',
-    description: 'Convaincu que nous devons agir maintenant, je pilote notre stratégie écologique et veille à l\'impact environnemental de nos actions.',
+    pole: 'Pôle L3D',
+    description: 'IE1 le plus distrait de la liste, j\'ai repoussé mon travail de DD jusqu\'au bout, le prochain fillot sera la relève!!',
     photo: '/photos/compresse/Max.jpg',
     contact: []
   },
@@ -289,7 +290,7 @@ const membersData = {
     name: 'Félix Perrier',
     role: 'Respo Film',
     pole: 'Pôle Production',
-    description: 'Caméra en main, je capture les moments forts de la campagne et crée des vidéos percutantes pour raconter notre histoire.',
+    description: 'Digne de Steven Spielberg, caméra à la main j\'ai capturé les plus beaux moments de Wild Ember !',
     photo: '/photos/compresse/Felix.jpg',
     contact: []
   },
@@ -297,7 +298,7 @@ const membersData = {
     name: 'Ethan Nesen',
     role: 'Respo Musique',
     pole: 'Pôle Production',
-    description: 'Je crée l\'ambiance musicale de Wild Ember et coordonne toutes nos créations audio.',
+    description: 'La musique c\'est mon domaine, plusieurs nuit blanches à écrire, poser et tourner des morceaux pour ambiancer les Wilds!!',
     photo: '/photos/compresse/Ethan.jpg',
     contact: []
   },
@@ -305,74 +306,10 @@ const membersData = {
     name: 'Félix Perrier',
     role: 'Respo Site',
     pole: 'Pôle Production',
-    description: 'Je développe et maintiens notre présence web pour vous tenir informés de toutes nos actions.',
+    description: 'Mesghouni et Dangoumau serait fière de moi, dommage j\'ai pas laché cette perf au bon moment',
     photo: '/photos/compresse/Felix.jpg',
     contact: []
   },
-  'ambassadeur': {
-    name: 'Prénom Nom',
-    role: 'Ambassadeur·ice',
-    pole: 'Pôle Démarche',
-    description: 'Je vais à votre rencontre sur le campus pour échanger, écouter vos idées et créer du lien entre vous et notre équipe.',
-    photo: '/photos/compresse/Felix.jpg',
-    contact: []
-  },
-  'mediateur': {
-    name: 'Prénom Nom',
-    role: 'Médiateur·ice',
-    pole: 'Pôle Démarche',
-    description: 'À l\'écoute de toutes les voix, je facilite le dialogue et m\'assure que chacun·e puisse s\'exprimer et être entendu·e.',
-    photo: '/photos/compresse/mediateur.jpg',
-    contact: []
-  },
-  'referent-dd': {
-    name: 'Prénom Nom',
-    role: 'Référent·e DD',
-    pole: 'Pôle Développement Durable',
-    description: 'Convaincu·e que nous devons agir maintenant, je pilote notre stratégie écologique et veille à l\'impact environnemental de nos actions.',
-    photo: '/photos/compresse/referent-dd.jpg',
-    contact: []
-  },
-  'charge-projet-dd': {
-    name: 'Prénom Nom',
-    role: 'Chargé·e de projet DD',
-    pole: 'Pôle Développement Durable',
-    description: 'Je concrétise nos initiatives durables : recyclage, réduction des déchets, partenariats éco-responsables... L\'action avant tout !',
-    photo: '/photos/compresse/charge-dd.jpg',
-    contact: []
-  },
-  'sensibilisation': {
-    name: 'Prénom Nom',
-    role: 'Sensibilisation',
-    pole: 'Pôle Développement Durable',
-    description: 'J\'organise des ateliers et actions de sensibilisation pour partager les bonnes pratiques écologiques et inspirer le changement.',
-    photo: '/photos/compresse/sensibilisation.jpg',
-    contact: []
-  },
-  'videaste': {
-    name: 'Prénom Nom',
-    role: 'Vidéaste',
-    pole: 'Pôle Production',
-    description: 'Caméra en main, je capture les moments forts de la campagne et crée des vidéos percutantes pour raconter notre histoire.',
-    photo: '/photos/compresse/videaste.jpg',
-    contact: []
-  },
-  'designer': {
-    name: 'Prénom Nom',
-    role: 'Designer',
-    pole: 'Pôle Production',
-    description: 'Je conçois nos supports visuels avec créativité : goodies, affiches, merchandising... Chaque design a du sens et du style.',
-    photo: '/photos/compresse/designer.jpg',
-    contact: []
-  },
-  'photographe': {
-    name: 'Prénom Nom',
-    role: 'Photographe',
-    pole: 'Pôle Production',
-    description: 'Je capture l\'essence de Wild Ember en images. Chaque photo raconte une partie de notre aventure et de nos valeurs.',
-    photo: '/photos/compresse/photographe.jpg',
-    contact: []
-  }
 }
 
 // Modale membre
