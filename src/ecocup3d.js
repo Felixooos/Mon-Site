@@ -11,16 +11,16 @@ function createEcocup3D(containerId, textureUrl) {
   console.log('Container trouvé:', container);
   console.log('Largeur du container:', container.offsetWidth);
 
-  // 1. La Scène avec fond dégradé stylé
+  // 1. La Scène avec fond dégradé identique aux stickers
   const scene = new THREE.Scene();
   const canvas = document.createElement('canvas');
   canvas.width = 512;
   canvas.height = 512;
   const context = canvas.getContext('2d');
-  const gradient = context.createRadialGradient(256, 256, 0, 256, 256, 400);
-  gradient.addColorStop(0, '#FFE8D6');
-  gradient.addColorStop(0.5, '#FFD4B3');
-  gradient.addColorStop(1, '#FFB88C');
+  // Même dégradé que les stickers
+  const gradient = context.createLinearGradient(0, 0, 512, 512);
+  gradient.addColorStop(0, '#FFF5E6');
+  gradient.addColorStop(1, '#FFE8D6');
   context.fillStyle = gradient;
   context.fillRect(0, 0, 512, 512);
   const backgroundTexture = new THREE.CanvasTexture(canvas);
