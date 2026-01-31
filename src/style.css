@@ -292,25 +292,29 @@ button:focus-visible {
 
 @media (max-width: 480px) {
   .hero-group-photo {
-    padding: 5px;
+    padding: 0;
+    margin-bottom: 30px;
   }
   
   .group-photo-container {
-    max-width: 98%;
-    border: 4px solid rgba(255, 255, 255, 0.9);
-    outline: 4px solid rgba(231, 76, 60, 0.3);
-    outline-offset: 4px;
+    max-width: 100%;
+    border-radius: 20px;
+    border: 5px solid rgba(255, 255, 255, 0.95);
+    outline: 5px solid rgba(231, 76, 60, 0.4);
+    outline-offset: 5px;
+    box-shadow: 0 15px 40px rgba(231, 76, 60, 0.4);
   }
   
   .group-photo-title {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
   }
   
   .group-photo-subtitle {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
   
   .group-photo-overlay {
-    padding: 15px 10px;
+    padding: 18px 12px;
   }
 }

@@ -241,22 +241,52 @@
 @media (max-width: 600px) {
   .team-pole {
     flex-direction: column !important;
-    margin-bottom: 50px;
-  }
-  
-  .pole-left .pole-image,
-  .pole-right .pole-image {
-    order: 1 !important;
-    flex: 0 0 250px;
-    height: 250px;
-    transform: rotate(0deg) !important;
+    margin-bottom: 60px;
+    position: relative;
   }
   
   .pole-left .pole-content,
   .pole-right .pole-content {
-    order: 2 !important;
+    order: 1 !important;
     margin: 0 !important;
-    padding: 20px !important;
+    padding: 25px 20px 140px 20px !important;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .pole-left .pole-image,
+  .pole-right .pole-image {
+    order: 2 !important;
+    flex: 0 0 200px;
+    height: 200px;
+    position: absolute;
+    bottom: -30px;
+    box-shadow: 0 12px 35px rgba(231, 76, 60, 0.35);
+  }
+  
+  .pole-left .pole-image {
+    right: 15px;
+    transform: rotate(-3deg) !important;
+  }
+  
+  .pole-right .pole-image {
+    left: 15px;
+    transform: rotate(3deg) !important;
+  }
+  
+  .pole-left .pole-image:hover,
+  .pole-right .pole-image:hover {
+    transform: rotate(0deg) scale(1.08) !important;
+    box-shadow: 0 15px 45px rgba(231, 76, 60, 0.5);
+  }
+  
+  .pole-title {
+    font-size: 24px;
+  }
+  
+  .pole-description {
+    font-size: 14px;
+    margin-bottom: 15px;
   }
   
   .pole-badge {
