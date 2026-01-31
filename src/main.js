@@ -1,6 +1,7 @@
 import './style.css'
 import './sections.css'
 import { supabase } from './supabaseClient'
+import { initEcocup3D } from './ecocup3d'
 
 // ==================== GESTION DE LA SIDEBAR ====================
 const hamburgerMenu = document.querySelector('#hamburger-menu')
@@ -153,7 +154,7 @@ const membersData = {
     name: 'Lila Beckaert',
     role: 'Vice-Présidente',
     pole: 'Le Bureau',
-    description: 'J\'ai raté pas mal de réunions j\'ai le sommeil un peu lourd, mais je suis extrèmemet heureuse et motivé d\'être vice présidente!! ',
+    description: 'J\'ai raté pas mal de réunions j\'ai le sommeil un peu lourd, mais je suis extrêmement heureuse et motivée d\'être vice présidente!! ',
     photo: '/photos/compresse/Lila.jpg',
     contact: []
   },
@@ -177,7 +178,7 @@ const membersData = {
     name: 'Andréas Deléage',
     role: 'Respo Log',
     pole: 'Pôle L3D',
-    description: 'Fini pour moi les poissons et le peppermint, cet année je suis respo log et j\'organise des merveilleux WEL!!',
+    description: 'Fini pour moi les poissons et le peppermint, cette année je suis respo log et j\'organise des merveilleux WEL!!',
     photo: '/photos/compresse/Andreas.jpg',
     contact: []
   },
@@ -193,7 +194,7 @@ const membersData = {
     name: 'Margaux Regnault',
     role: 'Co Respo Comm',
     pole: 'Pôle Communication',
-    description: 'Définitivement l\'IE1 la plus boosté,j\ai entièrement conçu le feed insta des WILD EMBER en y cachant un maximum de référence pour vous régaler!',
+    description: 'Définitivement l\'IE1 la plus boostée,j\ai entièrement conçu le feed insta des WILD EMBER en y cachant un maximum de référence pour vous régaler!',
     photo: '/photos/compresse/Margaux.jpg',
     contact: []
   },
@@ -201,7 +202,7 @@ const membersData = {
     name: '?Nathanaël Fontaine',
     role: 'Comm',
     pole: 'Pôle Communication',
-    description: 'La Comm n\'étant définitivement pas faites pour moi, je suis partie aider mon ami Enekio dans sa récolte obscur d\'argents!!',
+    description: 'La Comm n\'étant définitivement pas faite pour moi, je suis parti aider mon ami Enekio dans sa récolte obscure d\'argent!!',
     photo: '/photos/compresse/Nathanael.jpg',
     contact: []
   },
@@ -209,7 +210,7 @@ const membersData = {
     name: 'Léa Bouquet',
     role: 'Comm',
     pole: 'Pôle Communication',
-    description: 'Bien qu\'ayant un emploie du temps ministre, j\'ai su aider mon pôle comm par ma créativité débordante et mon énergie inépuisable !!',
+    description: 'Bien qu\'ayant un emploi du temps ministre, j\'ai su aider mon pôle comm par ma créativité débordante et mon énergie inépuisable !!',
     photo: '/photos/compresse/Lea.jpg',
     contact: []
   },
@@ -217,7 +218,7 @@ const membersData = {
     name: 'Ethan Nesen',
     role: 'Comm',
     pole: 'Pôle Communication',
-    description: 'Je n\'ai pas trop la vision en comm, donc j\'ai préféré batir à coté mon propre pôle musique pour amabiancer les Wilds!!',
+    description: 'Je n\'ai pas trop la vision en comm, donc j\'ai préféré bâtir à côté mon propre pôle musique pour ambiancer les Wilds!!',
     photo: '/photos/compresse/Ethan.jpg',
     contact: []
   },
@@ -225,7 +226,7 @@ const membersData = {
     name: 'Louis Raclin',
     role: 'Respo Event',
     pole: 'Pôle Événementiel',
-    description: 'Je suis un gros bébé qui mange pas mais j\' organisé des événements plus que mémorable pour nos campagnes BDI!!',
+    description: 'Je suis un gros bébé qui mange pas mais j\' organise des événements plus que mémorables pour nos campagnes BDI!!',
     photo: '/photos/compresse/Louis.jpg',
     contact: []
   },
@@ -241,7 +242,7 @@ const membersData = {
     name: 'Sacha Lepers',
     role: 'Event',
     pole: 'Pôle Événementiel',
-    description: 'Acteur important du film des Wilds, y a pas grand chose enfaite de plus c\'est déjà bien ...',
+    description: 'Acteur important du film des Wilds, y a pas grand chose de plus en faite c\'est déjà bien ...',
     photo: '/photos/compresse/Sacha.jpg',
     contact: []
   },
@@ -257,7 +258,7 @@ const membersData = {
     name: 'Antoine Jouillerot',
     role: 'Event',
     pole: 'Pôle Événementiel',
-    description: 'Travailleur la journée et charmeur la nuit, je sais alterné entre mes deux seules qualités...',
+    description: 'Travailleur la journée et charmeur la nuit, je sais alterner entre mes deux seules qualités...',
     photo: '/photos/compresse/Antoine.jpg',
     contact: []
   },
@@ -298,7 +299,7 @@ const membersData = {
     name: 'Ethan Nesen',
     role: 'Respo Musique',
     pole: 'Pôle Production',
-    description: 'La musique c\'est mon domaine, plusieurs nuit blanches à écrire, poser et tourner des morceaux pour ambiancer les Wilds!!',
+    description: 'La musique c\'est mon domaine, plusieurs nuits blanches à écrire, poser et tourner des morceaux pour ambiancer les Wilds!!',
     photo: '/photos/compresse/Ethan.jpg',
     contact: []
   },
@@ -306,7 +307,7 @@ const membersData = {
     name: 'Félix Perrier',
     role: 'Respo Site',
     pole: 'Pôle Production',
-    description: 'Mesghouni et Dangoumau serait fière de moi, dommage j\'ai pas laché cette perf au bon moment',
+    description: 'Mesghouni et Dangoumau seraient fière de moi, dommage j\'ai pas laché cette perf au bon moment',
     photo: '/photos/compresse/Felix.jpg',
     contact: []
   },
@@ -1977,4 +1978,10 @@ document.querySelectorAll('.modal input').forEach(input => {
 })
 
 checkSession()
+
+// Initialiser l'ecocup 3D après le chargement de la page
+setTimeout(() => {
+  initEcocup3D()
+}, 500)
+
 verifierTagUrl()

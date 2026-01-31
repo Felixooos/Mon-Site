@@ -720,6 +720,28 @@
             <p class="section-subtitle">Représente fièrement Wild Ember avec style</p>
             
             <div class="merch-grid">
+              <!-- Ecocup Collector avec 3D -->
+              <div class="merch-item ecocup-3d-item">
+                <div class="merch-image merch-3d-container" id="ecocup-3d-canvas">
+                  <!-- Le canvas Three.js sera inséré ici -->
+                </div>
+                <div class="merch-info">
+                  <h3 class="merch-name">Ecocup Collector</h3>
+                  <p class="merch-description">Ecocup exclusive Wild Ember en édition limitée</p>
+                </div>
+              </div>
+              
+              <!-- Ecocup Normale avec 3D -->
+              <div class="merch-item ecocup-3d-item">
+                <div class="merch-image merch-3d-container" id="ecocup-normal-3d-canvas">
+                  <!-- Le canvas Three.js sera inséré ici -->
+                </div>
+                <div class="merch-info">
+                  <h3 class="merch-name">Ecocup Wild Ember</h3>
+                  <p class="merch-description">Ecocup officielle de la campagne Wild Ember</p>
+                </div>
+              </div>
+              
               <div class="merch-item">
                 <div class="merch-image">🎽</div>
                 <div class="merch-info">
@@ -1125,6 +1147,9 @@
 
     </div>
 
+    <!-- Three.js pour la 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

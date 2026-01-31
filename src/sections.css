@@ -375,6 +375,23 @@
   font-size: 14px;
 }
 
+/* Container 3D pour l'ecocup */
+.merch-3d-container {
+  background: transparent !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.merch-3d-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.ecocup-3d-item .merch-image {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%) !important;
+}
+
 /* Section Programme */
 .programme-section {
   padding: 40px 20px;
