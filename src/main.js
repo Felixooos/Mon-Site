@@ -220,7 +220,7 @@ const membersData = {
     facebook: 'https://www.facebook.com/profile.php?id=61577975832522&locale=fr_FR'
   },
   'comm1': {
-    name: '?Nathanaël Fontaine',
+    name: 'Nathanaël Fontaine',
     role: 'Comm',
     pole: 'Pôle Communication',
     description: 'La Comm n\'étant définitivement pas faite pour moi, je suis parti aider mon ami Enekio dans sa récolte obscure d\'argent!!',
@@ -260,7 +260,7 @@ const membersData = {
     role: 'Event',
     pole: 'Pôle Événementiel',
     description: 'Jongleuse entre la Comm, l\'event, j\'ai finalement trouvé ma place en tant que Respo déco!!',
-    photo: '/photos/compresse/event1.jpg',
+    photo: '/photos/compresse/Jeanne.jpg',
     contact: [],
     facebook: ''
   },
@@ -278,7 +278,7 @@ const membersData = {
     role: 'Event',
     pole: 'Pôle Événementiel',
     description: 'Ils ont voulu m\'appeler "Paff ou Puff", alors que je veux juste les Puffs...',
-    photo: '/photos/compresse/event3.jpg',
+    photo: '/photos/compresse/Soline.jpg',
     contact: [],
     facebook: 'https://www.facebook.com/profile.php?id=61578837955154&locale=fr_FR'
   },
