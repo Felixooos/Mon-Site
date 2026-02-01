@@ -377,6 +377,30 @@
   text-transform: uppercase;
 }
 
+/* Responsive pour section merch */
+@media (max-width: 768px) {
+  .merch-header-banner .section-title {
+    font-size: 2rem;
+  }
+  
+  .merch-section .section-subtitle {
+    font-size: 16px;
+    font-weight: 800;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@media (max-width: 480px) {
+  .merch-header-banner .section-title {
+    font-size: 1.8rem;
+  }
+  
+  .merch-section .section-subtitle {
+    font-size: 15px;
+  }
+}
+
 .merch-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -437,6 +461,25 @@
   font-size: 12px;
   line-height: 1.2;
   margin: 0;
+}
+
+/* Ajustement des noms de goodies sur mobile */
+@media (max-width: 768px) {
+  .merch-name {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .merch-name {
+    font-size: 21px;
+  }
+}
+
+@media (max-width: 360px) {
+  .merch-name {
+    font-size: 20px;
+  }
 }
 
 /* Container 3D pour l'ecocup */
