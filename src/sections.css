@@ -1089,4 +1089,14 @@
     font-size: 15px;
     padding: 8px 0 8px 20px;
   }
+  
+  /* Footer mobile: cacher les décos et centrer l'éléphant */
+  .footer-deco {
+    display: none !important;
+  }
+  
+  #footer-vincent {
+    left: 50% !important;
+    transform: translateX(-50%);
+  }
 }
