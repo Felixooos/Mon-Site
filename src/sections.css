@@ -466,19 +466,19 @@
 /* Ajustement des noms de goodies sur mobile */
 @media (max-width: 768px) {
   .merch-name {
-    font-size: 22px;
+    font-size: 28px;
   }
 }
 
 @media (max-width: 480px) {
   .merch-name {
-    font-size: 21px;
+    font-size: 26px;
   }
 }
 
 @media (max-width: 360px) {
   .merch-name {
-    font-size: 20px;
+    font-size: 24px;
   }
 }
 
