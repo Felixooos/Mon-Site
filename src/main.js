@@ -265,7 +265,7 @@ const membersData = {
     facebook: ''
   },
   'event2': {
-    name: 'Sacha Lepers',
+    name: 'Sacha Tiberghien',
     role: 'Event',
     pole: 'Pôle Événementiel',
     description: 'Acteur important du film des Wilds, y a pas grand chose de plus en faite c\'est déjà bien ...',
