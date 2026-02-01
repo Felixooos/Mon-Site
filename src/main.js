@@ -140,6 +140,20 @@ window.addEventListener('resize', () => {
   }
 })
 
+// ==================== GESTION DU PROGRAMME EXPANDABLE ====================
+function toggleProgramme(id) {
+  const item = document.getElementById(`programme-${id}`)
+  if (item) {
+    const parent = item.closest('.programme-item-expand')
+    if (parent) {
+      parent.classList.toggle('open')
+    }
+  }
+}
+
+// Rendre la fonction accessible globalement
+window.toggleProgramme = toggleProgramme
+
 // ==================== GESTION DES MEMBRES DE L'ÉQUIPE ====================
 const membersData = {
   'president': {
@@ -148,7 +162,8 @@ const membersData = {
     pole: 'Le Bureau',
     description: 'Parti de 0, je suis passé par respo évent, trèz, puis vice-prez pendant 1 mois, pour au final devenir Président de Wild Ember. ',
     photo: '/photos/compresse/Victor.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/profile.php?id=100093944988385&locale=fr_FR'
   },
   'vice-president': {
     name: 'Lila Beckaert',
@@ -156,7 +171,8 @@ const membersData = {
     pole: 'Le Bureau',
     description: 'J\'ai raté pas mal de réunions j\'ai le sommeil un peu lourd, mais je suis extrêmement heureuse et motivée d\'être vice présidente!! ',
     photo: '/photos/compresse/Lila.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/profile.php?id=61564787956888&locale=fr_FR'
   },
   'tresorier': {
     name: 'Enekio Olhagaray',
@@ -164,7 +180,8 @@ const membersData = {
     pole: 'Le Bureau',
     description: ' Si j\'ai un seul truc à dire,c\'est merci Boursobank pour vos parrainages sinon on était cook!!',
     photo: '/photos/compresse/Enekio.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/profile.php?id=61565158467716&locale=fr_FR'
   },
   'secretaire': {
     name: 'Camille Gommane',
@@ -172,7 +189,8 @@ const membersData = {
     pole: 'Le Bureau',
     description: 'J\'ai passé 5 mois à concevoir le planning du torcho car d\'après les happenings prévus par louis il faudrait 36 staffeurs (help)!! ',
     photo: '/photos/compresse/Camille.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/camille.gomanne.7?locale=fr_FR'
   },
   'respolog': {
     name: 'Andréas Deléage',
@@ -180,7 +198,8 @@ const membersData = {
     pole: 'Pôle L3D',
     description: 'Fini pour moi les poissons et le peppermint, cette année je suis respo log et j\'organise des merveilleux WEL!!',
     photo: '/photos/compresse/Andreas.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/andreas.delage?locale=fr_FR'
   },
   'respocomm': {
     name: 'Félix Perrier',
@@ -188,7 +207,8 @@ const membersData = {
     pole: 'Pôle Communication',
     description: 'Anciennement connu comme le plus gros paresseux dans le pôle com des Pearls, j\'ai redoublé de travail pour proposer une Comm à la hauteur de Wild Ember !',
     photo: '/photos/compresse/Felix.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/felix.perruer?locale=fr_FR'
   },
   'corespocomm': {
     name: 'Margaux Regnault',
@@ -196,7 +216,8 @@ const membersData = {
     pole: 'Pôle Communication',
     description: 'Définitivement l\'IE1 la plus boostée,j\ai entièrement conçu le feed insta des WILD EMBER en y cachant un maximum de référence pour vous régaler!',
     photo: '/photos/compresse/Margaux.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/profile.php?id=61577975832522&locale=fr_FR'
   },
   'comm1': {
     name: '?Nathanaël Fontaine',
@@ -204,7 +225,8 @@ const membersData = {
     pole: 'Pôle Communication',
     description: 'La Comm n\'étant définitivement pas faite pour moi, je suis parti aider mon ami Enekio dans sa récolte obscure d\'argent!!',
     photo: '/photos/compresse/Nathanael.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/profile.php?id=61550998131678&locale=fr_FR'
   },
   'comm2': {
     name: 'Léa Bouquet',
@@ -212,7 +234,8 @@ const membersData = {
     pole: 'Pôle Communication',
     description: 'Bien qu\'ayant un emploi du temps ministre, j\'ai su aider mon pôle comm par ma créativité débordante et mon énergie inépuisable !!',
     photo: '/photos/compresse/Lea.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/profile.php?id=100081868824804&locale=fr_FR'
   },
   'comm3': {
     name: 'Ethan Nesen',
@@ -220,7 +243,8 @@ const membersData = {
     pole: 'Pôle Communication',
     description: 'Je n\'ai pas trop la vision en comm, donc j\'ai préféré bâtir à côté mon propre pôle musique pour ambiancer les Wilds!!',
     photo: '/photos/compresse/Ethan.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/profile.php?id=61555701656084&locale=fr_FR'
   },
   'respoevent': {
     name: 'Louis Raclin',
@@ -228,7 +252,8 @@ const membersData = {
     pole: 'Pôle Événementiel',
     description: 'Je suis un gros bébé qui mange pas mais j\' organise des événements plus que mémorables pour nos campagnes BDI!!',
     photo: '/photos/compresse/Louis.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/profile.php?id=61564941304268&locale=fr_FR'
   },
   'event1': {
     name: 'Jeanne Portail',
@@ -236,7 +261,8 @@ const membersData = {
     pole: 'Pôle Événementiel',
     description: 'Jongleuse entre la Comm, l\'event, j\'ai finalement trouvé ma place en tant que Respo déco!!',
     photo: '/photos/compresse/event1.jpg',
-    contact: []
+    contact: [],
+    facebook: ''
   },
   'event2': {
     name: 'Sacha Lepers',
@@ -244,7 +270,8 @@ const membersData = {
     pole: 'Pôle Événementiel',
     description: 'Acteur important du film des Wilds, y a pas grand chose de plus en faite c\'est déjà bien ...',
     photo: '/photos/compresse/Sacha.jpg',
-    contact: []
+    contact: [],
+    facebook: ''
   },
   'event3': {
     name: 'Soline Zanatta',
@@ -252,7 +279,8 @@ const membersData = {
     pole: 'Pôle Événementiel',
     description: 'Ils ont voulu m\'appeler "Paff ou Puff", alors que je veux juste les Puffs...',
     photo: '/photos/compresse/event3.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/profile.php?id=61578837955154&locale=fr_FR'
   },
   'event4': {
     name: 'Antoine Jouillerot',
@@ -260,7 +288,8 @@ const membersData = {
     pole: 'Pôle Événementiel',
     description: 'Travailleur la journée et charmeur la nuit, je sais alterner entre mes deux seules qualités...',
     photo: '/photos/compresse/Antoine.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/profile.php?id=100081589205324&locale=fr_FR'
   },
  
   'respodem': {
@@ -269,7 +298,8 @@ const membersData = {
     pole: 'Pôle L3D',
     description: 'Pour moi pas de réu sans avoir bu, la vodka m\'aide à réflechir j\'y peux rien!!',
     photo: '/photos/compresse/Lucas.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/profile.php?id=61564758462340&locale=fr_FR'
   },
   'dem1': {
     name: 'Joseph Simon',
@@ -277,7 +307,8 @@ const membersData = {
     pole: 'Pôle L3D',
     description: 'Le mec chill de la liste, je suis présent aux réunions mais je pars aux ski la veille des campagnes parce que pourquoi pas.',
     photo: '/photos/compresse/Joseph.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/profile.php?id=100040809643761&locale=fr_FR'
   },
   'respodd': {
     name: 'Max Hareng',
@@ -285,7 +316,8 @@ const membersData = {
     pole: 'Pôle L3D',
     description: 'IE1 le plus distrait de la liste, j\'ai repoussé mon travail de DD jusqu\'au bout, le prochain fillot sera la relève!!',
     photo: '/photos/compresse/Max.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/profile.php?id=61556459168175&locale=fr_FR'
   },
   'respofilm': {
     name: 'Félix Perrier',
@@ -293,7 +325,8 @@ const membersData = {
     pole: 'Pôle Production',
     description: 'Digne de Steven Spielberg, caméra à la main j\'ai capturé les plus beaux moments de Wild Ember !',
     photo: '/photos/compresse/Felix.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/felix.perruer?locale=fr_FR'
   },
   'respomusique': {
     name: 'Ethan Nesen',
@@ -301,7 +334,8 @@ const membersData = {
     pole: 'Pôle Production',
     description: 'La musique c\'est mon domaine, plusieurs nuits blanches à écrire, poser et tourner des morceaux pour ambiancer les Wilds!!',
     photo: '/photos/compresse/Ethan.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/profile.php?id=61555701656084&locale=fr_FR'
   },
   'resposite': {
     name: 'Félix Perrier',
@@ -309,7 +343,8 @@ const membersData = {
     pole: 'Pôle Production',
     description: 'Mesghouni et Dangoumau seraient fière de moi, dommage j\'ai pas laché cette perf au bon moment',
     photo: '/photos/compresse/Felix.jpg',
-    contact: []
+    contact: [],
+    facebook: 'https://www.facebook.com/felix.perruer?locale=fr_FR'
   },
 }
 
@@ -322,6 +357,7 @@ const memberRoleBadge = document.querySelector('#member-role-badge')
 const memberPole = document.querySelector('#member-pole')
 const memberDescription = document.querySelector('#member-description')
 const memberContact = document.querySelector('#member-contact')
+const memberFacebook = document.querySelector('#member-facebook')
 const btnCloseMember = document.querySelector('#btn-close-member')
 
 // Gérer les clics sur les tags de membres
@@ -356,6 +392,14 @@ document.addEventListener('click', (e) => {
         contactTag.textContent = contact
         memberContact.appendChild(contactTag)
       })
+      
+      // Facebook
+      if (member.facebook) {
+        memberFacebook.href = member.facebook
+        memberFacebook.style.display = 'block'
+      } else {
+        memberFacebook.style.display = 'none'
+      }
       
       // Afficher la modale
       memberModal.classList.remove('hidden')

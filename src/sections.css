@@ -846,13 +846,160 @@
 
 /* Section Programme */
 .programme-section {
-  padding: 40px 20px;
+  padding: 0 20px 40px 20px;
   max-width: 900px;
   margin: 0 auto;
 }
 
+/* Banderole pour le titre "Notre Programme" */
+.programme-header-banner {
+  background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%);
+  padding: 20px 40px;
+  margin: 0 -20px 20px -20px;
+  width: calc(100% + 40px);
+  box-shadow: 0 4px 15px rgba(62, 39, 35, 0.3);
+  position: relative;
+  overflow: hidden;
+  border-top: 2px solid rgba(62, 39, 35, 0.1);
+  border-bottom: 2px solid rgba(62, 39, 35, 0.1);
+}
+
+.programme-header-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+  animation: shine 3s infinite;
+}
+
+.programme-header-banner .section-title {
+  font-family: 'Tribeca', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #3E2723 0%, #8B4513 50%, #D2691E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 !important;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  letter-spacing: 1px;
+}
+
+.programme-section .section-subtitle {
+  color: #e74c3c;
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 40px;
+  margin-top: 20px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
 .programme-list {
   margin-top: 30px;
+}
+
+/* Nouveaux styles pour items déroulants */
+.programme-item-expand {
+  background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%);
+  border-radius: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  border-left: 5px solid #e74c3c;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.programme-item-expand:hover {
+  box-shadow: 0 10px 30px rgba(231, 76, 60, 0.2);
+}
+
+.programme-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.programme-header:hover {
+  background: rgba(231, 76, 60, 0.05);
+}
+
+.programme-arrow {
+  font-size: 18px;
+  color: #e74c3c;
+  transition: transform 0.3s ease;
+}
+
+.programme-item-expand.open .programme-arrow {
+  transform: rotate(180deg);
+}
+
+.programme-summary {
+  padding: 0 25px 20px 25px;
+}
+
+.programme-summary p {
+  color: #555;
+  font-size: 22px;
+  line-height: 1.7;
+  margin-bottom: 15px;
+}
+
+.btn-show-more {
+  display: none;
+}
+
+.btn-show-more:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.programme-detail {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+  padding: 0 25px;
+}
+
+.programme-item-expand.open .programme-detail {
+  max-height: 1000px;
+  padding: 0 25px 20px 25px;
+}
+
+.programme-item-expand.open .programme-summary {
+  display: none;
+}
+
+.programme-detail ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.programme-detail li {
+  color: #555;
+  font-size: 20px;
+  line-height: 1.8;
+  padding: 10px 0 10px 25px;
+  position: relative;
+}
+
+.programme-detail li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: #e74c3c;
+  font-weight: bold;
 }
 
 .programme-item {
@@ -872,7 +1019,7 @@
 
 .programme-title {
   color: #e74c3c;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   margin-bottom: 15px;
   display: flex;
@@ -881,15 +1028,7 @@
 }
 
 .programme-icon {
-  width: 30px;
-  height: 30px;
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
+  font-size: 24px;
   flex-shrink: 0;
 }
 
@@ -936,5 +1075,14 @@
   .merch-section,
   .programme-section {
     padding: 30px 15px;
+  }
+  
+  .programme-summary p {
+    font-size: 16px;
+  }
+  
+  .programme-detail li {
+    font-size: 15px;
+    padding: 8px 0 8px 20px;
   }
 }

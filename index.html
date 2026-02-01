@@ -114,6 +114,8 @@
         overflow-y: auto;
         padding-top: 15px;
         will-change: left;
+        display: flex;
+        flex-direction: column;
       }
       
       #sidebar.open {
@@ -811,58 +813,160 @@
         <!-- Section Programme -->
         <div id="section-programme" class="section-content">
           <div class="programme-section">
-            <h1 class="section-title">Notre Programme</h1>
-            <p class="section-subtitle">Nos engagements pour une meilleure expérience</p>
+            <div class="programme-header-banner">
+              <h1 class="section-title">MANDAT BDI 2026/2027</h1>
+            </div>
             
             <div class="programme-list">
-              <div class="programme-item">
-                <h3 class="programme-title">
-                  <span class="programme-icon">1</span>
-                  Amélioration de la Vie Étudiante
-                </h3>
-                <p class="programme-description">
-                  Nous nous engageons à créer des espaces de détente confortables, organiser des événements réguliers et favoriser une ambiance conviviale pour tous.
-                </p>
+              <!-- REMISE DES DIPLÔMES -->
+              <div class="programme-item-expand">
+                <div class="programme-header" onclick="toggleProgramme('rdd')">
+                  <h3 class="programme-title">
+                    REMISE DES DIPLÔMES
+                  </h3>
+                  <span class="programme-arrow">▼</span>
+                </div>
+                <div class="programme-summary">
+                  <p>Organiser une Remise Des Diplômes qui convient à tous les diplômés de l'Institut Centrale de Lille</p>
+                  <button class="btn-show-more" onclick="toggleProgramme('rdd')">Afficher la version complète</button>
+                </div>
+                <div id="programme-rdd" class="programme-detail">
+                  <ul>
+                    <li>Organiser une Remise Des Diplômes qui convient à tous les diplômés de l'Institut Centrale de Lille</li>
+                    <li>Permettre aux diplômés d'amener plus de proche</li>
+                    <li>Permettre aux diplômés de profiter d'une soirée entre eux + admin et professeurs</li>
+                  </ul>
+                </div>
               </div>
               
-              <div class="programme-item">
-                <h3 class="programme-title">
-                  <span class="programme-icon">2</span>
-                  Communication Transparente
-                </h3>
-                <p class="programme-description">
-                  Mise en place d'une plateforme de communication directe avec l'équipe, comptes-rendus réguliers et sondages pour recueillir vos avis.
-                </p>
+              <!-- EVENEMENTIEL -->
+              <div class="programme-item-expand">
+                <div class="programme-header" onclick="toggleProgramme('event')">
+                  <h3 class="programme-title">
+                    ÉVÉNEMENTIEL
+                  </h3>
+                  <span class="programme-arrow">▼</span>
+                </div>
+                <div class="programme-summary">
+                  <p>Organisation d'événements marquants : bal de promo, après-midi des assos, voyages et soirées pour renforcer les liens</p>
+                  <button class="btn-show-more" onclick="toggleProgramme('event')">Afficher la version complète</button>
+                </div>
+                <div id="programme-event" class="programme-detail">
+                  <ul>
+                    <li>Organiser le bal de promo avant le départ des IE3</li>
+                    <li>Organiser l'après-midi des assos en collaboration avec tous les BDX, en la clôturant avec une soirée dansante</li>
+                    <li>Organiser un voyage correspondant aux attentes des étudiants (enquête auprès des étudiants présents au voyage des Pearl)</li>
+                    <li>Organiser la désinté des IE3 avec un restaurant exclusif à la promotion et une soirée commune aux Iteemiens</li>
+                    <li>Organiser la Réinté des IE4</li>
+                    <li>Organiser des événements réguliers pour renforcer les liens entre les étudiants (bars, afterwork…)</li>
+                  </ul>
+                </div>
               </div>
               
-              <div class="programme-item">
-                <h3 class="programme-title">
-                  <span class="programme-icon">3</span>
-                  Soutien Académique
-                </h3>
-                <p class="programme-description">
-                  Organisation de sessions de tutorat, mise à disposition de ressources pédagogiques et accompagnement personnalisé pour la réussite de tous.
-                </p>
+              <!-- DÉVELOPPEMENT DURABLE -->
+              <div class="programme-item-expand">
+                <div class="programme-header" onclick="toggleProgramme('dd')">
+                  <h3 class="programme-title">
+                    DÉVELOPPEMENT DURABLE
+                  </h3>
+                  <span class="programme-arrow">▼</span>
+                </div>
+                <div class="programme-summary">
+                  <p>Initiatives écologiques : tri dans la cafet, bilan carbone et cagnotte pour projets solidaires</p>
+                  <button class="btn-show-more" onclick="toggleProgramme('dd')">Afficher la version complète</button>
+                </div>
+                <div id="programme-dd" class="programme-detail">
+                  <ul>
+                    <li>Proposer un système de tri clair dans la cafet de l'iteem</li>
+                    <li>Faire un bilan de nos émissions à la fin de notre mandat</li>
+                    <li>Mettre en place une cagnotte pour des projets durables et solidaires</li>
+                  </ul>
+                </div>
               </div>
               
-              <div class="programme-item">
-                <h3 class="programme-title">
-                  <span class="programme-icon">4</span>
-                  Développement Durable
-                </h3>
-                <p class="programme-description">
-                  Initiatives écologiques concrètes : réduction des déchets, actions de sensibilisation et partenariats avec des associations environnementales.
-                </p>
+              <!-- VIE INTERNE -->
+              <div class="programme-item-expand">
+                <div class="programme-header" onclick="toggleProgramme('vie')">
+                  <h3 class="programme-title">
+                    VIE INTERNE
+                  </h3>
+                  <span class="programme-arrow">▼</span>
+                </div>
+                <div class="programme-summary">
+                  <p>Renforcer la vie Iteemienne : collaboration avec l'administration, événements au sein de l'école et partenariat avec le BDE</p>
+                  <button class="btn-show-more" onclick="toggleProgramme('vie')">Afficher la version complète</button>
+                </div>
+                <div id="programme-vie" class="programme-detail">
+                  <ul>
+                    <li>Recruter 4 Iteemiens pour former un BDI de 22 membres</li>
+                    <li>Collaborer avec l'administration pour raviver la vie Iteemienne au sein des murs de l'école</li>
+                    <li>Organiser des événements au sein de l'école qui plairont réellement aux étudiants</li>
+                    <li>Fluidifier la communication avec l'administration pour mieux comprendre les projets en vigueur</li>
+                    <li>Collaborer avec le BDE Centrale pour organiser des événements communs</li>
+                    <li>Ranger continuellement le local BDI</li>
+                  </ul>
+                </div>
               </div>
               
-              <div class="programme-item">
-                <h3 class="programme-title">
-                  <span class="programme-icon">5</span>
-                  Événements & Activités
-                </h3>
-                <p class="programme-description">
-                  Organisation d'événements variés tout au long de l'année : soirées, compétitions sportives, sorties culturelles et activités de team building.
-                </p>
+              <!-- COHÉSION ET VIE ASSOCIATIVE -->
+              <div class="programme-item-expand">
+                <div class="programme-header" onclick="toggleProgramme('cohesion')">
+                  <h3 class="programme-title">
+                    COHÉSION ET VIE ASSOCIATIVE
+                  </h3>
+                  <span class="programme-arrow">▼</span>
+                </div>
+                <div class="programme-summary">
+                  <p>Pulls de promo, journée de partage des stages et aménagement de l'espace Iteemiens</p>
+                  <button class="btn-show-more" onclick="toggleProgramme('cohesion')">Afficher la version complète</button>
+                </div>
+                <div id="programme-cohesion" class="programme-detail">
+                  <h4 style="color: #e74c3c; margin: 15px 0 10px 0; font-size: 16px;">Pulls de promo</h4>
+                  <ul>
+                    <li>Faire des pulls de promo à l'image du BDI</li>
+                    <li>Passer commande des pulls auprès des autres promotions à la fin de l'année 2025/2026</li>
+                    <li>Comprendre le pull de promotion dans le prix du WEI pour les IE1</li>
+                    <li>Remettre le pull de promo aux IE1 pendant le WEI et aux autres promotions la semaine suivante</li>
+                  </ul>
+                  <h4 style="color: #e74c3c; margin: 15px 0 10px 0; font-size: 16px;">Journée de partage des stages</h4>
+                  <ul>
+                    <li>Organiser, en collaboration avec l'administration et les alumni, une journée dédiée au partage des expériences de stage</li>
+                    <li>Transformer les oraux de retour de stage en présentations ouvertes</li>
+                    <li>Permettre aux étudiants des autres promotions d'assister librement aux présentations</li>
+                    <li>Planning clair indiquant le nom de l'étudiant, l'entreprise et le type de mission</li>
+                    <li>Clôturer la journée par un temps convivial (mini-buffet) favorisant les échanges</li>
+                  </ul>
+                  <h4 style="color: #e74c3c; margin: 15px 0 10px 0; font-size: 16px;">Espace Iteemiens</h4>
+                  <ul>
+                    <li>Trouver un nom à l'espace réservé aux iteemiens en bas du BAT J</li>
+                    <li>Aménagement : Canapé, Pouf, mange debout, enceinte Bluetooth, lumières LED</li>
+                    <li>Affiche des différents BDI et possibilité de refaire la peinture ou fresque</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <!-- INTÉGRATION -->
+              <div class="programme-item-expand">
+                <div class="programme-header" onclick="toggleProgramme('integration')">
+                  <h3 class="programme-title">
+                    INTÉGRATION
+                  </h3>
+                  <span class="programme-arrow">▼</span>
+                </div>
+                <div class="programme-summary">
+                  <p>Équipe d'intégration renforcée pour organiser un WEI plus impressionnant et des événements de qualité</p>
+                  <button class="btn-show-more" onclick="toggleProgramme('integration')">Afficher la version complète</button>
+                </div>
+                <div id="programme-integration" class="programme-detail">
+                  <ul>
+                    <li>Former une équipe d'intégration composée de 12 membres dont 1 bachelor</li>
+                    <li>Accompagner davantage l'équipe d'intégration pour organiser des événements plus qualitatifs</li>
+                    <li>Profiter de la première semaine banalisée pour organiser des événements au sein de l'école</li>
+                    <li>Prendre des photos de promotion entière et inter-promo</li>
+                    <li>Faire une enquête auprès des IE1 concernant leur expérience du WEI</li>
+                    <li>Permettre à l'équipe d'organiser un WEI plus impressionnant (activités, mobile home, sécurité, soirée)</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -900,7 +1004,7 @@
           <input type="text" id="search-users" placeholder="🔍 Chercher un utilisateur..." style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; margin-bottom: 15px; background: white; color: #333;" />
         </div>
 
-        <div id="leaderboard" style="background: #f9f9f9; padding: 20px; border-radius: 10px; max-height: 600px; overflow-y: auto;">
+        <div id="leaderboard" style="background: #f9f9f9; padding: 20px; border-radius: 10px; max-height: 600px; overflow-y: auto; overflow-x: hidden;">
           <!-- Les utilisateurs vont s'afficher ici -->
         </div>
         </div>
@@ -1119,6 +1223,12 @@
             <p id="member-pole" style="color: #666; font-size: 16px; font-weight: 600; margin: 0 0 20px 0;"></p>
             <p id="member-description" style="color: #555; font-size: 15px; line-height: 1.7; margin-bottom: 20px;"></p>
             <div id="member-contact" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;"></div>
+            <a id="member-facebook" href="" target="_blank" style="display: none; background: #1877F2; color: white; text-decoration: none; padding: 12px 20px; border-radius: 8px; font-weight: 600; margin-bottom: 15px; text-align: center; transition: background 0.3s ease;" onmouseover="this.style.background='#166FE5'" onmouseout="this.style.background='#1877F2'">
+              <svg style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 8px; fill: white;" viewBox="0 0 24 24">
+                <path d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.34 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 22 12.06C22 6.53 17.5 2.04 12 2.04Z" />
+              </svg>
+              Voir mon Facebook
+            </a>
             <button id="btn-close-member" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">Fermer</button>
           </div>
         </div>
