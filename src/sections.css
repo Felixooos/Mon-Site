@@ -321,9 +321,60 @@
 
 /* Section Merch */
 .merch-section {
-  padding: 40px 20px;
+  padding: 0 20px 40px 20px;
   max-width: 1400px;
   margin: 0 auto;
+}
+
+/* Banderole pour le titre "Nos Goodies" */
+.merch-header-banner {
+  background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%);
+  padding: 20px 40px;
+  margin: 0 -20px 20px -20px;
+  width: calc(100% + 40px);
+  box-shadow: 0 4px 15px rgba(62, 39, 35, 0.3);
+  position: relative;
+  overflow: hidden;
+  border-top: 2px solid rgba(62, 39, 35, 0.1);
+  border-bottom: 2px solid rgba(62, 39, 35, 0.1);
+}
+
+.merch-header-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+  animation: shine 3s infinite;
+}
+
+.merch-header-banner .section-title {
+  font-family: 'Tribeca', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #3E2723 0%, #8B4513 50%, #D2691E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 !important;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  letter-spacing: 1px;
+}
+
+.merch-section .section-subtitle {
+  color: #e74c3c;
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 40px;
+  margin-top: 20px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .merch-grid {
@@ -339,6 +390,8 @@
   overflow: hidden;
   box-shadow: 0 5px 20px rgba(0,0,0,0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .merch-item:hover {
@@ -348,7 +401,8 @@
 
 .merch-image {
   width: 100%;
-  height: 250px;
+  flex: 1;
+  min-height: 250px;
   background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
   display: flex;
   align-items: center;
@@ -359,20 +413,30 @@
 }
 
 .merch-info {
-  padding: 20px;
+  padding: 15px;
   text-align: center;
+  height: 90px;
+  min-height: 90px;
+  max-height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .merch-name {
   color: #e74c3c;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
+  line-height: 1.1;
 }
 
 .merch-description {
   color: #666;
-  font-size: 14px;
+  font-size: 12px;
+  line-height: 1.2;
+  margin: 0;
 }
 
 /* Container 3D pour l'ecocup */
@@ -445,6 +509,235 @@
 .sticker-item:hover .sticker-pixelated {
   filter: blur(15px) drop-shadow(0 8px 16px rgba(231, 76, 60, 0.3)) !important;
   transform: scale(1) rotate(0deg) !important;
+}
+
+/* Sac à dos avec animation similaire aux stickers */
+.sac-container {
+  background: linear-gradient(135deg, #FFF5E6 0%, #FFE8D6 100%) !important;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  min-height: 350px;
+  height: 100%;
+}
+
+.sac-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 16px rgba(231, 76, 60, 0.25));
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: sacFloat 3.5s ease-in-out infinite;
+}
+
+.sac-item:hover .sac-img {
+  transform: scale(1.05) rotate(-2deg);
+  filter: drop-shadow(0 12px 24px rgba(231, 76, 60, 0.4));
+}
+
+.sac-item .merch-image {
+  height: 350px;
+  aspect-ratio: 1 / 1;
+}
+
+@keyframes sacFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(-1deg);
+  }
+}
+
+/* Responsive pour le sac */
+@media (min-width: 768px) {
+  .sac-item .merch-image {
+    height: 400px;
+  }
+  
+  .sac-container {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .sac-item .merch-image {
+    height: 320px;
+  }
+  
+  .sac-container {
+    padding: 10px;
+  }
+}
+
+/* Capote avec animation similaire */
+.capote-container {
+  background: linear-gradient(135deg, #FFF5E6 0%, #FFE8D6 100%) !important;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  min-height: 350px;
+  height: 100%;
+}
+
+.capote-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 16px rgba(231, 76, 60, 0.25));
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: capoteFloat 3.2s ease-in-out infinite;
+}
+
+.capote-item:hover .capote-img {
+  transform: scale(1.05) rotate(2deg);
+  filter: drop-shadow(0 12px 24px rgba(231, 76, 60, 0.4));
+}
+
+.capote-item .merch-image {
+  height: 350px;
+  aspect-ratio: 1 / 1;
+}
+
+@keyframes capoteFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
+}
+
+/* Responsive pour la capote */
+@media (min-width: 768px) {
+  .capote-item .merch-image {
+    height: 400px;
+  }
+  
+  .capote-container {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .capote-item .merch-image {
+    height: 320px;
+  }
+  
+  .capote-container {
+    padding: 10px;
+  }
+}
+
+/* Poche vinyle (placeholder pour futur goodies) */
+.vinyle-container {
+  background: linear-gradient(135deg, #FFF5E6 0%, #FFE8D6 100%) !important;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  min-height: 350px;
+  height: 100%;
+}
+
+.vinyle-placeholder {
+  font-size: 120px;
+  animation: vinyleFloat 3.8s ease-in-out infinite;
+  filter: blur(10px);
+  opacity: 0.6;
+}
+
+.vinyle-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+
+.vinyle-text {
+  font-size: 24px;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  animation: vinylePulse 2s ease-in-out infinite;
+  text-align: center;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@keyframes vinylePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+/* Empêcher le hover de révéler la pochette vinyle */
+.vinyle-item:hover .vinyle-placeholder {
+  filter: blur(10px) !important;
+  transform: scale(1) rotate(0deg) !important;
+}
+
+.vinyle-item .merch-image {
+  height: 350px;
+  aspect-ratio: 1 / 1;
+}
+
+@keyframes vinyleFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(5deg);
+  }
+}
+
+/* Responsive pour la poche vinyle */
+@media (min-width: 768px) {
+  .vinyle-item .merch-image {
+    height: 400px;
+  }
+  
+  .vinyle-container {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .vinyle-item .merch-image {
+    height: 320px;
+  }
+  
+  .vinyle-container {
+    padding: 10px;
+  }
+  
+  .vinyle-placeholder {
+    font-size: 100px;
+  }
 }
 
 .mystery-overlay {
