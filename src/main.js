@@ -1633,13 +1633,30 @@ async function chargerMesGains() {
     const borderColor = isPositif ? '#2ecc71' : '#e74c3c'
     const signe = isPositif ? '+' : ''
     
+    // Détecter si c'est un tag NFC et formater
+    let description = gain.raison || 'Transaction'
+    let evenement = gain.raison || 'Transaction'
+    
+    if (gain.raison && gain.raison.startsWith('NFC:')) {
+      description = 'Carte de Paiement'
+      // Extraire le code après "NFC:" et le formater
+      const code = gain.raison.substring(4) // Enlève "NFC:"
+      // Formater : PETIT-DEJ1 → Petit Dej 1
+      evenement = code
+        .split('-')
+        .map(mot => mot.charAt(0).toUpperCase() + mot.slice(1).toLowerCase())
+        .join(' ')
+        .replace(/(\d+)/, ' $1') // Ajoute espace avant les chiffres
+        .trim()
+    }
+    
     html += `
       <div style="background: ${gradient}; padding: 20px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid ${borderColor}; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease; cursor: pointer; overflow: hidden;" onmouseover="this.style.transform='translateX(5px)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'">
         <div style="display: flex; gap: 15px; justify-content: space-between;">
           <!-- Colonne gauche : infos textuelles -->
           <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
-            <h4 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 18px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${gain.raison || 'Transaction'}</h4>
-            <p style="margin: 0 0 3px 0; font-size: 14px; color: #666;">Événement : ${gain.raison || 'Transaction'}</p>
+            <h4 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 18px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${description}</h4>
+            <p style="margin: 0 0 3px 0; font-size: 14px; color: #666;">Événement : ${evenement}</p>
             <p style="margin: 0; font-size: 13px; color: #999;">📅 ${dateStr} à ${heureStr}</p>
           </div>
           <!-- Colonne droite : prix en haut, photo en bas -->
@@ -1899,6 +1916,7 @@ document.querySelector('#btn-confirm-modifier').addEventListener('click', async 
   }
   
   // Rafraîchir la page
+
   location.reload()
 })
 
