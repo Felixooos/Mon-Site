@@ -1909,7 +1909,7 @@ function afficherMessageNFC(emoji, titre, message, couleur = '#e74c3c') {
   document.querySelector('#nfc-info-emoji').textContent = emoji;
   document.querySelector('#nfc-info-titre').textContent = titre;
   document.querySelector('#nfc-info-titre').style.color = couleur;
-  document.querySelector('#nfc-info-message').textContent = message;
+  document.querySelector('#nfc-info-message').innerHTML = message;
   document.querySelector('#nfc-info-modal .modal-content').style.border = `3px solid ${couleur}`;
   document.querySelector('#btn-close-nfc-info').style.background = couleur;
   document.querySelector('#nfc-info-modal').classList.remove('hidden');

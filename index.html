@@ -425,7 +425,7 @@
           max-height: 500px !important;
           padding: 8px !important;
           overflow-y: scroll;
-          overflow-x: hidden;
+          overflow-x: hidden !important;
           width: 100%;
           box-sizing: border-box;
         }
@@ -433,6 +433,9 @@
           padding: 10px 8px !important;
           margin-bottom: 6px !important;
           font-size: 14px;
+          max-width: 100%;
+          overflow-x: hidden;
+          box-sizing: border-box;
           word-wrap: break-word;
           overflow-wrap: break-word;
           overflow: hidden;
@@ -973,7 +976,7 @@
         </div>
 
         <!-- Section Campagne (contenu existant) -->
-        <div id="section-campagne" class="section-content active">
+        <div id="section-campagne" class="section-content active" style="overflow-x: hidden;">
         <!-- Cadre solde en haut à droite -->
         <div id="solde-header" style="position: fixed; top: 20px; right: 20px; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 10px 15px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 8px; z-index: 2000; transition: top 0.3s ease;">
           <span id="solde-header-amount" style="font-size: 18px; font-weight: bold; color: #333;">0</span>
