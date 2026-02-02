@@ -10,9 +10,19 @@ const sidebarOverlay = document.querySelector('#sidebar-overlay')
 const sidebarItems = document.querySelectorAll('.sidebar-item')
 
 let sidebarOpen = false
+let lastToggleTime = 0
 
 function toggleSidebar() {
   console.log('Toggle sidebar called, current state:', sidebarOpen)
+  
+  // Protection anti-rebond : ignorer les appels trop rapides (< 300ms)
+  const now = Date.now()
+  if (now - lastToggleTime < 300) {
+    console.log('Toggle ignoré - trop rapide')
+    return
+  }
+  lastToggleTime = now
+  
   sidebarOpen = !sidebarOpen
   
   if (sidebarOpen) {
@@ -62,13 +72,19 @@ hamburgerMenu.addEventListener('click', (e) => {
 
 // Fermer au clic/touch sur l'overlay
 sidebarOverlay.addEventListener('click', (e) => {
-  toggleSidebar()
+  console.log('Overlay clicked, sidebar open:', sidebarOpen)
+  if (sidebarOpen) {
+    toggleSidebar()
+  }
 })
 
 sidebarOverlay.addEventListener('touchend', (e) => {
   e.preventDefault()
-  toggleSidebar()
-})
+  console.log('Overlay touched, sidebar open:', sidebarOpen)
+  if (sidebarOpen) {
+    toggleSidebar()
+  }
+}, { passive: false })
 
 hamburgerMenu.addEventListener('touchend', (e) => {
   e.preventDefault()
@@ -788,7 +804,29 @@ async function gererEtudiant(emailUser) {
     jeSuisBoutiqueManager = etudiant.is_boutique_manager || false
     emailAdmin = etudiant.email
     if (jeSuisAdmin) console.log("MODE ADMIN ACTIVÉ")
-    if (jeSuisBoutiqueManager) console.log("MODE GESTIONNAIRE BOUTIQUE ACTIVÉ")
+    if (jeSuisBoutiqueManager) {
+      console.log("MODE GESTIONNAIRE BOUTIQUE ACTIVÉ")
+      
+      // Afficher le bouton Mode Édition
+      const btnEditMode = document.querySelector('#btn-toggle-edit-mode')
+      btnEditMode.style.display = 'block'
+      
+      // Initialiser l'état du bouton
+      const icon = document.querySelector('#edit-mode-icon')
+      const text = document.querySelector('#edit-mode-text')
+      if (modeEdition) {
+        btnEditMode.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)'
+        btnEditMode.style.color = 'white'
+        icon.textContent = '🔓'
+      } else {
+        btnEditMode.style.background = 'rgba(255, 255, 255, 0.95)'
+        btnEditMode.style.color = '#333'
+        icon.textContent = '🔒'
+      }
+      
+      // Ajouter le listener
+      btnEditMode.addEventListener('click', toggleModeEdition)
+    }
     displayWelcomeScreen(emailUser)
   } else {
     console.warn("Étudiant non trouvé après vérification")
@@ -1133,7 +1171,38 @@ const boutiqueScreen = document.querySelector('#boutique-screen')
 const moiScreen = document.querySelector('#moi-screen')
 
 let jeSuisBoutiqueManager = false
+let modeEdition = localStorage.getItem('modeEdition') === 'true'
 let objetEnCoursAchat = null
+
+// Fonction pour activer/désactiver le mode édition
+function toggleModeEdition() {
+  modeEdition = !modeEdition
+  localStorage.setItem('modeEdition', modeEdition)
+  
+  const btn = document.querySelector('#btn-toggle-edit-mode')
+  const icon = document.querySelector('#edit-mode-icon')
+  const text = document.querySelector('#edit-mode-text')
+  
+  if (modeEdition) {
+    btn.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)'
+    btn.style.color = 'white'
+    icon.textContent = '🔓'
+    text.textContent = 'Mode Édition'
+  } else {
+    btn.style.background = 'rgba(255, 255, 255, 0.95)'
+    btn.style.color = '#333'
+    icon.textContent = '🔒'
+    text.textContent = 'Mode Édition'
+  }
+  
+  // Recharger les sections actives
+  if (document.querySelector('#boutique-screen').classList.contains('active')) {
+    chargerObjetsBoutique()
+  }
+  if (document.querySelector('#section-challenge').classList.contains('active')) {
+    loadChallenges()
+  }
+}
 
 // Gestion des onglets principaux
 tabClassement.addEventListener('click', () => {
@@ -1196,13 +1265,17 @@ tabMoi.addEventListener('click', async () => {
 // ==================== FONCTIONS BOUTIQUE ====================
 
 async function chargerObjetsBoutique() {
-  // Les admins voient tout, les autres ne voient que les objets publiés
+  // Filtre selon le mode
   let query = supabase
     .from('objets_boutique')
     .select('*')
   
-  if (!jeSuisBoutiqueManager) {
-    query = query.eq('is_published', true)
+  if (jeSuisBoutiqueManager && modeEdition) {
+    // Super admin EN MODE ÉDITION : voir tout sauf les objets supprimés
+    query = query.eq('admin_deleted', false)
+  } else {
+    // Tous les autres (y compris super admin en mode normal) : seulement objets publiés
+    query = query.eq('is_published', true).eq('admin_deleted', false)
   }
   
   const { data: objets, error } = await query.order('created_at', { ascending: true })
@@ -1212,15 +1285,25 @@ async function chargerObjetsBoutique() {
     return
   }
   
-  // Afficher le bouton d'ajout si gestionnaire
-  const btnAjout = document.querySelector('#btn-ajouter-objet-flottant')
+  // Afficher les boutons si gestionnaire en mode édition
+  const btnAjout = document.querySelector('#btn-ajouter-objet')
   const btnActualiser = document.querySelector('#btn-actualiser-boutique')
-  if (jeSuisBoutiqueManager) {
-    btnAjout.classList.remove('hidden')
-    btnActualiser.classList.remove('hidden')
+  
+  if (jeSuisBoutiqueManager && modeEdition) {
+    btnAjout?.classList.remove('hidden')
+    btnActualiser?.classList.remove('hidden')
+    
+    // Compter seulement les objets non publiés (en attente)
+    const objetsNonPublies = objets.filter(o => !o.is_published).length
+    
+    if (objetsNonPublies > 0 && btnActualiser) {
+      btnActualiser.textContent = `📢 Actualiser (${objetsNonPublies})`
+    } else if (btnActualiser) {
+      btnActualiser.textContent = '📢 Actualiser'
+    }
   } else {
-    btnAjout.classList.add('hidden')
-    btnActualiser.classList.add('hidden')
+    btnAjout?.classList.add('hidden')
+    btnActualiser?.classList.add('hidden')
   }
   
   // Créer la grille
@@ -1259,8 +1342,8 @@ async function chargerObjetsBoutique() {
     
     let html = ''
     
-    // Menu 3 points si gestionnaire
-    if (jeSuisBoutiqueManager) {
+    // Menu 3 points si gestionnaire en mode édition
+    if (jeSuisBoutiqueManager && modeEdition) {
       html += `<button class="btn-menu-3pts" data-objet-id="${objet.id}" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">⋮</button>`
     }
     
@@ -1330,34 +1413,41 @@ async function chargerObjetsBoutique() {
   })
 }
 
-// Bouton flottant pour ajouter un objet
-document.querySelector('#btn-ajouter-objet-flottant').addEventListener('click', () => {
+// Bouton pour ajouter un objet
+document.querySelector('#btn-ajouter-objet')?.addEventListener('click', () => {
   ouvrirModalAjout()
 })
 
-// Bouton actualiser boutique (admin)
-document.querySelector('#btn-actualiser-boutique').addEventListener('click', async () => {
-  const confirmation1 = confirm('⚠️ Voulez-vous forcer l\'actualisation de la boutique pour tous les utilisateurs ?')
-  if (!confirmation1) return
+// Fonction pour synchroniser la boutique
+async function synchroniserBoutique() {
+  // Étape 1 : Supprimer définitivement les objets marqués comme supprimés
+  const { error: deleteError } = await supabase
+    .from('objets_boutique')
+    .delete()
+    .eq('admin_deleted', true)
   
-  const confirmation2 = confirm('⚠️ Êtes-vous vraiment sûr ? Cela va recharger la boutique pour tous les utilisateurs connectés.')
-  if (!confirmation2) return
+  if (deleteError) {
+    afficherMessageNFC('', 'Erreur', 'Erreur lors de la suppression', '#e74c3c')
+    console.error(deleteError)
+    return false
+  }
   
-  // Publier tous les objets en attente
-  const { error } = await supabase
+  // Étape 2 : Publier tous les objets en attente
+  const { error: publishError } = await supabase
     .from('objets_boutique')
     .update({ is_published: true })
     .eq('is_published', false)
   
-  if (error) {
+  if (publishError) {
     afficherMessageNFC('', 'Erreur', 'Erreur lors de la publication', '#e74c3c')
-    console.error(error)
-    return
+    console.error(publishError)
+    return false
   }
   
-  afficherMessageNFC('', 'Succès', 'Boutique actualisée et publiée pour tous !', '#2a9d8f')
+  afficherMessageNFC('', 'Succès', 'Boutique synchronisée pour tous !', '#2a9d8f')
   await chargerObjetsBoutique()
-})
+  return true
+}
 
 // Gestion du choix de taille dans le modal
 document.querySelectorAll('.btn-taille').forEach(btn => {
@@ -1457,9 +1547,15 @@ window.ouvrirMenuObjet = function(id, nom, prix, imageUrl, taille, quantite) {
 }
 
 async function supprimerObjet(objetId, type) {
+  if (!jeSuisBoutiqueManager || !modeEdition) {
+    alert('❌ Activez le Mode Édition pour supprimer des objets')
+    return
+  }
+  
+  // Marquer l'objet comme supprimé au lieu de le supprimer définitivement
   const { error } = await supabase
     .from('objets_boutique')
-    .delete()
+    .update({ admin_deleted: true })
     .eq('id', objetId)
   
   if (error) {
@@ -1468,7 +1564,7 @@ async function supprimerObjet(objetId, type) {
     return
   }
   
-  alert('Objet supprimé !')
+  alert('Objet marqué pour suppression ! Cliquez sur "Actualiser" pour synchroniser.')
   await chargerObjetsBoutique()
 }
 
@@ -2037,6 +2133,663 @@ document.querySelectorAll('.modal input').forEach(input => {
       e.preventDefault()
     }
   })
+})
+
+// ==================== GESTION DES CHALLENGES ====================
+let currentDifficulty = '50'
+
+// Charger les challenges
+async function loadChallenges() {
+  console.log('🔄 Chargement des challenges...')
+  try {
+    // Filtrer selon le type d'utilisateur
+    let query = supabase
+      .from('challenges')
+      .select('*')
+      .order('created_at', { ascending: false })
+    
+    if (jeSuisBoutiqueManager && modeEdition) {
+      // Mode édition : voir tout sauf les challenges supprimés
+      query = query.eq('admin_deleted', false)
+    } else {
+      // Mode normal : seulement les défis publiés et non supprimés
+      query = query.eq('published', true).eq('admin_deleted', false)
+    }
+    
+    const { data: challenges, error } = await query
+
+    if (error) throw error
+    
+    console.log('✅ Challenges chargés:', challenges)
+
+    // Afficher les boutons selon le rôle
+    const btnAddChallenge = document.querySelector('#btn-add-challenge')
+    const btnActualiser = document.querySelector('#btn-actualiser-challenges')
+    
+    if (jeSuisBoutiqueManager && modeEdition) {
+      btnAddChallenge?.classList.remove('hidden')
+      btnActualiser?.classList.remove('hidden')
+      
+      // Compter seulement les challenges non publiés (en attente)
+      const unpublishedCount = challenges.filter(c => !c.published).length
+      
+      if (unpublishedCount > 0 && btnActualiser) {
+        btnActualiser.textContent = `📢 Actualiser (${unpublishedCount})`
+        btnActualiser.style.animation = 'pulse 2s infinite'
+      } else if (btnActualiser) {
+        btnActualiser.textContent = '✅ Tout est à jour'
+        btnActualiser.style.animation = 'none'
+      }
+    } else {
+      btnAddChallenge?.classList.add('hidden')
+      btnActualiser?.classList.add('hidden')
+    }
+
+    // Charger les validations
+    const { data: validations, error: validError } = await supabase
+      .from('challenge_validations')
+      .select('*')
+
+    if (validError) {
+      console.error('Erreur validations:', validError)
+      throw validError
+    }
+
+    // Grouper les challenges par difficulté
+    const challengesByDifficulty = {
+      '50': [],
+      '150': [],
+      '300': []
+    }
+
+    challenges.forEach(challenge => {
+      const validation = validations.filter(v => v.challenge_id === challenge.id)
+      if (challengesByDifficulty[challenge.difficulte]) {
+        challengesByDifficulty[challenge.difficulte].push({
+          ...challenge,
+          validations: validation
+        })
+      }
+    })
+
+    // Afficher les challenges
+    displayChallenges('50', challengesByDifficulty['50'])
+    displayChallenges('150', challengesByDifficulty['150'])
+    displayChallenges('300', challengesByDifficulty['300'])
+    
+    // Initialiser l'affichage : montrer uniquement la liste 50 au départ
+    document.querySelectorAll('.challenges-list').forEach(list => {
+      list.style.display = 'none'
+    })
+    document.querySelector('#challenges-50').style.display = 'block'
+
+  } catch (error) {
+    console.error('Erreur lors du chargement des challenges:', error)
+  }
+}
+
+// Afficher les challenges
+function displayChallenges(difficulty, challenges) {
+  const container = document.querySelector(`#challenges-${difficulty}`)
+  if (!container) return
+
+  if (challenges.length === 0) {
+    container.innerHTML = '<div class="empty-challenges">Aucun challenge pour le moment</div>'
+    return
+  }
+
+  const currentUserEmail = localStorage.getItem('userEmail')
+
+  container.innerHTML = challenges.map(challenge => {
+    const userValidation = challenge.validations.find(v => v.user_email === currentUserEmail)
+    const isCompleted = !!userValidation
+    const allValidations = challenge.validations
+    const isAlreadyValidated = allValidations.length > 0 // Le défi a déjà été validé par quelqu'un
+
+    return `
+      <div class="challenge-card ${isCompleted ? 'completed' : ''} ${isAlreadyValidated ? 'already-validated' : ''} ${!challenge.published && jeSuisBoutiqueManager && modeEdition ? 'unpublished' : ''}" style="position: relative;">
+        ${jeSuisBoutiqueManager && modeEdition ? `
+          <button class="btn-menu-3pts" onclick="ouvrirMenuChallenge(${challenge.id})" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">⋮</button>
+        ` : ''}
+        <div class="challenge-header-row">
+          <h3 class="challenge-title">${challenge.titre} ${!challenge.published && jeSuisBoutiqueManager && modeEdition ? '<span class="draft-badge">📝 Brouillon</span>' : ''}</h3>
+          <div class="challenge-points">+${challenge.points} pts</div>
+        </div>
+        <p class="challenge-description">${challenge.description}</p>
+        <div class="challenge-footer">
+          <div>
+            ${isAlreadyValidated ? `
+              <div class="challenge-status completed">✅ Défi terminé !</div>
+              <div class="challenge-completed-by">
+                <svg viewBox="0 0 24 24"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" /></svg>
+                Validé par ${allValidations[0].user_email.split('@')[0].split('.').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ')}
+              </div>
+            ` : `
+              <div class="challenge-status">En attente de validation</div>
+            `}
+          </div>
+          <div>
+            ${jeSuisAdmin && !isAlreadyValidated ? `
+              <button class="btn-validate-challenge" onclick="openValidateModal(${challenge.id}, '${challenge.titre}', ${challenge.points})">
+                ✓ Valider pour un utilisateur
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    `
+  }).join('')
+}
+
+// Gérer les onglets de difficulté
+document.querySelectorAll('.challenge-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const difficulty = tab.dataset.difficulty
+    
+    // Mettre à jour les onglets actifs
+    document.querySelectorAll('.challenge-tab').forEach(t => t.classList.remove('active'))
+    tab.classList.add('active')
+    
+    // Mettre à jour les listes actives - forcer le style display
+    document.querySelectorAll('.challenges-list').forEach(list => {
+      list.classList.remove('active')
+      list.style.display = 'none'
+    })
+    const targetList = document.querySelector(`#challenges-${difficulty}`)
+    if (targetList) {
+      targetList.classList.add('active')
+      targetList.style.display = 'block'
+    }
+    
+    currentDifficulty = difficulty
+  })
+})
+
+// Bouton ajouter challenge
+const btnAddChallenge = document.querySelector('#btn-add-challenge')
+if (btnAddChallenge) {
+  btnAddChallenge.addEventListener('click', () => {
+    document.querySelector('#challenge-difficulty').value = currentDifficulty
+    document.querySelector('#modal-add-challenge').classList.remove('hidden')
+    document.body.style.overflow = 'hidden'
+  })
+}
+
+// Annuler ajout challenge
+document.querySelector('#btn-cancel-add-challenge')?.addEventListener('click', () => {
+  document.querySelector('#modal-add-challenge').classList.add('hidden')
+  document.body.style.overflow = ''
+  document.querySelector('#challenge-title').value = ''
+  document.querySelector('#challenge-description').value = ''
+})
+
+// Confirmer ajout challenge
+document.querySelector('#btn-confirm-add-challenge')?.addEventListener('click', async () => {
+  const difficulty = document.querySelector('#challenge-difficulty').value
+  const title = document.querySelector('#challenge-title').value.trim()
+  const description = document.querySelector('#challenge-description').value.trim()
+  const points = parseInt(difficulty) // Les points sont déduits directement de la difficulté
+
+  if (!title || !description) {
+    alert('Veuillez remplir tous les champs correctement')
+    return
+  }
+
+  try {
+    const { data, error } = await supabase.from('challenges').insert([{
+      difficulte: difficulty,
+      titre: title,
+      description: description,
+      points: points,
+      published: false, // Par défaut non publié
+      admin_deleted: false
+    }]).select()
+
+    if (error) throw error
+
+    alert('✅ Challenge ajouté en brouillon ! Cliquez sur "Actualiser" pour le publier.')
+    document.querySelector('#modal-add-challenge').classList.add('hidden')
+    document.body.style.overflow = ''
+    document.querySelector('#challenge-title').value = ''
+    document.querySelector('#challenge-description').value = ''
+    
+    await loadChallenges()
+  } catch (error) {
+    console.error('Erreur lors de l\'ajout du challenge:', error)
+    alert('❌ Erreur lors de l\'ajout du challenge')
+  }
+})
+
+// Fonction pour synchroniser les challenges
+async function synchroniserChallenges() {
+  try {
+    console.log('🔄 Synchronisation des challenges...')
+    
+    // 1. Supprimer vraiment les challenges marqués comme supprimés par l'admin
+    const { data: deletedData, error: deleteError } = await supabase
+      .from('challenges')
+      .delete()
+      .eq('admin_deleted', true)
+      .select()
+    
+    if (deleteError) throw deleteError
+    console.log(`🗑️ ${deletedData?.length || 0} challenge(s) supprimé(s)`)
+    
+    // 2. Publier tous les nouveaux challenges (brouillons)
+    const { data: publishedData, error: publishError } = await supabase
+      .from('challenges')
+      .update({ published: true })
+      .eq('published', false)
+      .select()
+    
+    if (publishError) throw publishError
+    console.log(`📢 ${publishedData?.length || 0} challenge(s) publié(s)`, publishedData)
+    
+    alert('✅ Challenges actualisés avec succès !')
+    
+    // 3. Recharger la section challenges pour mettre à jour l'affichage et le compteur
+    await loadChallenges()
+    
+    return true
+  } catch (error) {
+    console.error('Erreur lors de l\'actualisation:', error)
+    alert('❌ Erreur lors de l\'actualisation')
+    return false
+  }
+}
+
+// Ouvrir modal de validation
+window.openValidateModal = async (challengeId, title, points) => {
+  document.querySelector('#validate-challenge-title').textContent = title
+  document.querySelector('#validate-challenge-points').textContent = `+${points} pts`
+  document.querySelector('#selected-challenge-id').value = challengeId
+  document.querySelector('#modal-validate-challenge').classList.remove('hidden')
+  document.body.style.overflow = 'hidden'
+  
+  console.log('✅ Utilisateurs disponibles:', allUsers.length)
+}
+
+// Recherche d'utilisateur
+document.querySelector('#validate-user-search')?.addEventListener('input', (e) => {
+  const searchTerm = e.target.value.toLowerCase().trim()
+  const resultsContainer = document.querySelector('#validate-user-results')
+  
+  console.log('🔍 Recherche:', searchTerm, '| Nb users:', allUsers.length)
+  
+  // Debug: afficher les 3 premiers users
+  if (allUsers.length > 0) {
+    console.log('👥 Exemple users:', allUsers.slice(0, 3).map(u => ({ 
+      nom: u.nom, 
+      prenom: u.prenom, 
+      email: u.email 
+    })))
+  }
+  
+  if (searchTerm.length < 2) {
+    resultsContainer.style.display = 'none'
+    return
+  }
+  
+  const filteredUsers = allUsers.filter(user => {
+    // Extraire nom et prénom depuis l'email
+    const rawName = user.email.split('@')[0]
+    const parts = rawName.split('.')
+    const prenom = parts[0] || ''
+    const nom = parts[1] || ''
+    const searchable = `${prenom} ${nom}`.toLowerCase()
+    return nom.toLowerCase().includes(searchTerm) || 
+           prenom.toLowerCase().includes(searchTerm) ||
+           searchable.includes(searchTerm)
+  })
+  
+  console.log('✅ Résultats filtrés:', filteredUsers.length)
+  
+  if (filteredUsers.length === 0) {
+    resultsContainer.innerHTML = '<div class="user-search-result">Aucun utilisateur trouvé</div>'
+    resultsContainer.style.display = 'block'
+    return
+  }
+  
+  resultsContainer.innerHTML = filteredUsers.map(user => {
+    // Extraire nom et prénom depuis l'email
+    const rawName = user.email.split('@')[0]
+    const parts = rawName.split('.')
+    const prenom = parts[0] ? parts[0].charAt(0).toUpperCase() + parts[0].slice(1) : ''
+    const nom = parts[1] ? parts[1].charAt(0).toUpperCase() + parts[1].slice(1) : ''
+    const displayName = `${prenom} ${nom}`.trim()
+    
+    return `
+      <div class="user-search-result" onclick="selectUser(${user.id}, '${displayName}', '${user.email}')">
+        ${displayName}
+      </div>
+    `
+  }).join('')
+  resultsContainer.style.display = 'block'
+})
+
+// Sélectionner un utilisateur
+window.selectUser = (userId, userName, userEmail) => {
+  document.querySelector('#selected-user-id').value = userId
+  document.querySelector('#selected-user-name span').textContent = userName
+  document.querySelector('#selected-user-name').style.display = 'block'
+  document.querySelector('#validate-user-results').style.display = 'none'
+  document.querySelector('#validate-user-search').value = userName
+  document.querySelector('#btn-confirm-validate-challenge').disabled = false
+  
+  // Stocker l'email également
+  document.querySelector('#selected-user-id').dataset.email = userEmail
+}
+
+// Annuler validation
+document.querySelector('#btn-cancel-validate-challenge')?.addEventListener('click', () => {
+  document.querySelector('#modal-validate-challenge').classList.add('hidden')
+  document.body.style.overflow = ''
+  document.querySelector('#validate-user-search').value = ''
+  document.querySelector('#validate-user-results').style.display = 'none'
+  document.querySelector('#selected-user-name').style.display = 'none'
+  document.querySelector('#selected-user-id').value = ''
+  document.querySelector('#btn-confirm-validate-challenge').disabled = true
+})
+
+// Confirmer validation
+document.querySelector('#btn-confirm-validate-challenge')?.addEventListener('click', async () => {
+  const challengeId = parseInt(document.querySelector('#selected-challenge-id').value)
+  const userId = parseInt(document.querySelector('#selected-user-id').value)
+  const userEmail = document.querySelector('#selected-user-id').dataset.email
+  const points = parseInt(document.querySelector('#validate-challenge-points').textContent.match(/\d+/)[0])
+  const adminEmail = currentUserEmail // Utiliser la variable globale au lieu de localStorage
+  const challengeTitle = document.querySelector('#validate-challenge-title').textContent
+
+  if (!userId || !challengeId) {
+    alert('Veuillez sélectionner un utilisateur')
+    return
+  }
+  
+  if (!adminEmail) {
+    alert('❌ Erreur: email admin non trouvé')
+    return
+  }
+
+  try {
+    // Vérifier si déjà validé
+    const { data: existing } = await supabase
+      .from('challenge_validations')
+      .select('*')
+      .eq('challenge_id', challengeId)
+      .eq('user_email', userEmail)
+
+    if (existing && existing.length > 0) {
+      alert('❌ Cet utilisateur a déjà validé ce challenge !')
+      return
+    }
+    
+    // Vérifier si le challenge a déjà été validé par quelqu'un d'autre
+    const { data: anyValidation } = await supabase
+      .from('challenge_validations')
+      .select('*')
+      .eq('challenge_id', challengeId)
+
+    if (anyValidation && anyValidation.length > 0) {
+      alert('❌ Ce challenge a déjà été validé par quelqu\'un d\'autre !')
+      return
+    }
+
+    // Ajouter la validation
+    const { error: validError } = await supabase.from('challenge_validations').insert([{
+      challenge_id: challengeId,
+      user_id: userId,
+      user_email: userEmail,
+      validated_by_admin: adminEmail
+    }])
+
+    if (validError) throw validError
+
+    // Ajouter les points à l'utilisateur
+    const { data: userData } = await supabase.from('etudiants').select('solde').eq('email', userEmail).single()
+    const newSolde = (userData?.solde || 0) + points
+
+    const { error: updateError } = await supabase.from('etudiants').update({ solde: newSolde }).eq('email', userEmail)
+    if (updateError) throw updateError
+
+    // Enregistrer la transaction
+    await supabase.from('transactions').insert([{
+      destinataire_email: userEmail,
+      montant: points,
+      raison: `Challenge: ${challengeTitle}`,
+      admin_email: adminEmail
+    }])
+
+    alert('✅ Challenge validé avec succès !')
+    document.querySelector('#modal-validate-challenge').classList.add('hidden')
+    document.body.style.overflow = ''
+    document.querySelector('#validate-user-search').value = ''
+    document.querySelector('#validate-user-results').style.display = 'none'
+    document.querySelector('#selected-user-name').style.display = 'none'
+    document.querySelector('#selected-user-id').value = ''
+    document.querySelector('#btn-confirm-validate-challenge').disabled = true
+    
+    await loadChallenges()
+    
+    // Rafraîchir le leaderboard si on est sur la page campagne
+    if (document.querySelector('#section-campagne').classList.contains('active')) {
+      loadLeaderboard()
+    }
+  } catch (error) {
+    console.error('Erreur lors de la validation:', error)
+    alert('❌ Erreur lors de la validation du challenge')
+  }
+})
+
+// Supprimer un challenge
+window.deleteChallenge = async (challengeId) => {
+  console.log('🗑️ Tentative de suppression:', { jeSuisBoutiqueManager, modeEdition, challengeId })
+  
+  if (!jeSuisBoutiqueManager || !modeEdition) {
+    alert('❌ Activez le Mode Édition pour supprimer des challenges')
+    return
+  }
+
+  try {
+    // D'abord récupérer le challenge pour savoir s'il est publié
+    const { data: challenge, error: fetchError } = await supabase
+      .from('challenges')
+      .select('published')
+      .eq('id', challengeId)
+      .single()
+    
+    if (fetchError) throw fetchError
+
+    // Si le challenge n'est pas encore publié, le supprimer directement
+    if (!challenge.published) {
+      if (!confirm('Supprimer ce challenge définitivement ?')) {
+        return
+      }
+
+      const { error } = await supabase
+        .from('challenges')
+        .delete()
+        .eq('id', challengeId)
+      
+      if (error) throw error
+      
+      alert('✅ Challenge supprimé définitivement')
+      await loadChallenges()
+      return
+    }
+
+    // Si le challenge est déjà publié, le marquer pour suppression différée
+    if (!confirm('Supprimer ce challenge ? (Il sera supprimé pour tout le monde quand vous cliquerez sur Actualiser)')) {
+      return
+    }
+
+    const { error } = await supabase
+      .from('challenges')
+      .update({ admin_deleted: true })
+      .eq('id', challengeId)
+      
+    if (error) throw error
+
+    alert('✅ Challenge supprimé de votre vue. Cliquez sur "Actualiser" pour appliquer la suppression à tout le monde.')
+    await loadChallenges()
+  } catch (error) {
+    console.error('Erreur lors de la suppression:', error)
+    alert('❌ Erreur lors de la suppression')
+  }
+}
+
+// Charger les challenges quand on arrive sur la section
+const observerChallenge = new MutationObserver(() => {
+  const challengeSection = document.querySelector('#section-challenge')
+  if (challengeSection && challengeSection.classList.contains('active')) {
+    loadChallenges()
+  }
+})
+
+if (document.querySelector('#section-challenge')) {
+  observerChallenge.observe(document.querySelector('#section-challenge'), {
+    attributes: true,
+    attributeFilter: ['class']
+  })
+}
+
+// Gestion du modal de programmation - VERSION SIMPLIFIÉE
+let currentSyncType = '' // 'challenges' ou 'boutique'
+
+document.querySelector('#btn-cancel-schedule')?.addEventListener('click', () => {
+  document.querySelector('#modal-schedule-sync').classList.add('hidden')
+  document.querySelector('#schedule-zone').style.display = 'none'
+  document.body.style.overflow = ''
+  currentSyncType = ''
+})
+
+// Bouton Actualiser Boutique
+document.querySelector('#btn-actualiser-boutique')?.addEventListener('click', () => {
+  currentSyncType = 'boutique'
+  document.querySelector('#modal-sync-title').textContent = '📢 Actualiser la Boutique'
+  document.querySelector('#modal-sync-subtitle').textContent = 'Synchroniser maintenant ou programmer ?'
+  document.querySelector('#modal-schedule-sync').classList.remove('hidden')
+  document.body.style.overflow = 'hidden'
+})
+
+// Bouton Actualiser Challenges
+document.querySelector('#btn-actualiser-challenges')?.addEventListener('click', () => {
+  currentSyncType = 'challenges'
+  document.querySelector('#modal-sync-title').textContent = '📢 Actualiser les Défis'
+  document.querySelector('#modal-sync-subtitle').textContent = 'Synchroniser maintenant ou programmer ?'
+  document.querySelector('#modal-schedule-sync').classList.remove('hidden')
+  document.body.style.overflow = 'hidden'
+})
+
+// Bouton MAINTENANT
+document.querySelector('#btn-sync-now')?.addEventListener('click', async () => {
+  const confirmation = confirm(`⚠️ Synchroniser ${currentSyncType === 'challenges' ? 'les défis' : 'la boutique'} MAINTENANT ?\\n\\nToutes les modifications (ajouts ET suppressions) seront appliquées pour tout le monde.`)
+  if (!confirmation) return
+  
+  if (currentSyncType === 'challenges') {
+    await synchroniserChallenges()
+  } else if (currentSyncType === 'boutique') {
+    await synchroniserBoutique()
+  }
+  
+  document.querySelector('#modal-schedule-sync').classList.add('hidden')
+  document.body.style.overflow = ''
+  currentSyncType = ''
+})
+
+// Bouton PROGRAMMER
+document.querySelector('#btn-sync-schedule')?.addEventListener('click', () => {
+  document.querySelector('#schedule-zone').style.display = 'block'
+})
+
+// Mise à jour de l'aperçu de la date
+document.querySelector('#sync-datetime')?.addEventListener('change', (e) => {
+  const datetime = e.target.value
+  const preview = document.querySelector('#sync-preview')
+  
+  if (datetime) {
+    const date = new Date(datetime)
+    preview.textContent = `📅 Programmé pour le ${date.toLocaleDateString('fr-FR', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })}`
+    preview.style.display = 'block'
+  } else {
+    preview.style.display = 'none'
+  }
+})
+
+// Confirmer la programmation
+document.querySelector('#btn-confirm-schedule-final')?.addEventListener('click', async () => {
+  const datetime = document.querySelector('#sync-datetime').value
+  
+  if (!datetime) {
+    alert('⚠️ Veuillez sélectionner une date et heure')
+    return
+  }
+  
+  const scheduledDate = new Date(datetime)
+  const now = new Date()
+  
+  if (scheduledDate <= now) {
+    alert('⚠️ La date doit être dans le futur')
+    return
+  }
+  
+  const delay = scheduledDate - now
+  
+  if (confirm(`Programmer la synchronisation pour le ${scheduledDate.toLocaleString('fr-FR')} ?`)) {
+    // Programmer avec setTimeout
+    setTimeout(async () => {
+      if (currentSyncType === 'challenges') {
+        await synchroniserChallenges()
+      } else if (currentSyncType === 'boutique') {
+        await synchroniserBoutique()
+      }
+    }, delay)
+    
+    alert(`✅ Synchronisation programmée pour le ${scheduledDate.toLocaleString('fr-FR')}`)
+    document.querySelector('#modal-schedule-sync').classList.add('hidden')
+    document.querySelector('#schedule-zone').style.display = 'none'
+    document.body.style.overflow = ''
+    
+    // Réinitialiser
+    document.querySelector('#sync-datetime').value = ''
+    document.querySelector('#sync-preview').style.display = 'none'
+    currentSyncType = ''
+  }
+})
+
+// Menu 3 points pour les challenges
+window.ouvrirMenuChallenge = (challengeId) => {
+  document.querySelector('#menu-challenge-id').value = challengeId
+  document.querySelector('#modal-menu-challenge').classList.remove('hidden')
+  document.body.style.overflow = 'hidden'
+}
+
+// Annuler menu challenge
+document.querySelector('#btn-annuler-menu-challenge')?.addEventListener('click', () => {
+  document.querySelector('#modal-menu-challenge').classList.add('hidden')
+  document.body.style.overflow = ''
+})
+
+// Modifier challenge
+document.querySelector('#btn-modifier-challenge')?.addEventListener('click', () => {
+  document.querySelector('#modal-menu-challenge').classList.add('hidden')
+  document.body.style.overflow = ''
+  alert('🚧 Fonction de modification à venir')
+  // TODO: Implémenter la modification
+})
+
+// Supprimer challenge depuis le menu
+document.querySelector('#btn-supprimer-challenge-menu')?.addEventListener('click', () => {
+  const challengeId = document.querySelector('#menu-challenge-id').value
+  document.querySelector('#modal-menu-challenge').classList.add('hidden')
+  document.body.style.overflow = ''
+  deleteChallenge(parseInt(challengeId))
 })
 
 checkSession()

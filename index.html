@@ -469,10 +469,12 @@
   </head>
   <body>
     <!-- Menu Hamburger -->
-    <div id="hamburger-menu" style="position: fixed; top: 20px; left: 20px; z-index: 2000; cursor: pointer; background: rgba(255, 255, 255, 0.95); padding: 12px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease; display: none;">
-      <div style="width: 30px; height: 3px; background: #e74c3c; margin: 6px 0; border-radius: 2px; transition: all 0.3s ease;"></div>
-      <div style="width: 30px; height: 3px; background: #e74c3c; margin: 6px 0; border-radius: 2px; transition: all 0.3s ease;"></div>
-      <div style="width: 30px; height: 3px; background: #e74c3c; margin: 6px 0; border-radius: 2px; transition: all 0.3s ease;"></div>
+    <div style="position: fixed; top: 20px; left: 20px; z-index: 2000; display: flex; gap: 10px; align-items: center;">
+      <div id="hamburger-menu" style="cursor: pointer; background: rgba(255, 255, 255, 0.95); padding: 12px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease; display: none;">
+        <div style="width: 30px; height: 3px; background: #e74c3c; margin: 6px 0; border-radius: 2px; transition: all 0.3s ease;"></div>
+        <div style="width: 30px; height: 3px; background: #e74c3c; margin: 6px 0; border-radius: 2px; transition: all 0.3s ease;"></div>
+        <div style="width: 30px; height: 3px; background: #e74c3c; margin: 6px 0; border-radius: 2px; transition: all 0.3s ease;"></div>
+      </div>
     </div>
 
     <!-- Sidebar Navigation -->
@@ -491,6 +493,13 @@
             <path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />
           </svg>
           Campagne
+        </a>
+        
+        <a href="#challenge" class="sidebar-item" data-section="challenge" style="display: flex; align-items: center; padding: 18px 25px; color: #333; text-decoration: none; font-weight: 600; font-size: 30px; transition: all 0.3s ease; border-left: 4px solid transparent;">
+          <svg style="width: 24px; height: 24px; margin-right: 15px; fill: #e74c3c;" viewBox="0 0 24 24">
+            <path d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" />
+          </svg>
+          Challenge
         </a>
         
         <a href="#nous" class="sidebar-item" data-section="nous" style="display: flex; align-items: center; padding: 18px 25px; color: #333; text-decoration: none; font-weight: 600; font-size: 30px; transition: all 0.3s ease; border-left: 4px solid transparent;">
@@ -513,7 +522,19 @@
           </svg>
           Programme
         </a>
+        
+        <a href="#prod" class="sidebar-item" data-section="prod" style="display: flex; align-items: center; padding: 18px 25px; color: #333; text-decoration: none; font-weight: 600; font-size: 30px; transition: all 0.3s ease; border-left: 4px solid transparent;">
+          <svg style="width: 24px; height: 24px; margin-right: 15px; fill: #e74c3c;" viewBox="0 0 24 24">
+            <path d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z" />
+          </svg>
+          Prod
+        </a>
       </nav>
+
+      <!-- Bouton Mode Édition (Super Admin) -->
+      <button id="btn-toggle-edit-mode" style="margin: 20px; padding: 15px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease; display: none; width: calc(100% - 40px);">
+        <span id="edit-mode-icon">🔒</span> <span id="edit-mode-text">Mode Édition</span>
+      </button>
 
       <!-- Footer Sidebar -->
       <div style="margin-top: auto; padding: 20px; border-top: 2px solid rgba(231, 76, 60, 0.2); background: rgba(232, 212, 186, 0.5);">
@@ -522,7 +543,7 @@
     </div>
 
     <!-- Overlay pour fermer la sidebar -->
-    <div id="sidebar-overlay" onclick="toggleSidebar()" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1998; opacity: 0; visibility: hidden; transition: all 0.3s ease;"></div>
+    <div id="sidebar-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1998; opacity: 0; visibility: hidden; transition: all 0.3s ease;"></div>
 
     <div id="app">
       
@@ -1038,6 +1059,134 @@
           </div>
         </div>
 
+        <!-- Section Prod -->
+        <div id="section-prod" class="section-content" style="position: relative;">
+          <!-- Décorations arrière-plan -->
+          <img src="/decoration/1.png" alt="" style="position: absolute; top: 5%; right: 18%; width: 95px; opacity: 0.10; pointer-events: none; z-index: 0; transform: rotate(20deg);">
+          <img src="/decoration/2.png" alt="" style="position: absolute; top: 25%; left: 10%; width: 85px; opacity: 0.08; pointer-events: none; z-index: 0; transform: rotate(-15deg);">
+          <img src="/decoration/3.png" alt="" style="position: absolute; bottom: 40%; left: 8%; width: 88px; opacity: 0.09; pointer-events: none; z-index: 0; transform: rotate(-25deg);">
+          <img src="/decoration/4.png" alt="" style="position: absolute; top: 60%; right: 12%; width: 90px; opacity: 0.10; pointer-events: none; z-index: 0; transform: rotate(15deg);">
+          <img src="/decoration/5.png" alt="" style="position: absolute; top: 80%; right: 5%; width: 92px; opacity: 0.11; pointer-events: none; z-index: 0; transform: rotate(35deg);">
+          
+          <div style="position: relative; z-index: 1;">
+            <!-- Banderolle titre -->
+            <div style="margin: 15px -20px 25px -20px; width: calc(100% + 40px); background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 20px; box-shadow: 0 8px 25px rgba(62, 39, 35, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.5); border-top: 3px solid rgba(62, 39, 35, 0.15); border-bottom: 3px solid rgba(62, 39, 35, 0.15); position: relative; text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px;">
+              <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2210%22 cy=%2210%22 r=%221%22 fill=%22rgba(62,39,35,0.05)%22/%3E%3C/svg%3E') repeat; opacity: 0.3; pointer-events: none;"></div>
+              <h1 style="margin: 0; background: linear-gradient(135deg, #3E2723 0%, #8B4513 50%, #D2691E 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 3.8rem; font-weight: 900; letter-spacing: 2px; font-family: 'Tribeca', sans-serif; position: relative; filter: drop-shadow(0 4px 8px rgba(62, 39, 35, 0.3)); white-space: nowrap; line-height: 1;">NOS PRODUCTIONS</h1>
+            </div>
+            
+            <!-- Vidéo principale - Le Film -->
+            <div style="background: rgba(255, 255, 255, 0.95); padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h2 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 28px; margin: 0 0 15px 0; text-align: center;">🎬 Notre Film</h2>
+              <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
+                <video controls poster="/videos/film-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
+                  <source src="/videos/film.mp4" type="video/mp4">
+                  Votre navigateur ne supporte pas la vidéo.
+                </video>
+              </div>
+            </div>
+            
+            <!-- Grille des clips horizontaux -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+              <!-- Clip Capote -->
+              <div style="background: rgba(255, 255, 255, 0.95); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 20px; margin: 0 0 10px 0; text-align: center;">🎵 Capote</h3>
+                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
+                  <video controls poster="/videos/capote-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
+                    <source src="/videos/capote.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la vidéo.
+                  </video>
+                </div>
+              </div>
+              
+              <!-- Clip Ember -->
+              <div style="background: rgba(255, 255, 255, 0.95); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 20px; margin: 0 0 10px 0; text-align: center;">🔥 Ember</h3>
+                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
+                  <video controls poster="/videos/ember-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
+                    <source src="/videos/ember.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la vidéo.
+                  </video>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Vidéos verticales -->
+            <h2 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 24px; margin: 25px 0 15px 0; text-align: center;">📱 Nos Publicités</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+              <!-- Publicité Ali Baba -->
+              <div style="background: rgba(255, 255, 255, 0.95); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 18px; margin: 0 0 10px 0; text-align: center;">🥙 Ali Baba Kebab</h3>
+                <div style="position: relative; padding-bottom: 177.78%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
+                  <video controls poster="/videos/alibaba-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
+                    <source src="/videos/alibaba.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la vidéo.
+                  </video>
+                </div>
+              </div>
+              
+              <!-- Publicité Kainf Burger -->
+              <div style="background: rgba(255, 255, 255, 0.95); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 18px; margin: 0 0 10px 0; text-align: center;">🍔 Kainf Burger</h3>
+                <div style="position: relative; padding-bottom: 177.78%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
+                  <video controls poster="/videos/kainf-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
+                    <source src="/videos/kainf.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la vidéo.
+                  </video>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section Challenge -->
+        <div id="section-challenge" class="section-content" style="position: relative;">
+          <!-- Décorations arrière-plan -->
+          <img src="/decoration/1.png" alt="" style="position: absolute; top: 5%; right: 18%; width: 95px; opacity: 0.10; pointer-events: none; z-index: 0; transform: rotate(20deg);">
+          <img src="/decoration/3.png" alt="" style="position: absolute; bottom: 30%; left: 8%; width: 88px; opacity: 0.09; pointer-events: none; z-index: 0; transform: rotate(-25deg);">
+          <img src="/decoration/5.png" alt="" style="position: absolute; top: 45%; right: 5%; width: 92px; opacity: 0.11; pointer-events: none; z-index: 0; transform: rotate(35deg);">
+          
+          <div class="challenge-section">
+            <div class="challenge-header-banner">
+              <h1 class="section-title">CHALLENGES QUOTIDIENS</h1>
+            </div>
+            <p class="section-subtitle">Relève les défis et gagne des Wbucks !</p>
+            
+            <!-- Onglets de difficulté -->
+            <div class="challenge-tabs">
+              <button class="challenge-tab active" data-difficulty="50">
+                <span class="tab-emoji">💰</span>
+                <span class="tab-text">50 Points</span>
+              </button>
+              <button class="challenge-tab" data-difficulty="150">
+                <span class="tab-emoji">💰💰</span>
+                <span class="tab-text">150 Points</span>
+              </button>
+              <button class="challenge-tab" data-difficulty="300">
+                <span class="tab-emoji">💰💰💰</span>
+                <span class="tab-text">300 Points</span>
+              </button>
+            </div>
+            
+            <!-- Boutons Admin (Super Admin seulement) -->
+            <div style="display: flex; gap: 10px; margin: 20px 0;">
+              <button id="btn-add-challenge" class="btn-add-challenge hidden" style="flex: 1;">
+                ➕ Ajouter un Challenge
+              </button>
+              <button id="btn-actualiser-challenges" class="btn-publish-challenges hidden" style="flex: 1;">
+                📢 Actualiser
+              </button>
+            </div>
+            
+            <!-- Liste des challenges -->
+            <div id="challenges-container">
+              <div id="challenges-50" class="challenges-list active"></div>
+              <div id="challenges-150" class="challenges-list"></div>
+              <div id="challenges-300" class="challenges-list"></div>
+            </div>
+          </div>
+        </div>
+
         <!-- Section Campagne (contenu existant) -->
         <div id="section-campagne" class="section-content active" style="overflow-x: hidden; position: relative;">
         <!-- Cadre solde en haut à droite -->
@@ -1078,10 +1227,15 @@
 
         <!-- Écran Boutique -->
         <div id="boutique-screen" style="display: none;">
-          <!-- Bouton actualiser pour admin -->
-          <button id="btn-actualiser-boutique" class="hidden" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; padding: 12px 20px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 15px; width: 100%; box-shadow: 0 3px 10px rgba(52,152,219,0.3);">
-            🔄 Actualiser la boutique pour tous
-          </button>
+          <!-- Boutons Admin (en haut) -->
+          <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <button id="btn-ajouter-objet" class="hidden" style="flex: 1; background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; padding: 12px 20px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 3px 10px rgba(231,76,60,0.3);">
+              ➕ Ajouter un Objet
+            </button>
+            <button id="btn-actualiser-boutique" class="hidden" style="flex: 1; background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; padding: 12px 20px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 3px 10px rgba(52,152,219,0.3);">
+              📢 Actualiser
+            </button>
+          </div>
           
           <h2 class="titre-page" style="text-align: center; margin-bottom: 20px; font-size: 1.5rem;">Notre Boutique</h2>
           
@@ -1089,9 +1243,6 @@
           <div id="objets-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; margin-bottom: 80px; grid-auto-flow: dense;">
             <!-- Les objets seront générés en JS -->
           </div>
-          
-          <!-- Bouton flottant pour ajouter (admin seulement) -->
-          <button id="btn-ajouter-objet-flottant" class="hidden" style="position: fixed; bottom: 80px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background: #e74c3c; color: white; border: none; font-size: 30px; cursor: pointer; box-shadow: 0 4px 15px rgba(231,76,60,0.4); z-index: 100; display: flex; align-items: center; justify-content: center; line-height: 1;">+</button>
         </div>
 
         <!-- Écran Moi -->
@@ -1305,6 +1456,115 @@
         <div class="modal-content" style="max-width: 90vw; max-height: 90vh; padding: 0; background: transparent; box-shadow: none;">
           <img id="pole-photo-large" src="" alt="" style="width: 100%; height: auto; max-height: 90vh; object-fit: contain; border-radius: 15px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);">
           <button id="btn-close-pole-photo" style="position: absolute; top: 10px; right: 10px; background: #e74c3c; color: white; width: 60px; height: 60px; border: none; border-radius: 50%; font-size: 32px; cursor: pointer; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); font-weight: bold; display: flex; align-items: center; justify-content: center; line-height: 1;">×</button>
+        </div>
+      </div>
+
+      <!-- Modal Ajouter Challenge -->
+      <div id="modal-add-challenge" class="modal hidden">
+        <div class="modal-content">
+          <h3>➕ Ajouter un Challenge</h3>
+          
+          <label>Niveau de difficulté (détermine les points)</label>
+          <select id="challenge-difficulty" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+            <option value="50">💰 50 Points</option>
+            <option value="150">💰💰 150 Points</option>
+            <option value="300">💰💰💰 300 Points</option>
+          </select>
+          
+          <label>Titre du challenge</label>
+          <input type="text" id="challenge-title" placeholder="Ex: Boire 2L d'eau" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px;">
+          
+          <label>Description</label>
+          <textarea id="challenge-description" placeholder="Détails du challenge..." style="width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px; min-height: 80px; font-family: inherit; resize: vertical;"></textarea>
+          
+          <div class="modal-buttons">
+            <button id="btn-cancel-add-challenge" style="background:#999; flex: 1;">Annuler</button>
+            <button id="btn-confirm-add-challenge" style="background:#27ae60; flex: 1;">Ajouter</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Valider Challenge -->
+      <div id="modal-validate-challenge" class="modal hidden">
+        <div class="modal-content">
+          <h3>✅ Valider le Challenge</h3>
+          <p id="validate-challenge-title" style="font-weight: bold; color: #e74c3c; margin: 15px 0;"></p>
+          <p id="validate-challenge-points" style="color: #27ae60; font-size: 20px; font-weight: bold; margin: 10px 0;"></p>
+          
+          <label>Chercher l'utilisateur</label>
+          <input type="text" id="validate-user-search" placeholder="Commence à taper un nom..." style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px;">
+          
+          <div id="validate-user-results" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; display: none;">
+            <!-- Les résultats de recherche apparaîtront ici -->
+          </div>
+          
+          <p id="selected-user-name" style="display: none; background: #e8f5e9; padding: 10px; border-radius: 8px; color: #27ae60; font-weight: bold; margin-bottom: 15px;">
+            Utilisateur sélectionné : <span></span>
+          </p>
+          
+          <input type="hidden" id="selected-user-id">
+          <input type="hidden" id="selected-challenge-id">
+          
+          <div class="modal-buttons">
+            <button id="btn-cancel-validate-challenge" style="background:#999; flex: 1;">Annuler</button>
+            <button id="btn-confirm-validate-challenge" style="background:#27ae60; flex: 1;" disabled>Valider</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Menu Challenge (3 points) -->
+      <div id="modal-menu-challenge" class="modal hidden">
+        <div class="modal-content">
+          <h3>⚙️ Gérer le Challenge</h3>
+          <input type="hidden" id="menu-challenge-id">
+          
+          <button id="btn-modifier-challenge" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #3498db, #2980b9); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 10px; font-size: 16px;">
+            ✏️ Modifier
+          </button>
+          
+          <button id="btn-supprimer-challenge-menu" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 10px; font-size: 16px;">
+            🗑️ Supprimer
+          </button>
+          
+          <button id="btn-annuler-menu-challenge" style="width: 100%; padding: 12px; background: #999; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">
+            Annuler
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Programmer Actualisation -->
+      <div id="modal-schedule-sync" class="modal hidden">
+        <div class="modal-content">
+          <h3 id="modal-sync-title">📢 Actualiser</h3>
+          <p style="color: #666; margin-bottom: 20px;" id="modal-sync-subtitle">Choisissez quand synchroniser vos modifications</p>
+          
+          <input type="hidden" id="sync-type">
+          
+          <!-- Choix : Maintenant ou Programmer -->
+          <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+            <button id="btn-sync-now" style="flex: 1; padding: 15px; background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">
+              Maintenant
+            </button>
+            <button id="btn-sync-schedule" style="flex: 1; padding: 15px; background: linear-gradient(135deg, #2196F3, #1976D2); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">
+              Programmer
+            </button>
+          </div>
+          
+          <!-- Zone de programmation (cachée par défaut) -->
+          <div id="schedule-zone" style="display: none;">
+            <label>Date et heure de synchronisation</label>
+            <input type="datetime-local" id="sync-datetime" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+            
+            <p id="sync-preview" style="background: #e3f2fd; padding: 10px; border-radius: 8px; font-size: 14px; display: none; margin-bottom: 15px;"></p>
+            
+            <button id="btn-confirm-schedule-final" style="width: 100%; padding: 15px; background: #2196F3; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">
+              ✅ Confirmer la programmation
+            </button>
+          </div>
+          
+          <button id="btn-cancel-schedule" style="width: 100%; padding: 12px; background: #999; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px;">
+            Annuler
+          </button>
         </div>
       </div>
 
