@@ -3,6 +3,15 @@ import './sections.css'
 import { supabase } from './supabaseClient'
 import { initEcocup3D } from './ecocup3d'
 
+// Forcer le z-index du compteur au-dessus de tout
+document.addEventListener('DOMContentLoaded', () => {
+  const soldeHeader = document.querySelector('#solde-header')
+  if (soldeHeader) {
+    soldeHeader.style.zIndex = '999999'
+    soldeHeader.style.position = 'fixed'
+  }
+})
+
 // ==================== GESTION DE LA SIDEBAR ====================
 const hamburgerMenu = document.querySelector('#hamburger-menu')
 const sidebar = document.querySelector('#sidebar')
@@ -32,8 +41,16 @@ function toggleSidebar() {
     sidebarOverlay.style.opacity = '1'
     sidebarOverlay.style.visibility = 'visible'
     hamburgerMenu.classList.add('active')
-    // Descendre le compteur Wbuck sur mobile
+    
+    // Sur mobile uniquement
     if (window.innerWidth < 768) {
+      // Déplacer le hamburger vers la droite avec transition
+      const hamburgerContainer = document.querySelector('#hamburger-container')
+      if (hamburgerContainer) {
+        hamburgerContainer.style.left = 'calc(85vw + 12px)'
+      }
+      
+      // Descendre le compteur Wbuck
       setTimeout(() => {
         const soldeHeader = document.querySelector('#solde-header')
         if (soldeHeader) {
@@ -49,8 +66,16 @@ function toggleSidebar() {
     sidebarOverlay.style.opacity = '0'
     sidebarOverlay.style.visibility = 'hidden'
     hamburgerMenu.classList.remove('active')
-    // Remonter le compteur Wbuck sur mobile
+    
+    // Sur mobile uniquement
     if (window.innerWidth < 768) {
+      // Remettre le hamburger à gauche avec transition
+      const hamburgerContainer = document.querySelector('#hamburger-container')
+      if (hamburgerContainer) {
+        hamburgerContainer.style.left = '20px'
+      }
+      
+      // Remonter le compteur Wbuck
       setTimeout(() => {
         const soldeHeader = document.querySelector('#solde-header')
         if (soldeHeader) {
@@ -130,12 +155,25 @@ sidebarItems.forEach(item => {
 function handleSectionChange(section) {
   // Masquer toutes les sections
   const sections = document.querySelectorAll('.section-content')
-  sections.forEach(s => s.classList.remove('active'))
+  sections.forEach(s => {
+    s.classList.remove('active')
+    s.classList.remove('section-enter')
+  })
   
-  // Afficher la section demandée
+  // Afficher la section demandée avec un léger délai pour permettre au navigateur de se préparer
   const targetSection = document.querySelector(`#section-${section}`)
   if (targetSection) {
-    targetSection.classList.add('active')
+    // Utiliser requestAnimationFrame pour un rendu plus fluide
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        targetSection.classList.add('active')
+        targetSection.classList.add('section-enter')
+        // Retirer la classe après l'animation pour qu'elle ne se répète pas
+        setTimeout(() => {
+          targetSection.classList.remove('section-enter')
+        }, 500)
+      })
+    })
   }
   
   // Masquer les écrans boutique et moi qui ne font pas partie du système de sections
@@ -176,7 +214,7 @@ const membersData = {
     name: 'Victor Lavieville',
     role: 'Président',
     pole: 'Le Bureau',
-    description: 'Parti de 0, je suis passé par respo évent, trèz, puis vice-prez pendant 1 mois, pour au final devenir Président de Wild Ember. ',
+    description: 'Parti de 0, je suis passé par respo évent, trez, puis vice-prez pendant 1 mois, pour au final devenir Président de Wild Ember. ',
     photo: '/photos/compresse/Victor.jpg',
     contact: [],
     facebook: 'https://www.facebook.com/profile.php?id=100093944988385&locale=fr_FR'
@@ -194,7 +232,7 @@ const membersData = {
     name: 'Enekio Olhagaray',
     role: 'Trésorier',
     pole: 'Le Bureau',
-    description: ' Si j\'ai un seul truc à dire,c\'est merci Boursobank pour vos parrainages sinon on était cook!!',
+    description: ' Si j\'ai un seul truc à dire, c\'est merci Boursobank pour vos parrainages sinon on était cook ! !',
     photo: '/photos/compresse/Enekio.jpg',
     contact: [],
     facebook: 'https://www.facebook.com/profile.php?id=61565158467716&locale=fr_FR'
@@ -221,7 +259,7 @@ const membersData = {
     name: 'Félix Perrier',
     role: 'Respo Comm',
     pole: 'Pôle Communication',
-    description: 'Anciennement connu comme le plus gros paresseux dans le pôle com des Pearls, j\'ai redoublé de travail pour proposer une Comm à la hauteur de Wild Ember !',
+    description: 'Anciennement connu comme le plus gros paresseux dans le pôle com de Pearl, j\'ai redoublé de travail pour proposer une Comm à la hauteur de Wild Ember ! ',
     photo: '/photos/compresse/Felix.jpg',
     contact: [],
     facebook: 'https://www.facebook.com/felix.perruer?locale=fr_FR'
@@ -230,7 +268,7 @@ const membersData = {
     name: 'Margaux Regnault',
     role: 'Co Respo Comm',
     pole: 'Pôle Communication',
-    description: 'Définitivement l\'IE1 la plus boostée,j\ai entièrement conçu le feed insta des WILD EMBER en y cachant un maximum de référence pour vous régaler!',
+    description: 'Définitivement l\'IE1 la plus boostée, j'ai entièrement conçu le feed insta des WILD EMBER en y cachant un maximum de références pour vous régaler ! ',
     photo: '/photos/compresse/Margaux.jpg',
     contact: [],
     facebook: 'https://www.facebook.com/profile.php?id=61577975832522&locale=fr_FR'
@@ -239,7 +277,7 @@ const membersData = {
     name: 'Nathanaël Fontaine',
     role: 'Comm',
     pole: 'Pôle Communication',
-    description: 'La Comm n\'étant définitivement pas faite pour moi, je suis parti aider mon ami Enekio dans sa récolte obscure d\'argent!!',
+    description: 'La Comm n\'étant définitivement pas faite pour moi, je suis parti aider mon ami Enekio dans sa récolte obscure d\'argent ! !',
     photo: '/photos/compresse/Nathanael.jpg',
     contact: [],
     facebook: 'https://www.facebook.com/profile.php?id=61550998131678&locale=fr_FR'
@@ -248,7 +286,7 @@ const membersData = {
     name: 'Léa Bouquet',
     role: 'Comm',
     pole: 'Pôle Communication',
-    description: 'Bien qu\'ayant un emploi du temps ministre, j\'ai su aider mon pôle comm par ma créativité débordante et mon énergie inépuisable !!',
+    description: 'Bien qu\'ayant un emploi du temps de ministre, j\'ai su aider mon pôle comm par ma créativité débordante et mon énergie inépuisable ! !',
     photo: '/photos/compresse/Lea.jpg',
     contact: [],
     facebook: 'https://www.facebook.com/profile.php?id=100081868824804&locale=fr_FR'
@@ -257,7 +295,7 @@ const membersData = {
     name: 'Ethan Nesen',
     role: 'Comm',
     pole: 'Pôle Communication',
-    description: 'Je n\'ai pas trop la vision en comm, donc j\'ai préféré bâtir à côté mon propre pôle musique pour ambiancer les Wilds!!',
+    description: 'Je n\'ai pas trop la vision en comm, donc j\'ai préféré bâtir à côté mon propre pôle musique pour ambiancer les Wild ! !',
     photo: '/photos/compresse/Ethan.jpg',
     contact: [],
     facebook: 'https://www.facebook.com/profile.php?id=61555701656084&locale=fr_FR'
@@ -266,7 +304,7 @@ const membersData = {
     name: 'Louis Raclin',
     role: 'Respo Event',
     pole: 'Pôle Événementiel',
-    description: 'Je suis un gros bébé qui mange pas mais j\' organise des événements plus que mémorables pour nos campagnes BDI!!',
+    description: 'Je suis un gros bébé qui mange pas mais j\'organise des événements plus que mémorables pour nos campagnes BDI ! !',
     photo: '/photos/compresse/Louis.jpg',
     contact: [],
     facebook: 'https://www.facebook.com/profile.php?id=61564941304268&locale=fr_FR'
@@ -275,7 +313,7 @@ const membersData = {
     name: 'Jeanne Portail',
     role: 'Event',
     pole: 'Pôle Événementiel',
-    description: 'Jongleuse entre la Comm, l\'event, j\'ai finalement trouvé ma place en tant que Respo déco!!',
+    description: 'Jongleuse entre la Comm, l\'event, j\'ai finalement trouvé ma place en tant que Respo déco ! !',
     photo: '/photos/compresse/Jeanne.jpg',
     contact: [],
     facebook: ''
@@ -284,7 +322,7 @@ const membersData = {
     name: 'Sacha Tiberghien',
     role: 'Event',
     pole: 'Pôle Événementiel',
-    description: 'Acteur important du film des Wilds, y a pas grand chose de plus en faite c\'est déjà bien ...',
+    description: 'Acteur important du film des Wilds, y'a pas grand chose de plus en fait c\'est déjà bien...',
     photo: '/photos/compresse/Sacha.jpg',
     contact: [],
     facebook: ''
@@ -293,7 +331,7 @@ const membersData = {
     name: 'Soline Zanatta',
     role: 'Event',
     pole: 'Pôle Événementiel',
-    description: 'Ils ont voulu m\'appeler "Paff ou Puff", alors que je veux juste les Puffs...',
+    description: 'Ils ont voulu m\'appeler "Paff ou Puff", alors que je veux juste les puffs...',
     photo: '/photos/compresse/Soline.jpg',
     contact: [],
     facebook: 'https://www.facebook.com/profile.php?id=61578837955154&locale=fr_FR'
@@ -330,7 +368,7 @@ const membersData = {
     name: 'Max Hareng',
     role: 'Respo DD',
     pole: 'Pôle L3D',
-    description: 'IE1 le plus distrait de la liste, j\'ai repoussé mon travail de DD jusqu\'au bout, le prochain fillot sera la relève!!',
+    description: 'l'IE1 le plus distrait de la liste, j\'ai repoussé mon travail de DD jusqu\'au bout, le prochain fillot sera la relève ! !',
     photo: '/photos/compresse/Max.jpg',
     contact: [],
     facebook: 'https://www.facebook.com/profile.php?id=61556459168175&locale=fr_FR'
@@ -339,7 +377,7 @@ const membersData = {
     name: 'Félix Perrier',
     role: 'Respo Film',
     pole: 'Pôle Production',
-    description: 'Digne de Steven Spielberg, caméra à la main j\'ai capturé les plus beaux moments de Wild Ember !',
+    description: 'Digne de Steven Spielberg, caméra à la main j\'ai capturé les plus beaux moments de Wild Ember ! ',
     photo: '/photos/compresse/Felix.jpg',
     contact: [],
     facebook: 'https://www.facebook.com/felix.perruer?locale=fr_FR'
@@ -348,7 +386,7 @@ const membersData = {
     name: 'Ethan Nesen',
     role: 'Respo Musique',
     pole: 'Pôle Production',
-    description: 'La musique c\'est mon domaine, plusieurs nuits blanches à écrire, poser et tourner des morceaux pour ambiancer les Wilds!!',
+    description: 'La musique c\'est mon domaine, plusieurs nuits blanches à écrire, poser et tourner des morceaux pour ambiancer les Wilds ! !',
     photo: '/photos/compresse/Ethan.jpg',
     contact: [],
     facebook: 'https://www.facebook.com/profile.php?id=61555701656084&locale=fr_FR'
@@ -357,7 +395,7 @@ const membersData = {
     name: 'Félix Perrier',
     role: 'Respo Site',
     pole: 'Pôle Production',
-    description: 'Mesghouni et Dangoumau seraient fière de moi, dommage j\'ai pas laché cette perf au bon moment',
+    description: 'Mesghouni et Dangoumau seraient fiers de moi, dommage j\'ai pas laché cette perf au bon moment',
     photo: '/photos/compresse/Felix.jpg',
     contact: [],
     facebook: 'https://www.facebook.com/felix.perruer?locale=fr_FR'
@@ -2385,15 +2423,12 @@ async function synchroniserChallenges() {
     if (publishError) throw publishError
     console.log(`📢 ${publishedData?.length || 0} challenge(s) publié(s)`, publishedData)
     
-    alert('✅ Challenges actualisés avec succès !')
-    
     // 3. Recharger la section challenges pour mettre à jour l'affichage et le compteur
     await loadChallenges()
     
     return true
   } catch (error) {
     console.error('Erreur lors de l\'actualisation:', error)
-    alert('❌ Erreur lors de l\'actualisation')
     return false
   }
 }
@@ -2559,7 +2594,6 @@ document.querySelector('#btn-confirm-validate-challenge')?.addEventListener('cli
       admin_email: adminEmail
     }])
 
-    alert('✅ Challenge validé avec succès !')
     document.querySelector('#modal-validate-challenge').classList.add('hidden')
     document.body.style.overflow = ''
     document.querySelector('#validate-user-search').value = ''
@@ -2576,7 +2610,6 @@ document.querySelector('#btn-confirm-validate-challenge')?.addEventListener('cli
     }
   } catch (error) {
     console.error('Erreur lors de la validation:', error)
-    alert('❌ Erreur lors de la validation du challenge')
   }
 })
 

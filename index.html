@@ -304,7 +304,7 @@
           top: 12px !important;
           left: 12px !important;
           padding: 8px !important;
-          z-index: 2001 !important;
+          z-index: 99999 !important;
           transition: left 0.3s ease-out !important;
         }
         
@@ -338,10 +338,16 @@
         }
         
         #solde-header {
-          top: 12px !important;
+          top: 12px;
           right: 12px !important;
           padding: 8px 12px !important;
           font-size: 14px !important;
+          transition: top 0.3s ease-out !important;
+          z-index: 999999 !important;
+        }
+        
+        #hamburger-container {
+          z-index: 99999 !important;
         }
         
         #solde-header img {
@@ -464,17 +470,28 @@
           font-size: 14px;
           padding: 10px !important;
         }
+        
+        /* Réduire padding des vidéos sur mobile */
+        .prod-video-card {
+          padding: 8px !important;
+        }
       }
     </style>
   </head>
   <body>
     <!-- Menu Hamburger -->
-    <div style="position: fixed; top: 20px; left: 20px; z-index: 2000; display: flex; gap: 10px; align-items: center;">
-      <div id="hamburger-menu" style="cursor: pointer; background: rgba(255, 255, 255, 0.95); padding: 12px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease; display: none;">
+    <div id="hamburger-container" style="position: fixed; top: 20px; left: 20px; z-index: 99999; display: flex; gap: 10px; align-items: center; transition: left 0.3s ease;">
+      <div id="hamburger-menu" style="cursor: pointer; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 12px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: none;">
         <div style="width: 30px; height: 3px; background: #e74c3c; margin: 6px 0; border-radius: 2px; transition: all 0.3s ease;"></div>
         <div style="width: 30px; height: 3px; background: #e74c3c; margin: 6px 0; border-radius: 2px; transition: all 0.3s ease;"></div>
         <div style="width: 30px; height: 3px; background: #e74c3c; margin: 6px 0; border-radius: 2px; transition: all 0.3s ease;"></div>
       </div>
+    </div>
+
+    <!-- Compteur Wbucks -->
+    <div id="solde-header" style="position: fixed; top: 20px; right: 20px; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 10px 15px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 8px; z-index: 999999 !important; transition: top 0.3s ease;">
+      <span id="solde-header-amount" style="font-size: 18px; font-weight: bold; color: #333;">0</span>
+      <img src="/Wbuck.png" alt="Wbuck" style="width: 24px; height: 24px;" />
     </div>
 
     <!-- Sidebar Navigation -->
@@ -644,7 +661,7 @@
               <div class="group-photo-container">
                 <img src="/photos/compresse/Grouupe.jpg" alt="Wild Ember - Photo de groupe" class="group-photo-img">
                 <div class="group-photo-overlay">
-                  <h1 class="group-photo-title">WILD EMBER</h1>
+                  <h1 class="group-photo-title">WILDEMBER</h1>
                   <p class="group-photo-subtitle">Ensemble, on va tout cramer ! 🔥</p>
                 </div>
               </div>
@@ -661,13 +678,13 @@
                   <span class="pole-label">Le Bureau</span>
                   <h2 class="pole-title">Direction & Coordination</h2>
                   <p class="pole-description">
-                    Ca c'est l'équipe principal, ils organisent les réus, l'administratif, ils récupèrent les sous, mais bon ils gueullent sur tout les gens qui les écoutent pas.
+                    Ça c'est l'équipe principal, ils organisent les réus, l'administratif, ils récupèrent les sous, mais bon ils gueullent sur tout les gens qui les écoutent pas.
                   </p>
                   <div class="pole-members">
-                    <span class="member-tag" data-member="president">Prèz - Victor</span>
-                    <span class="member-tag" data-member="vice-president">Vice-Prèz - Lila</span>
-                    <span class="member-tag" data-member="tresorier">Trèz - Enékio</span>
-                    <span class="member-tag" data-member="secretaire">Scrèz - Camille</span>
+                    <span class="member-tag" data-member="president">Prez - Victor</span>
+                    <span class="member-tag" data-member="vice-president">Vice-Prez - Lila</span>
+                    <span class="member-tag" data-member="tresorier">Trez - Enékio</span>
+                    <span class="member-tag" data-member="secretaire">Screz - Camille</span>
                   </div>
                 </div>
               </div>
@@ -682,7 +699,7 @@
                   <span class="pole-label">Pôle Communication</span>
                   <h2 class="pole-title">Com & Réseaux Sociaux</h2>
                   <p class="pole-description">
-                    ici ça passe des nuits blanches à terminer des visuels ou à finir un site, mais bon bien qu'ils soient un peu bizarre c'est grace à eux qu'on a des goodies aux campagnes donc on les remercie.. 
+                    Ici ça passe des nuits blanches à terminer des visuels ou à finir un site, mais bon bien qu'ils soient un peu bizarres c'est grâce à eux qu'on a des goodies aux campagnes donc on les remercie... 
                   </p>
                   <div class="pole-members">
                     <span class="member-tag" data-member="respocomm">Réspo Comm - Félix</span>
@@ -704,7 +721,7 @@
                   <span class="pole-label">Pôle Évent</span>
                   <h2 class="pole-title">Activités & Animation</h2>
                   <p class="pole-description">
-                    Ici c'est les architectes de vos moments mémorables ! Ils ont conçu et minutieusement préparé tout les évents et recettes des wilds, et tout ça dans le but de vous régaler !!
+                    Ici c'est les architectes de vos moments mémorables ! Ils ont conçu et minutieusement préparé tout les évents et recettes des wilds, et tout ça dans le but de vous régaler ! !
                   </p>
                   <div class="pole-members">
                     <span class="member-tag" data-member="respoevent">Réspo Event - Louis</span>
@@ -865,7 +882,7 @@
                 <div class="merch-image vinyle-container">
                   <div class="vinyle-placeholder">💿</div>
                   <div class="vinyle-overlay">
-                    <span class="vinyle-text">Disponible<br>jeudi aprem</span>
+                    <span class="vinyle-text">Disponible<br>samedi apès-midi</span>
                   </div>
                 </div>
                 <div class="merch-info">
@@ -901,7 +918,7 @@
           <img src="/decoration/6.png" alt="" style="position: absolute; top: 78%; right: 15%; width: 88px; opacity: 0.11; pointer-events: none; z-index: 0; transform: rotate(52deg);">
           <div class="programme-section">
             <div class="programme-header-banner">
-              <h1 class="section-title">MANDAT BDI 2026/2027</h1>
+              <h1 class="section-title">MANDAT BDI<br>2026/2027</h1>
             </div>
             
             <div class="programme-list">
@@ -920,7 +937,7 @@
                 <div id="programme-rdd" class="programme-detail">
                   <ul>
                     <li>Organiser une Remise Des Diplômes qui convient à tous les diplômés de l'Institut Centrale de Lille</li>
-                    <li>Permettre aux diplômés d'amener plus de proche</li>
+                    <li>Permettre aux diplômés d'amener plus de proches</li>
                     <li>Permettre aux diplômés de profiter d'une soirée entre eux + admin et professeurs</li>
                   </ul>
                 </div>
@@ -1023,10 +1040,10 @@
                     <li>Planning clair indiquant le nom de l'étudiant, l'entreprise et le type de mission</li>
                     <li>Clôturer la journée par un temps convivial (mini-buffet) favorisant les échanges</li>
                   </ul>
-                  <h4 style="color: #e74c3c; margin: 15px 0 10px 0; font-size: 16px;">Espace Iteemiens</h4>
+                  <h4 style="color: #e74c3c; margin: 15px 0 10px 0; font-size: 16px;">Espace Iteemien</h4>
                   <ul>
                     <li>Trouver un nom à l'espace réservé aux iteemiens en bas du BAT J</li>
-                    <li>Aménagement : Canapé, Pouf, mange debout, enceinte Bluetooth, lumières LED</li>
+                    <li>Aménagement : Canapé, poufs, mange debout, enceinte Bluetooth, lumières LED</li>
                     <li>Affiche des différents BDI et possibilité de refaire la peinture ou fresque</li>
                   </ul>
                 </div>
@@ -1070,14 +1087,14 @@
           
           <div style="position: relative; z-index: 1;">
             <!-- Banderolle titre -->
-            <div style="margin: 15px -20px 25px -20px; width: calc(100% + 40px); background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 20px; box-shadow: 0 8px 25px rgba(62, 39, 35, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.5); border-top: 3px solid rgba(62, 39, 35, 0.15); border-bottom: 3px solid rgba(62, 39, 35, 0.15); position: relative; text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px;">
+            <div style="margin: 15px 0 25px 0; width: 100vw; margin-left: calc(-50vw + 50%); background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 20px; box-shadow: 0 8px 25px rgba(62, 39, 35, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.5); border-top: 3px solid rgba(62, 39, 35, 0.15); border-bottom: 3px solid rgba(62, 39, 35, 0.15); text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px; overflow: hidden; position: relative;" class="prod-header-banner">
               <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2210%22 cy=%2210%22 r=%221%22 fill=%22rgba(62,39,35,0.05)%22/%3E%3C/svg%3E') repeat; opacity: 0.3; pointer-events: none;"></div>
-              <h1 style="margin: 0; background: linear-gradient(135deg, #3E2723 0%, #8B4513 50%, #D2691E 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 3.8rem; font-weight: 900; letter-spacing: 2px; font-family: 'Tribeca', sans-serif; position: relative; filter: drop-shadow(0 4px 8px rgba(62, 39, 35, 0.3)); white-space: nowrap; line-height: 1;">NOS PRODUCTIONS</h1>
+              <h1 style="margin: 0; background: linear-gradient(135deg, #3E2723 0%, #8B4513 50%, #D2691E 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: clamp(2.2rem, 7vw, 7rem); font-weight: 900; letter-spacing: 2px; font-family: 'Tribeca', sans-serif; position: relative; filter: drop-shadow(0 4px 8px rgba(62, 39, 35, 0.3)); white-space: nowrap; line-height: 1; z-index: 1;">PRODUCTIONS</h1>
             </div>
             
             <!-- Vidéo principale - Le Film -->
-            <div style="background: rgba(255, 255, 255, 0.95); padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-              <h2 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 28px; margin: 0 0 15px 0; text-align: center;">🎬 Notre Film</h2>
+            <div class="prod-video-card" style="background: linear-gradient(135deg, rgba(245, 230, 211, 0.95) 0%, rgba(232, 212, 186, 0.95) 100%); padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h2 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 28px; margin: 0 0 15px 0; text-align: center;">Notre Film</h2>
               <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
                 <video controls poster="/videos/film-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
                   <source src="/videos/film.mp4" type="video/mp4">
@@ -1089,8 +1106,8 @@
             <!-- Grille des clips horizontaux -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
               <!-- Clip Capote -->
-              <div style="background: rgba(255, 255, 255, 0.95); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 20px; margin: 0 0 10px 0; text-align: center;">🎵 Capote</h3>
+              <div class="prod-video-card" style="background: linear-gradient(135deg, rgba(245, 230, 211, 0.95) 0%, rgba(232, 212, 186, 0.95) 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 20px; margin: 0 0 10px 0; text-align: center;">Capote</h3>
                 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
                   <video controls poster="/videos/capote-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
                     <source src="/videos/capote.mp4" type="video/mp4">
@@ -1100,8 +1117,8 @@
               </div>
               
               <!-- Clip Ember -->
-              <div style="background: rgba(255, 255, 255, 0.95); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 20px; margin: 0 0 10px 0; text-align: center;">🔥 Ember</h3>
+              <div class="prod-video-card" style="background: linear-gradient(135deg, rgba(245, 230, 211, 0.95) 0%, rgba(232, 212, 186, 0.95) 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 20px; margin: 0 0 10px 0; text-align: center;">Ember</h3>
                 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
                   <video controls poster="/videos/ember-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
                     <source src="/videos/ember.mp4" type="video/mp4">
@@ -1112,11 +1129,10 @@
             </div>
             
             <!-- Vidéos verticales -->
-            <h2 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 24px; margin: 25px 0 15px 0; text-align: center;">📱 Nos Publicités</h2>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
               <!-- Publicité Ali Baba -->
-              <div style="background: rgba(255, 255, 255, 0.95); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 18px; margin: 0 0 10px 0; text-align: center;">🥙 Ali Baba Kebab</h3>
+              <div class="prod-video-card" style="background: linear-gradient(135deg, rgba(245, 230, 211, 0.95) 0%, rgba(232, 212, 186, 0.95) 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 18px; margin: 0 0 10px 0; text-align: center;">Ali Baba</h3>
                 <div style="position: relative; padding-bottom: 177.78%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
                   <video controls poster="/videos/alibaba-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
                     <source src="/videos/alibaba.mp4" type="video/mp4">
@@ -1126,8 +1142,8 @@
               </div>
               
               <!-- Publicité Kainf Burger -->
-              <div style="background: rgba(255, 255, 255, 0.95); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 18px; margin: 0 0 10px 0; text-align: center;">🍔 Kainf Burger</h3>
+              <div class="prod-video-card" style="background: linear-gradient(135deg, rgba(245, 230, 211, 0.95) 0%, rgba(232, 212, 186, 0.95) 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 18px; margin: 0 0 10px 0; text-align: center;">Kainf</h3>
                 <div style="position: relative; padding-bottom: 177.78%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
                   <video controls poster="/videos/kainf-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
                     <source src="/videos/kainf.mp4" type="video/mp4">
@@ -1148,7 +1164,7 @@
           
           <div class="challenge-section">
             <div class="challenge-header-banner">
-              <h1 class="section-title">CHALLENGES QUOTIDIENS</h1>
+              <h1 class="section-title">Challenges</h1>
             </div>
             <p class="section-subtitle">Relève les défis et gagne des Wbucks !</p>
             
@@ -1188,16 +1204,11 @@
         </div>
 
         <!-- Section Campagne (contenu existant) -->
-        <div id="section-campagne" class="section-content active" style="overflow-x: hidden; position: relative;">
-        <!-- Cadre solde en haut à droite -->
-        <div id="solde-header" style="position: fixed; top: 20px; right: 20px; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 10px 15px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 8px; z-index: 2000; transition: top 0.3s ease;">
-          <span id="solde-header-amount" style="font-size: 18px; font-weight: bold; color: #333;">0</span>
-          <img src="/Wbuck.png" alt="Wbuck" style="width: 24px; height: 24px;" />
-        </div>
+        <div id="section-campagne" class="section-content active" style="position: relative;">
         
-        <div style="margin: 15px -20px 25px -20px; width: calc(100% + 40px); background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 20px; box-shadow: 0 8px 25px rgba(62, 39, 35, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.5); border-top: 3px solid rgba(62, 39, 35, 0.15); border-bottom: 3px solid rgba(62, 39, 35, 0.15); position: relative; text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px;">
+        <div style="margin: 15px 0 25px 0; width: 200vw; margin-left: calc(-100vw + 50%); background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 20px; box-shadow: 0 8px 25px rgba(62, 39, 35, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.5); border-top: 3px solid rgba(62, 39, 35, 0.15); border-bottom: 3px solid rgba(62, 39, 35, 0.15); text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px; overflow: hidden; position: relative;" class="campagne-header-banner">
           <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2210%22 cy=%2210%22 r=%221%22 fill=%22rgba(62,39,35,0.05)%22/%3E%3C/svg%3E') repeat; opacity: 0.3; pointer-events: none;"></div>
-          <h1 id="titre-wild" style="margin: 0; background: linear-gradient(135deg, #3E2723 0%, #8B4513 50%, #D2691E 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 3.8rem; font-weight: 900; letter-spacing: 2px; font-family: 'Tribeca', sans-serif; position: relative; filter: drop-shadow(0 4px 8px rgba(62, 39, 35, 0.3)); white-space: nowrap; line-height: 1;">Les Wilds</h1>
+          <h1 id="titre-wild" style="margin: 0; background: linear-gradient(135deg, #3E2723 0%, #8B4513 50%, #D2691E 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: clamp(2.8rem, 9vw, 7rem); font-weight: 900; letter-spacing: 2px; font-family: 'Tribeca', sans-serif; position: relative; filter: drop-shadow(0 4px 8px rgba(62, 39, 35, 0.3)); white-space: nowrap; line-height: 1; z-index: 1;">LES WILD</h1>
         </div>
         
         <!-- Onglets de navigation -->
