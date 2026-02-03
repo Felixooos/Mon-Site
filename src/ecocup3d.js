@@ -52,23 +52,27 @@ window.createEcocup3D = function(containerId, textureUrl) {
   
   console.log('Canvas ajouté au container');
 
-  // 4. Lumière
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+  // 4. Lumière - avec ombre à gauche et reflet à droite
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
   scene.add(ambientLight);
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-  directionalLight.position.set(5, 10, 7);
-  scene.add(directionalLight);
-  const fillLight = new THREE.DirectionalLight(0xffffff, 0.4);
-  fillLight.position.set(-5, 0, -5);
-  scene.add(fillLight);
+  
+  // Lumière principale de droite pour créer le reflet
+  const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
+  mainLight.position.set(5, 5, 5);
+  scene.add(mainLight);
+  
+  // Lumière de gauche plus faible pour l'ombre
+  const leftLight = new THREE.DirectionalLight(0xffffff, 0.3);
+  leftLight.position.set(-5, 3, 5);
+  scene.add(leftLight);
 
   // 5. L'Objet (Ecocup)
   const geometry = new THREE.CylinderGeometry(3, 2, 10, 64);
   
-  const material = new THREE.MeshStandardMaterial({ 
-    color: 0xeeeeee,
-    roughness: 0.7,
-    metalness: 0.0
+  const material = new THREE.MeshPhongMaterial({ 
+    color: 0xffffff,
+    shininess: 30,
+    specular: 0x444444
   });
 
   const cup = new THREE.Mesh(geometry, material);

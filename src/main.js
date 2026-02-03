@@ -175,7 +175,7 @@ function handleSectionChange(section) {
     })
     
     // Initialiser les ecocups 3D si on affiche la section goodies
-    if (section === 'goodies' && typeof window.createEcocup3D === 'function') {
+    if (section === 'merch' && typeof window.createEcocup3D === 'function') {
       setTimeout(() => {
         window.createEcocup3D('#ecocup-normal-3d-canvas', '/goodies/Ecocup.png')
         window.createEcocup3D('#ecocup-3d-canvas', '/goodies/EcocupCollector.png')
