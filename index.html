@@ -1636,10 +1636,15 @@
             pointer-events: none;
             display: block;
             z-index: 0;
+            object-fit: contain;
+            max-width: none;
           }
           @media (max-width: 768px) {
             #footer-vincent {
               height: 280px;
+              width: auto !important;
+              aspect-ratio: auto;
+              object-fit: contain;
             }
           }
         </style>
