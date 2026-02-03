@@ -790,17 +790,17 @@
           <img src="/decoration/3.png" alt="" style="position: absolute; top: 38%; left: 4%; width: 80px; opacity: 0.10; pointer-events: none; z-index: 0; transform: rotate(48deg);">
           <img src="/decoration/6.png" alt="" style="position: absolute; bottom: 52%; left: 16%; width: 92px; opacity: 0.08; pointer-events: none; z-index: 0; transform: rotate(-28deg);">
           <img src="/decoration/1.png" alt="" style="position: absolute; top: 88%; right: 8%; width: 85px; opacity: 0.11; pointer-events: none; z-index: 0; transform: rotate(55deg);">
-          <img src="/decoration/4.svg" alt="" style="position: absolute; bottom: 68%; right: 14%; width: 78px; opacity: 0.09; pointer-events: none; z-index: 0; transform: rotate(-45deg);">
-          <img src="/decoration/2.png" alt="" style="position: absolute; top: 22%; right: 32%; width: 90px; opacity: 0.10; pointer-events: none; z-index: 0; transform: rotate(28deg);">
-          <img src="/decoration/5.png" alt="" style="position: absolute; bottom: 45%; left: 28%; width: 98px; opacity: 0.08; pointer-events: none; z-index: 0; transform: rotate(-18deg);">
-          <img src="/decoration/1.png" alt="" style="position: absolute; top: 2%; left: 12%; width: 82px; opacity: 0.09; pointer-events: none; z-index: 0; transform: rotate(42deg);">
-          <img src="/decoration/3.png" alt="" style="position: absolute; bottom: 8%; right: 12%; width: 86px; opacity: 0.11; pointer-events: none; z-index: 0; transform: rotate(-32deg);">
-          <img src="/decoration/6.png" alt="" style="position: absolute; top: 48%; right: 5%; width: 94px; opacity: 0.07; pointer-events: none; z-index: 0; transform: rotate(15deg);">
-          <img src="/decoration/4.svg" alt="" style="position: absolute; bottom: 22%; left: 6%; width: 88px; opacity: 0.10; pointer-events: none; z-index: 0; transform: rotate(-52deg);">
-          <img src="/decoration/2.png" alt="" style="position: absolute; top: 92%; left: 38%; width: 76px; opacity: 0.08; pointer-events: none; z-index: 0; transform: rotate(62deg);">
-          <img src="/decoration/5.png" alt="" style="position: absolute; top: 68%; left: 22%; width: 92px; opacity: 0.09; pointer-events: none; z-index: 0; transform: rotate(-8deg);">
-          <img src="/decoration/1.png" alt="" style="position: absolute; bottom: 78%; right: 28%; width: 84px; opacity: 0.11; pointer-events: none; z-index: 0; transform: rotate(38deg);">
-          <img src="/decoration/3.png" alt="" style="position: absolute; top: 32%; left: 35%; width: 80px; opacity: 0.07; pointer-events: none; z-index: 0; transform: rotate(-22deg);">
+          <img src="/decoration/4.svg" alt="" style="position: absolute; top: 32%; right: 8%; width: 82px; opacity: 0.11; pointer-events: none; z-index: 0; transform: rotate(65deg);">
+          <img src="/decoration/2.png" alt="" style="position: absolute; bottom: 72%; left: 35%; width: 88px; opacity: 0.07; pointer-events: none; z-index: 0; transform: rotate(-12deg);">
+          <img src="/decoration/5.png" alt="" style="position: absolute; top: 2%; right: 12%; width: 92px; opacity: 0.10; pointer-events: none; z-index: 0; transform: rotate(45deg);">
+          <img src="/decoration/3.png" alt="" style="position: absolute; bottom: 18%; right: 35%; width: 86px; opacity: 0.09; pointer-events: none; z-index: 0; transform: rotate(-28deg);">
+          <img src="/decoration/6.png" alt="" style="position: absolute; top: 52%; left: 8%; width: 80px; opacity: 0.08; pointer-events: none; z-index: 0; transform: rotate(22deg);">
+          <img src="/decoration/1.png" alt="" style="position: absolute; bottom: 45%; right: 4%; width: 94px; opacity: 0.11; pointer-events: none; z-index: 0; transform: rotate(-48deg);">
+          <img src="/decoration/4.svg" alt="" style="position: absolute; top: 25%; left: 32%; width: 78px; opacity: 0.09; pointer-events: none; z-index: 0; transform: rotate(8deg);">
+          <img src="/decoration/2.png" alt="" style="position: absolute; bottom: 88%; left: 18%; width: 90px; opacity: 0.07; pointer-events: none; z-index: 0; transform: rotate(-55deg);">
+          <img src="/decoration/5.png" alt="" style="position: absolute; top: 62%; right: 28%; width: 96px; opacity: 0.10; pointer-events: none; z-index: 0; transform: rotate(32deg);">
+          <img src="/decoration/3.png" alt="" style="position: absolute; bottom: 28%; left: 5%; width: 84px; opacity: 0.08; pointer-events: none; z-index: 0; transform: rotate(-18deg);">
+          <img src="/decoration/6.png" alt="" style="position: absolute; top: 78%; right: 15%; width: 88px; opacity: 0.11; pointer-events: none; z-index: 0; transform: rotate(52deg);">
           <div class="merch-section">
             <div class="merch-header-banner">
               <h1 class="section-title">Nos Goodies</h1>
@@ -1625,7 +1625,25 @@
       <!-- Footer Crédits -->
       <footer style="background: linear-gradient(135deg, #c0392b 0%, #8b2500 100%); color: white; padding: 40px 20px 20px 20px; margin-top: 60px; border-top: 4px solid #ff6b35; text-align: center; position: relative; overflow: hidden;">
         <!-- Décorations arrière-plan -->
-        <img id="footer-vincent" src="/decoration/vincent1.png" alt="" style="position: absolute; bottom: 0; left: 0; height: 400px; width: auto; opacity: 0.7; pointer-events: none; display: block; z-index: 0;">
+        <style>
+          #footer-vincent {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 400px;
+            width: auto;
+            opacity: 0.7;
+            pointer-events: none;
+            display: block;
+            z-index: 0;
+          }
+          @media (max-width: 768px) {
+            #footer-vincent {
+              height: 280px;
+            }
+          }
+        </style>
+        <img id="footer-vincent" src="/decoration/vincent1.png" alt="">
         <img class="footer-deco" src="/decoration/1.png" alt="" style="position: absolute; top: 8%; right: 28%; width: 98px; opacity: 0.15; pointer-events: none; z-index: 0; transform: rotate(25deg);">
         <img class="footer-deco" src="/decoration/4.svg" alt="" style="position: absolute; top: 62%; left: 38%; width: 85px; opacity: 0.12; pointer-events: none; z-index: 0; transform: rotate(-30deg);">
         <img class="footer-deco" src="/decoration/3.png" alt="" style="position: absolute; bottom: 48%; right: 12%; width: 92px; opacity: 0.14; pointer-events: none; z-index: 0; transform: rotate(40deg);">
@@ -1648,7 +1666,7 @@
           </p>
           
           <p style="color: #e8b4a0; font-size: 13px; margin: 20px 0; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px; display: inline-block;">
-            📸 Un problème ? Contactez-nous sur Instagram <a href="https://instagram.com/Wild_Ember" target="_blank" style="color: #ff6b35; font-weight: bold; text-decoration: none;">@Wild_Ember</a>
+            📧 Un problème ? Contactez-nous sur Instagram <a href="https://instagram.com/Wild_Ember" target="_blank" style="color: #ff6b35; font-weight: bold; text-decoration: none;">@Wild_Ember</a>
           </p>
           
           <!-- Sponsors -->
@@ -1669,11 +1687,11 @@
               <span style="color: rgba(255, 255, 255, 0.4); font-size: clamp(11px, 2.5vw, 14px);">Metro Bowling</span>
               <span style="color: rgba(255, 255, 255, 0.4); font-size: clamp(11px, 2.5vw, 14px);">Omega X Hyde</span>
               <span style="color: rgba(255, 255, 255, 0.4); font-size: clamp(11px, 2.5vw, 14px);">OUT</span>
-              <span style="color: rgba(255, 255, 255, 0.4); font-size: clamp(11px, 2.5vw, 14px);">Pokawa</span>
-              <span style="color: rgba(255, 255, 255, 0.4); font-size: clamp(11px, 2.5vw, 14px);">RedBull</span>
-              <span style="color: rgba(255, 255, 255, 0.4); font-size: clamp(11px, 2.5vw, 14px);">Revolut</span>
-              <span style="color: rgba(255, 255, 255, 0.4); font-size: clamp(11px, 2.5vw, 14px);">Seven Bar</span>
-              <span style="color: rgba(255, 255, 255, 0.4); font-size: clamp(11px, 2.5vw, 14px);">Soundboks</span>
+              <span style="color: rgba(255, 255, 255, 0.4); font-size: clamp(11px, 2.5vw, 14px);">Pernod-Ricard</span>
+              <span style="color: rgba(255, 255, 255, 0.4); font-size: clamp(11px, 2.5vw, 14px);">Pepsi</span>
+              <span style="color: rgba(255, 255, 255, 0.4); font-size: clamp(11px, 2.5vw, 14px);">Schweppes</span>
+              <span style="color: rgba(255, 255, 255, 0.4); font-size: clamp(11px, 2.5vw, 14px);">Tutti Pizza</span>
+              <span style="color: rgba(255, 255, 255, 0.4); font-size: clamp(11px, 2.5vw, 14px);">Wonderbox</span>
             </div>
           </div>
           
@@ -1684,11 +1702,7 @@
           </div>
         </div>
       </footer>
-
     </div>
-
-    <!-- Three.js pour la 3D -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
     <script type="module" src="/src/main.js"></script>
   </body>
