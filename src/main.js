@@ -268,7 +268,7 @@ const membersData = {
     name: 'Margaux Regnault',
     role: 'Co Respo Comm',
     pole: 'Pôle Communication',
-    description: 'Définitivement l\'IE1 la plus boostée, j'ai entièrement conçu le feed insta des WILD EMBER en y cachant un maximum de références pour vous régaler ! ',
+    description: 'Définitivement l\'IE1 la plus boostée, j\'ai entièrement conçu le feed insta des WILD EMBER en y cachant un maximum de références pour vous régaler ! ',
     photo: '/photos/compresse/Margaux.jpg',
     contact: [],
     facebook: 'https://www.facebook.com/profile.php?id=61577975832522&locale=fr_FR'
@@ -322,7 +322,7 @@ const membersData = {
     name: 'Sacha Tiberghien',
     role: 'Event',
     pole: 'Pôle Événementiel',
-    description: 'Acteur important du film des Wilds, y'a pas grand chose de plus en fait c\'est déjà bien...',
+    description: 'Acteur important du film des Wilds, y\'a pas grand chose de plus en fait c\'est déjà bien...',
     photo: '/photos/compresse/Sacha.jpg',
     contact: [],
     facebook: ''
@@ -368,7 +368,7 @@ const membersData = {
     name: 'Max Hareng',
     role: 'Respo DD',
     pole: 'Pôle L3D',
-    description: 'l'IE1 le plus distrait de la liste, j\'ai repoussé mon travail de DD jusqu\'au bout, le prochain fillot sera la relève ! !',
+    description: 'l\'IE1 le plus distrait de la liste, j\'ai repoussé mon travail de DD jusqu\'au bout, le prochain fillot sera la relève ! !',
     photo: '/photos/compresse/Max.jpg',
     contact: [],
     facebook: 'https://www.facebook.com/profile.php?id=61556459168175&locale=fr_FR'
