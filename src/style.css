@@ -1,10 +1,56 @@
 /* RESET OBLIGATOIRE POUR MOBILE */
-html, body {
+html {
+  overflow-x: hidden !important;
+  overflow-y: scroll !important;
+  width: 100vw;
+  position: relative;
+}
+
+body {
   margin: 0 !important;
   padding: 0 !important;
   width: 100%;
   max-width: 100vw;
-  overflow-x: hidden;
+  overflow-x: hidden !important;
+  position: relative;
+}
+
+/* Forcer overflow hidden sur TOUS les éléments */
+*, *::before, *::after {
+  max-width: 100vw;
+}
+
+.section-content,
+#section-nous,
+#section-prod,
+#section-merch,
+#section-challenge,
+#section-campagne {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+}
+
+/* Cacher scrollbar horizontale sur tous les navigateurs */
+html::-webkit-scrollbar-horizontal,
+body::-webkit-scrollbar-horizontal {
+  display: none !important;
+}
+
+html {
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  scrollbar-width: none;
+}
+
+body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+#app {
+  overflow-x: hidden !important;
+  width: 100%;
+  max-width: 100vw;
+  position: relative;
 }
 
 * {

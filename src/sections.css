@@ -38,13 +38,14 @@
   position: relative;
   background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%);
   padding: 20px 40px;
-  margin: 0 0 20px 0;
-  width: 200vw;
-  margin-left: calc(-100vw + 50%);
+  margin: 0;
+  width: 100vw;
+  margin-left: -20px;
   box-shadow: 0 4px 15px rgba(62, 39, 35, 0.3);
   overflow: hidden;
   border-top: 2px solid rgba(62, 39, 35, 0.1);
   border-bottom: 2px solid rgba(62, 39, 35, 0.1);
+  margin-bottom: 20px;
 }
 
 .team-header-banner::before {
@@ -95,7 +96,9 @@
 }
 
 .video-thumbnail-container video {
-  display: none;
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }
 
 .video-thumbnail {
@@ -111,7 +114,11 @@
   transition: transform 0.3s ease;
 }
 
-.video-thumbnail:hover {
+.video-thumbnail.video-locked {
+  cursor: default;
+}
+
+.video-thumbnail:not(.video-locked):hover {
   transform: scale(1.02);
 }
 
@@ -558,13 +565,14 @@ body.video-modal-open #solde-header {
   position: relative;
   background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%);
   padding: 20px 40px;
-  margin: 0 0 20px 0;
-  width: 200vw;
-  margin-left: calc(-100vw + 50%);
+  margin: 0;
+  width: 100vw;
+  margin-left: -20px;
   box-shadow: 0 4px 15px rgba(62, 39, 35, 0.3);
   overflow: hidden;
   border-top: 2px solid rgba(62, 39, 35, 0.1);
   border-bottom: 2px solid rgba(62, 39, 35, 0.1);
+  margin-bottom: 20px;
 }
 
 .merch-header-banner::before {
@@ -974,7 +982,6 @@ body.video-modal-open #solde-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.15);
   pointer-events: none;
 }
 
@@ -1090,13 +1097,14 @@ body.video-modal-open #solde-header {
   position: relative;
   background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%);
   padding: 20px 40px;
-  margin: 0 0 20px 0;
-  width: 200vw;
-  margin-left: calc(-100vw + 50%);
+  margin: 0;
+  width: 100vw;
+  margin-left: -20px;
   box-shadow: 0 4px 15px rgba(62, 39, 35, 0.3);
   overflow: hidden;
   border-top: 2px solid rgba(62, 39, 35, 0.1);
   border-bottom: 2px solid rgba(62, 39, 35, 0.1);
+  margin-bottom: 20px;
 }
 
 .programme-header-banner::before {
@@ -1355,13 +1363,14 @@ body.video-modal-open #solde-header {
   position: relative;
   background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%);
   padding: 20px 40px;
-  margin: 0 0 20px 0;
-  width: 200vw;
-  margin-left: calc(-100vw + 50%);
+  margin: 0;
+  width: 100vw;
+  margin-left: -20px;
   box-shadow: 0 4px 15px rgba(62, 39, 35, 0.3);
   overflow: hidden;
   border-top: 2px solid rgba(62, 39, 35, 0.1);
   border-bottom: 2px solid rgba(62, 39, 35, 0.1);
+  margin-bottom: 20px;
 }
 
 .challenge-header-banner::before {

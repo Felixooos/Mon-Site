@@ -32,12 +32,12 @@
       }
       #app {
         width: 100%;
-        padding: 0 20px;
+        padding: 0;
       }
       .container {
         background: transparent;
         border-radius: 0;
-        padding: 10px;
+        padding: 10px 20px;
         box-shadow: none;
         text-align: center;
         min-height: 100vh;
@@ -1101,8 +1101,8 @@
               <h2 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 28px; margin: 0 0 15px 0; text-align: center;">Notre Film</h2>
               <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
                 <div class="video-thumbnail-container">
-                  <div class="video-thumbnail" style="background-image: url('/videos/film-cover.jpg');"></div>
-                  <video controls poster="/videos/film-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
+                  <div class="video-thumbnail" style="background-image: url('/videos/film-cover-compressed.jpg');"></div>
+                  <video controls poster="/videos/film-cover-compressed.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
                     <source src="/videos/film.mp4" type="video/mp4">
                     Votre navigateur ne supporte pas la vidéo.
                   </video>
@@ -1116,13 +1116,12 @@
               <div class="prod-video-card" style="background: linear-gradient(135deg, rgba(245, 230, 211, 0.95) 0%, rgba(232, 212, 186, 0.95) 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                 <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 20px; margin: 0 0 10px 0; text-align: center;">Ember</h3>
                 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
-                  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none;"></div>
-                  <div class="vinyle-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 11; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 16px; border-radius: 6px; font-family: 'Tribeca', sans-serif; font-size: 14px; font-weight: bold; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); pointer-events: none; white-space: nowrap;">
-                    Disponible mercredi à 12H
+                  <div class="vinyle-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; color: white; font-family: 'Tribeca', sans-serif; font-size: clamp(12px, 3vw, 18px); font-weight: bold; text-align: center; pointer-events: none; white-space: nowrap; text-shadow: 2px 2px 4px rgba(0,0,0,0.9), -1px -1px 2px rgba(0,0,0,0.9);">
+                    Dispo mercredi 12H
                   </div>
                   <div class="video-thumbnail-container">
                     <div class="video-thumbnail video-locked" style="background-image: url('/videos/ember-cover-blur.jpg'); pointer-events: none;"></div>
-                    <video controls poster="/videos/ember-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
+                    <video controls poster="/videos/ember-cover-compressed.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
                       <source src="/videos/ember.mp4" type="video/mp4">
                       Votre navigateur ne supporte pas la vidéo.
                     </video>
@@ -1134,13 +1133,12 @@
               <div class="prod-video-card" style="background: linear-gradient(135deg, rgba(245, 230, 211, 0.95) 0%, rgba(232, 212, 186, 0.95) 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                 <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 20px; margin: 0 0 10px 0; text-align: center;">Capote</h3>
                 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
-                  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none;"></div>
-                  <div class="vinyle-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 11; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 16px; border-radius: 6px; font-family: 'Tribeca', sans-serif; font-size: 14px; font-weight: bold; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); pointer-events: none; white-space: nowrap;">
-                    Disponible jeudi à 12H30
+                  <div class="vinyle-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; color: white; font-family: 'Tribeca', sans-serif; font-size: clamp(12px, 3vw, 18px); font-weight: bold; text-align: center; pointer-events: none; white-space: nowrap; text-shadow: 2px 2px 4px rgba(0,0,0,0.9), -1px -1px 2px rgba(0,0,0,0.9);">
+                    Dispo jeudi 12H30
                   </div>
                   <div class="video-thumbnail-container">
                     <div class="video-thumbnail video-locked" style="background-image: url('/videos/capote-cover-blur.jpg'); pointer-events: none;"></div>
-                    <video controls poster="/videos/capote-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
+                    <video controls poster="/videos/capote-cover-compressed.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
                       <source src="/videos/capote.mp4" type="video/mp4">
                       Votre navigateur ne supporte pas la vidéo.
                     </video>
@@ -1155,13 +1153,12 @@
               <div class="prod-video-card" style="background: linear-gradient(135deg, rgba(245, 230, 211, 0.95) 0%, rgba(232, 212, 186, 0.95) 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                 <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 18px; margin: 0 0 10px 0; text-align: center;">Ali Baba</h3>
                 <div style="position: relative; padding-bottom: 177.78%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
-                  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none;"></div>
-                  <div class="vinyle-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 11; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 16px; border-radius: 6px; font-family: 'Tribeca', sans-serif; font-size: 14px; font-weight: bold; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); pointer-events: none; white-space: nowrap;">
-                    Disponible vendredi à 12H
+                  <div class="vinyle-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; color: white; font-family: 'Tribeca', sans-serif; font-size: clamp(12px, 3vw, 18px); font-weight: bold; text-align: center; pointer-events: none; white-space: nowrap; text-shadow: 2px 2px 4px rgba(0,0,0,0.9), -1px -1px 2px rgba(0,0,0,0.9);">
+                    Dispo vendredi 12H
                   </div>
                   <div class="video-thumbnail-container">
                     <div class="video-thumbnail video-locked" style="background-image: url('/videos/alibaba-cover-blur.jpg'); pointer-events: none;"></div>
-                    <video controls poster="/videos/alibaba-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
+                    <video controls poster="/videos/alibaba-cover-compressed.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
                       <source src="/videos/alibaba.mp4" type="video/mp4">
                       Votre navigateur ne supporte pas la vidéo.
                     </video>
@@ -1174,8 +1171,8 @@
                 <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 18px; margin: 0 0 10px 0; text-align: center;">Kainf</h3>
                 <div style="position: relative; padding-bottom: 177.78%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
                   <div class="video-thumbnail-container">
-                    <div class="video-thumbnail" style="background-image: url('/videos/kainf-cover.jpg');"></div>
-                    <video controls poster="/videos/kainf-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
+                    <div class="video-thumbnail" style="background-image: url('/videos/kainf-cover-compressed.jpg');"></div>
+                    <video controls poster="/videos/kainf-cover-compressed.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
                       <source src="/videos/kainf.mp4" type="video/mp4">
                       Votre navigateur ne supporte pas la vidéo.
                     </video>
@@ -1234,7 +1231,7 @@
         <!-- Section Campagne (contenu existant) -->
         <div id="section-campagne" class="section-content active" style="position: relative;">
         
-        <div style="margin: 15px 0 25px 0; width: 200vw; margin-left: calc(-100vw + 50%); background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 20px; box-shadow: 0 8px 25px rgba(62, 39, 35, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.5); border-top: 3px solid rgba(62, 39, 35, 0.15); border-bottom: 3px solid rgba(62, 39, 35, 0.15); text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px; overflow: hidden; position: relative;" class="campagne-header-banner">
+        <div style="position: relative; margin: 15px 0 25px 0; width: 100vw; margin-left: -20px; background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%); padding: 20px; box-shadow: 0 8px 25px rgba(62, 39, 35, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.5); border-top: 3px solid rgba(62, 39, 35, 0.15); border-bottom: 3px solid rgba(62, 39, 35, 0.15); text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px; overflow: hidden;" class="campagne-header-banner">
           <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2210%22 cy=%2210%22 r=%221%22 fill=%22rgba(62,39,35,0.05)%22/%3E%3C/svg%3E') repeat; opacity: 0.3; pointer-events: none;"></div>
           <h1 id="titre-wild" style="margin: 0; background: linear-gradient(135deg, #3E2723 0%, #8B4513 50%, #D2691E 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: clamp(2.8rem, 9vw, 7rem); font-weight: 900; letter-spacing: 2px; font-family: 'Tribeca', sans-serif; position: relative; filter: drop-shadow(0 4px 8px rgba(62, 39, 35, 0.3)); white-space: nowrap; line-height: 1; z-index: 1;">LES WILD</h1>
         </div>
