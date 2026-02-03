@@ -1,6 +1,7 @@
 // ==================== ECOCUP 3D avec Three.js ====================
+import * as THREE from 'three';
 
-function createEcocup3D(containerId, textureUrl) {
+window.createEcocup3D = function(containerId, textureUrl) {
   console.log('Initialisation de l\'ecocup 3D pour:', containerId);
   const container = document.querySelector(containerId);
   if (!container) {
