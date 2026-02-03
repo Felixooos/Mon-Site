@@ -12,20 +12,8 @@ window.createEcocup3D = function(containerId, textureUrl) {
   console.log('Container trouvé:', container);
   console.log('Largeur du container:', container.offsetWidth);
 
-  // 1. La Scène avec fond dégradé identique aux stickers
+  // 1. La Scène sans fond (transparent)
   const scene = new THREE.Scene();
-  const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 512;
-  const context = canvas.getContext('2d');
-  // Même dégradé que les stickers
-  const gradient = context.createLinearGradient(0, 0, 512, 512);
-  gradient.addColorStop(0, '#FFF5E6');
-  gradient.addColorStop(1, '#FFE8D6');
-  context.fillStyle = gradient;
-  context.fillRect(0, 0, 512, 512);
-  const backgroundTexture = new THREE.CanvasTexture(canvas);
-  scene.background = backgroundTexture;
 
   // 2. La Caméra
   const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
@@ -35,7 +23,7 @@ window.createEcocup3D = function(containerId, textureUrl) {
   // 3. Le Rendu
   const renderer = new THREE.WebGLRenderer({ 
     antialias: true, 
-    alpha: false,
+    alpha: true,
     powerPreference: 'high-performance'
   });
   // Forcer un rendu carré pour éviter l'écrasement
@@ -52,27 +40,15 @@ window.createEcocup3D = function(containerId, textureUrl) {
   
   console.log('Canvas ajouté au container');
 
-  // 4. Lumière - avec ombre à gauche et reflet à droite
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-  scene.add(ambientLight);
-  
-  // Lumière principale de droite pour créer le reflet
-  const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
-  mainLight.position.set(5, 5, 5);
-  scene.add(mainLight);
-  
-  // Lumière de gauche plus faible pour l'ombre
-  const leftLight = new THREE.DirectionalLight(0xffffff, 0.3);
-  leftLight.position.set(-5, 3, 5);
-  scene.add(leftLight);
+  // 4. Pas de lumière - les couleurs de la texture seront naturelles
 
   // 5. L'Objet (Ecocup)
   const geometry = new THREE.CylinderGeometry(3, 2, 10, 64);
   
-  const material = new THREE.MeshPhongMaterial({ 
+  const material = new THREE.MeshBasicMaterial({ 
     color: 0xffffff,
-    shininess: 30,
-    specular: 0x444444
+    transparent: false,
+    opacity: 1.0
   });
 
   const cup = new THREE.Mesh(geometry, material);
