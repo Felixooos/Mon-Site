@@ -2559,7 +2559,7 @@ document.querySelector('#btn-confirm-validate-challenge')?.addEventListener('cli
   }
 
   try {
-    // Vérifier si déjà validé
+    // Vérifier si cet utilisateur a déjà validé ce challenge
     const { data: existing } = await supabase
       .from('challenge_validations')
       .select('*')
@@ -2568,17 +2568,6 @@ document.querySelector('#btn-confirm-validate-challenge')?.addEventListener('cli
 
     if (existing && existing.length > 0) {
       alert('❌ Cet utilisateur a déjà validé ce challenge !')
-      return
-    }
-    
-    // Vérifier si le challenge a déjà été validé par quelqu'un d'autre
-    const { data: anyValidation } = await supabase
-      .from('challenge_validations')
-      .select('*')
-      .eq('challenge_id', challengeId)
-
-    if (anyValidation && anyValidation.length > 0) {
-      alert('❌ Ce challenge a déjà été validé par quelqu\'un d\'autre !')
       return
     }
 
