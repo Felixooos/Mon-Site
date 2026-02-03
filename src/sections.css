@@ -38,14 +38,11 @@
   position: relative;
   background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%);
   padding: 20px 40px;
-  margin: 0;
-  width: 100vw;
-  margin-left: -20px;
+  margin: 0 calc(-50vw + 50%) 20px calc(-50vw + 50%);
   box-shadow: 0 4px 15px rgba(62, 39, 35, 0.3);
   overflow: hidden;
   border-top: 2px solid rgba(62, 39, 35, 0.1);
   border-bottom: 2px solid rgba(62, 39, 35, 0.1);
-  margin-bottom: 20px;
 }
 
 .team-header-banner::before {
@@ -242,6 +239,23 @@ body.video-modal-open #solde-header {
   transform: scale(1.1);
 }
 
+/* Modal iframe pour YouTube */
+.video-modal-iframe {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 800px;
+  aspect-ratio: 16 / 9;
+  z-index: 3;
+}
+
+.video-modal-iframe.active {
+  display: block;
+}
+
 @media (max-width: 768px) {
   .video-modal-content {
     width: 95%;
@@ -254,6 +268,10 @@ body.video-modal-open #solde-header {
   
   .video-modal-play-icon::before {
     border-width: 16px 0 16px 28px;
+  }
+  
+  .video-modal-iframe {
+    width: 95%;
   }
 }
 
@@ -565,14 +583,11 @@ body.video-modal-open #solde-header {
   position: relative;
   background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%);
   padding: 20px 40px;
-  margin: 0;
-  width: 100vw;
-  margin-left: -20px;
+  margin: 0 calc(-50vw + 50%) 20px calc(-50vw + 50%);
   box-shadow: 0 4px 15px rgba(62, 39, 35, 0.3);
   overflow: hidden;
   border-top: 2px solid rgba(62, 39, 35, 0.1);
   border-bottom: 2px solid rgba(62, 39, 35, 0.1);
-  margin-bottom: 20px;
 }
 
 .merch-header-banner::before {
@@ -1097,14 +1112,11 @@ body.video-modal-open #solde-header {
   position: relative;
   background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%);
   padding: 20px 40px;
-  margin: 0;
-  width: 100vw;
-  margin-left: -20px;
+  margin: 0 calc(-50vw + 50%) 20px calc(-50vw + 50%);
   box-shadow: 0 4px 15px rgba(62, 39, 35, 0.3);
   overflow: hidden;
   border-top: 2px solid rgba(62, 39, 35, 0.1);
   border-bottom: 2px solid rgba(62, 39, 35, 0.1);
-  margin-bottom: 20px;
 }
 
 .programme-header-banner::before {
@@ -1363,14 +1375,11 @@ body.video-modal-open #solde-header {
   position: relative;
   background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BA 100%);
   padding: 20px 40px;
-  margin: 0;
-  width: 100vw;
-  margin-left: -20px;
+  margin: 0 calc(-50vw + 50%) 20px calc(-50vw + 50%);
   box-shadow: 0 4px 15px rgba(62, 39, 35, 0.3);
   overflow: hidden;
   border-top: 2px solid rgba(62, 39, 35, 0.1);
   border-bottom: 2px solid rgba(62, 39, 35, 0.1);
-  margin-bottom: 20px;
 }
 
 .challenge-header-banner::before {

@@ -36,6 +36,12 @@ const imagesToBlur = [
     output: 'public/videos/alibaba-cover-blur.jpg',
     blur: 60,
     addPadding: false
+  },
+  {
+    input: 'public/videos/kainf-cover.jpg',
+    output: 'public/videos/kainf-cover-blur.jpg',
+    blur: 60,
+    addPadding: false
   }
 ];
 

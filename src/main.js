@@ -2894,11 +2894,13 @@ setTimeout(() => {
         <div class="video-modal-play-icon"></div>
       </div>
       <video controls></video>
+      <iframe class="video-modal-iframe" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
     </div>
   `
   document.body.appendChild(modal)
   
   const modalVideo = modal.querySelector('video')
+  const modalIframe = modal.querySelector('.video-modal-iframe')
   const modalPoster = modal.querySelector('.video-modal-poster')
   const closeBtn = modal.querySelector('.video-modal-close')
   const playOverlay = modal.querySelector('.video-modal-play-overlay')
@@ -2910,6 +2912,8 @@ setTimeout(() => {
     modalVideo.pause()
     modalVideo.currentTime = 0
     modalVideo.classList.remove('active')
+    modalIframe.classList.remove('active')
+    modalIframe.src = ''
     modalPoster.classList.remove('hidden')
     playOverlay.classList.remove('hidden')
     modalVideo.innerHTML = ''
@@ -2924,12 +2928,24 @@ setTimeout(() => {
   // Play au clic sur l'overlay
   playOverlay.addEventListener('click', () => {
     modalPoster.classList.add('hidden')
-    modalVideo.classList.add('active')
-    modalVideo.play()
     playOverlay.classList.add('hidden')
+    
+    // Si c'est une iframe, on la montre et on ajoute autoplay
+    if (modalIframe.src) {
+      modalIframe.classList.add('active')
+      // Ajouter autoplay à l'URL YouTube
+      if (modalIframe.src.includes('youtube.com')) {
+        const separator = modalIframe.src.includes('?') ? '&' : '?'
+        modalIframe.src = modalIframe.src + separator + 'autoplay=1'
+      }
+    } else {
+      // Sinon c'est une vidéo normale
+      modalVideo.classList.add('active')
+      modalVideo.play()
+    }
   })
   
-  // Montrer l'overlay si on met pause
+  // Montrer l'overlay si on met pause (seulement pour vidéo)
   modalVideo.addEventListener('pause', () => {
     if (modalVideo.currentTime < modalVideo.duration - 0.5) {
       playOverlay.classList.remove('hidden')
@@ -2946,9 +2962,27 @@ setTimeout(() => {
       
       const container = thumbnail.closest('.video-thumbnail-container')
       const video = container.querySelector('video')
+      const iframe = container.querySelector('iframe')
       
-      if (video) {
-        // Récupérer l'image poster
+      if (iframe) {
+        // C'est une iframe YouTube
+        const posterUrl = thumbnail.style.backgroundImage.match(/url\(['"]?([^'"]+)['"]?\)/)?.[1]
+        
+        // Afficher le poster dans le modal
+        modalPoster.src = posterUrl
+        
+        // Copier l'URL de l'iframe
+        modalIframe.src = iframe.src
+        
+        // Ouvrir le modal avec le poster visible
+        modal.classList.add('active')
+        document.body.classList.add('video-modal-open')
+        modalPoster.classList.remove('hidden')
+        modalVideo.classList.remove('active')
+        modalIframe.classList.remove('active')
+        playOverlay.classList.remove('hidden')
+      } else if (video) {
+        // C'est une vidéo normale
         const posterUrl = video.getAttribute('poster')
         
         // Copier la source vidéo dans le modal
@@ -2966,6 +3000,7 @@ setTimeout(() => {
         document.body.classList.add('video-modal-open')
         modalPoster.classList.remove('hidden')
         modalVideo.classList.remove('active')
+        modalIframe.classList.remove('active')
         playOverlay.classList.remove('hidden')
       }
     })
