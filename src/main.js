@@ -2833,3 +2833,143 @@ setTimeout(() => {
 }, 500)
 
 verifierTagUrl()
+
+// Animation scroll photos pôle - MOBILE SEULEMENT
+function checkPoleCenter() {
+  // Skip sur desktop
+  if (window.innerWidth > 768) {
+    requestAnimationFrame(checkPoleCenter)
+    return
+  }
+  
+  const centerY = window.innerHeight / 2
+  const allPoles = document.querySelectorAll('.pole-image')
+  
+  allPoles.forEach((pole, i) => {
+    const rect = pole.getBoundingClientRect()
+    const poleCenter = rect.top + (rect.height / 2)
+    const distance = Math.abs(poleCenter - centerY)
+    
+    // Quand l'image est au milieu de l'écran
+    if (distance < 120) {
+      if (!pole.classList.contains('pole-centered')) {
+        console.log(`✅ Pôle ${i} au centre - activation`)
+        pole.classList.add('pole-centered')
+        const parent = pole.closest('.team-pole')
+        if (parent) parent.classList.add('pole-active')
+      }
+    } else {
+      if (pole.classList.contains('pole-centered')) {
+        console.log(`❌ Pôle ${i} hors centre - désactivation`)
+        pole.classList.remove('pole-centered')
+        const parent = pole.closest('.team-pole')
+        if (parent) parent.classList.remove('pole-active')
+      }
+    }
+  })
+  
+  requestAnimationFrame(checkPoleCenter)
+}
+
+// Démarrer après chargement
+setTimeout(() => {
+  console.log('🎬 Démarrage animation pôles')
+  console.log('📱 Mobile:', window.innerWidth <= 768)
+  console.log('🖼️ Pôles trouvés:', document.querySelectorAll('.pole-image').length)
+  checkPoleCenter()
+}, 1500)
+
+// Système de modal vidéo
+setTimeout(() => {
+  const thumbnails = document.querySelectorAll('.video-thumbnail')
+  
+  // Créer le modal
+  const modal = document.createElement('div')
+  modal.className = 'video-modal'
+  modal.innerHTML = `
+    <div class="video-modal-content">
+      <button class="video-modal-close">×</button>
+      <img class="video-modal-poster" src="" alt="">
+      <div class="video-modal-play-overlay">
+        <div class="video-modal-play-icon"></div>
+      </div>
+      <video controls></video>
+    </div>
+  `
+  document.body.appendChild(modal)
+  
+  const modalVideo = modal.querySelector('video')
+  const modalPoster = modal.querySelector('.video-modal-poster')
+  const closeBtn = modal.querySelector('.video-modal-close')
+  const playOverlay = modal.querySelector('.video-modal-play-overlay')
+  
+  // Fermer le modal
+  const closeModal = () => {
+    modal.classList.remove('active')
+    document.body.classList.remove('video-modal-open')
+    modalVideo.pause()
+    modalVideo.currentTime = 0
+    modalVideo.classList.remove('active')
+    modalPoster.classList.remove('hidden')
+    playOverlay.classList.remove('hidden')
+    modalVideo.innerHTML = ''
+    modalPoster.src = ''
+  }
+  
+  closeBtn.addEventListener('click', closeModal)
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal()
+  })
+  
+  // Play au clic sur l'overlay
+  playOverlay.addEventListener('click', () => {
+    modalPoster.classList.add('hidden')
+    modalVideo.classList.add('active')
+    modalVideo.play()
+    playOverlay.classList.add('hidden')
+  })
+  
+  // Montrer l'overlay si on met pause
+  modalVideo.addEventListener('pause', () => {
+    if (modalVideo.currentTime < modalVideo.duration - 0.5) {
+      playOverlay.classList.remove('hidden')
+    }
+  })
+  
+  // Ouvrir le modal au clic sur miniature
+  thumbnails.forEach(thumbnail => {
+    thumbnail.addEventListener('click', () => {
+      // Ignorer les vidéos verrouillées
+      if (thumbnail.classList.contains('video-locked')) {
+        return
+      }
+      
+      const container = thumbnail.closest('.video-thumbnail-container')
+      const video = container.querySelector('video')
+      
+      if (video) {
+        // Récupérer l'image poster
+        const posterUrl = video.getAttribute('poster')
+        
+        // Copier la source vidéo dans le modal
+        const source = video.querySelector('source')
+        if (source) {
+          modalVideo.innerHTML = `<source src="${source.src}" type="video/mp4">`
+          modalVideo.load()
+        }
+        
+        // Afficher le poster dans le modal
+        modalPoster.src = posterUrl
+        
+        // Ouvrir le modal avec le poster visible
+        modal.classList.add('active')
+        document.body.classList.add('video-modal-open')
+        modalPoster.classList.remove('hidden')
+        modalVideo.classList.remove('active')
+        playOverlay.classList.remove('hidden')
+      }
+    })
+  })
+}, 2000)
+
+

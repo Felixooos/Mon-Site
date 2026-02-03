@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "sync": "git add -A && git commit -m \"Mise à jour rapide\" && git push",
-    "compress": "node compress-images.js"
+    "compress": "node compress-images.js",
+    "blur": "node blur-secret-images.js"
   },
   "devDependencies": {
     "sharp": "^0.34.5",

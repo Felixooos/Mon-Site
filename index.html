@@ -112,6 +112,7 @@
         z-index: 1999;
         transition: left 0.3s ease-out;
         overflow-y: auto;
+        overflow-x: hidden;
         padding-top: 15px;
         will-change: left;
         display: flex;
@@ -830,9 +831,9 @@
               <!-- Sticker Légendaire (Pixelisé) -->
               <div class="merch-item sticker-item">
                 <div class="merch-image sticker-container">
-                  <img src="/goodies/LogoLegendairepng" alt="Sticker Légendaire" class="sticker-img sticker-pixelated">
-                  <div class="mystery-overlay">
-                    <span class="mystery-text">???</span>
+                  <img src="/goodies/LogoLegendaire-blur.png" alt="Sticker Légendaire" class="sticker-img legendaire">
+                  <div class="vinyle-overlay">
+                    <span class="vinyle-text">Disponible<br>jeudi soir</span>
                   </div>
                 </div>
                 <div class="merch-info">
@@ -862,7 +863,10 @@
               
               <div class="merch-item sac-item">
                 <div class="merch-image sac-container">
-                  <img src="/goodies/sac.png" alt="Sac à Dos" class="sac-img">
+                  <img src="/goodies/sac-blur.png" alt="Tote Bag" class="sac-img">
+                  <div class="vinyle-overlay">
+                    <span class="vinyle-text">Disponible<br>vendredi matin</span>
+                  </div>
                 </div>
                 <div class="merch-info">
                   <h3 class="merch-name">Tote Bag</h3>
@@ -882,11 +886,11 @@
                 <div class="merch-image vinyle-container">
                   <div class="vinyle-placeholder">💿</div>
                   <div class="vinyle-overlay">
-                    <span class="vinyle-text">Disponible<br>samedi apès-midi</span>
+                    <span class="vinyle-text">Disponible<br>samedi après-midi</span>
                   </div>
                 </div>
                 <div class="merch-info">
-                  <h3 class="merch-name">Poche Vinyle</h3>
+                  <h3 class="merch-name">Pochette Vinyle</h3>
                 </div>
               </div>
             </div>
@@ -1096,34 +1100,51 @@
             <div class="prod-video-card" style="background: linear-gradient(135deg, rgba(245, 230, 211, 0.95) 0%, rgba(232, 212, 186, 0.95) 100%); padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
               <h2 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 28px; margin: 0 0 15px 0; text-align: center;">Notre Film</h2>
               <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
-                <video controls poster="/videos/film-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
-                  <source src="/videos/film.mp4" type="video/mp4">
-                  Votre navigateur ne supporte pas la vidéo.
-                </video>
+                <div class="video-thumbnail-container">
+                  <div class="video-thumbnail" style="background-image: url('/videos/film-cover.jpg');"></div>
+                  <video controls poster="/videos/film-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
+                    <source src="/videos/film.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la vidéo.
+                  </video>
+                </div>
               </div>
             </div>
             
             <!-- Grille des clips horizontaux -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
-              <!-- Clip Capote -->
-              <div class="prod-video-card" style="background: linear-gradient(135deg, rgba(245, 230, 211, 0.95) 0%, rgba(232, 212, 186, 0.95) 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 20px; margin: 0 0 10px 0; text-align: center;">Capote</h3>
-                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
-                  <video controls poster="/videos/capote-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
-                    <source src="/videos/capote.mp4" type="video/mp4">
-                    Votre navigateur ne supporte pas la vidéo.
-                  </video>
-                </div>
-              </div>
-              
               <!-- Clip Ember -->
               <div class="prod-video-card" style="background: linear-gradient(135deg, rgba(245, 230, 211, 0.95) 0%, rgba(232, 212, 186, 0.95) 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                 <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 20px; margin: 0 0 10px 0; text-align: center;">Ember</h3>
                 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
-                  <video controls poster="/videos/ember-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
-                    <source src="/videos/ember.mp4" type="video/mp4">
-                    Votre navigateur ne supporte pas la vidéo.
-                  </video>
+                  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none;"></div>
+                  <div class="vinyle-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 11; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 16px; border-radius: 6px; font-family: 'Tribeca', sans-serif; font-size: 14px; font-weight: bold; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); pointer-events: none; white-space: nowrap;">
+                    Disponible mercredi à 12H
+                  </div>
+                  <div class="video-thumbnail-container">
+                    <div class="video-thumbnail video-locked" style="background-image: url('/videos/ember-cover-blur.jpg'); pointer-events: none;"></div>
+                    <video controls poster="/videos/ember-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
+                      <source src="/videos/ember.mp4" type="video/mp4">
+                      Votre navigateur ne supporte pas la vidéo.
+                    </video>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Clip Capote -->
+              <div class="prod-video-card" style="background: linear-gradient(135deg, rgba(245, 230, 211, 0.95) 0%, rgba(232, 212, 186, 0.95) 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 20px; margin: 0 0 10px 0; text-align: center;">Capote</h3>
+                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
+                  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none;"></div>
+                  <div class="vinyle-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 11; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 16px; border-radius: 6px; font-family: 'Tribeca', sans-serif; font-size: 14px; font-weight: bold; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); pointer-events: none; white-space: nowrap;">
+                    Disponible jeudi à 12H30
+                  </div>
+                  <div class="video-thumbnail-container">
+                    <div class="video-thumbnail video-locked" style="background-image: url('/videos/capote-cover-blur.jpg'); pointer-events: none;"></div>
+                    <video controls poster="/videos/capote-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
+                      <source src="/videos/capote.mp4" type="video/mp4">
+                      Votre navigateur ne supporte pas la vidéo.
+                    </video>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1134,10 +1155,17 @@
               <div class="prod-video-card" style="background: linear-gradient(135deg, rgba(245, 230, 211, 0.95) 0%, rgba(232, 212, 186, 0.95) 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                 <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 18px; margin: 0 0 10px 0; text-align: center;">Ali Baba</h3>
                 <div style="position: relative; padding-bottom: 177.78%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
-                  <video controls poster="/videos/alibaba-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
-                    <source src="/videos/alibaba.mp4" type="video/mp4">
-                    Votre navigateur ne supporte pas la vidéo.
-                  </video>
+                  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none;"></div>
+                  <div class="vinyle-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 11; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 16px; border-radius: 6px; font-family: 'Tribeca', sans-serif; font-size: 14px; font-weight: bold; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); pointer-events: none; white-space: nowrap;">
+                    Disponible vendredi à 12H
+                  </div>
+                  <div class="video-thumbnail-container">
+                    <div class="video-thumbnail video-locked" style="background-image: url('/videos/alibaba-cover-blur.jpg'); pointer-events: none;"></div>
+                    <video controls poster="/videos/alibaba-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
+                      <source src="/videos/alibaba.mp4" type="video/mp4">
+                      Votre navigateur ne supporte pas la vidéo.
+                    </video>
+                  </div>
                 </div>
               </div>
               
@@ -1145,10 +1173,13 @@
               <div class="prod-video-card" style="background: linear-gradient(135deg, rgba(245, 230, 211, 0.95) 0%, rgba(232, 212, 186, 0.95) 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                 <h3 style="color: #e74c3c; font-family: 'Tribeca', sans-serif; font-size: 18px; margin: 0 0 10px 0; text-align: center;">Kainf</h3>
                 <div style="position: relative; padding-bottom: 177.78%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
-                  <video controls poster="/videos/kainf-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
-                    <source src="/videos/kainf.mp4" type="video/mp4">
-                    Votre navigateur ne supporte pas la vidéo.
-                  </video>
+                  <div class="video-thumbnail-container">
+                    <div class="video-thumbnail" style="background-image: url('/videos/kainf-cover.jpg');"></div>
+                    <video controls poster="/videos/kainf-cover.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">
+                      <source src="/videos/kainf.mp4" type="video/mp4">
+                      Votre navigateur ne supporte pas la vidéo.
+                    </video>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1171,16 +1202,13 @@
             <!-- Onglets de difficulté -->
             <div class="challenge-tabs">
               <button class="challenge-tab active" data-difficulty="50">
-                <span class="tab-emoji">💰</span>
-                <span class="tab-text">50 Points</span>
+                <span class="tab-text">50 <img src="/public/Wbuck.png" alt="Wbuck" style="height: 1.2em; vertical-align: middle; display: inline-block;"></span>
               </button>
               <button class="challenge-tab" data-difficulty="150">
-                <span class="tab-emoji">💰💰</span>
-                <span class="tab-text">150 Points</span>
+                <span class="tab-text">150 <img src="/public/Wbuck.png" alt="Wbuck" style="height: 1.2em; vertical-align: middle; display: inline-block;"></span>
               </button>
               <button class="challenge-tab" data-difficulty="300">
-                <span class="tab-emoji">💰💰💰</span>
-                <span class="tab-text">300 Points</span>
+                <span class="tab-text">300 <img src="/public/Wbuck.png" alt="Wbuck" style="height: 1.2em; vertical-align: middle; display: inline-block;"></span>
               </button>
             </div>
             
@@ -1477,9 +1505,9 @@
           
           <label>Niveau de difficulté (détermine les points)</label>
           <select id="challenge-difficulty" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
-            <option value="50">💰 50 Points</option>
-            <option value="150">💰💰 150 Points</option>
-            <option value="300">💰💰💰 300 Points</option>
+            <option value="50">50 Wbucks</option>
+            <option value="150">150 Wbucks</option>
+            <option value="300">300 Wbucks</option>
           </select>
           
           <label>Titre du challenge</label>
