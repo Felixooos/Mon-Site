@@ -1555,6 +1555,19 @@ body.video-modal-open #solde-header {
   border-left-color: #27ae60;
 }
 
+.challenge-card.terminated {
+  opacity: 0.5;
+  background: linear-gradient(135deg, #bdc3c7 0%, #95a5a6 100%);
+  border-left-color: #7f8c8d;
+  pointer-events: none;
+  filter: grayscale(0.5);
+}
+
+.challenge-card.terminated .challenge-title,
+.challenge-card.terminated .challenge-description {
+  color: #666;
+}
+
 .challenge-card.already-validated {
   background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
   border-left-color: #1e8449;

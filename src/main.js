@@ -2291,10 +2291,11 @@ function displayChallenges(difficulty, challenges) {
     const userValidation = challenge.validations.find(v => v.user_email === currentUserEmail)
     const isCompleted = !!userValidation
     const allValidations = challenge.validations
-    const isAlreadyValidated = allValidations.length > 0 // Le défi a déjà été validé par quelqu'un
+    const validatedByCount = allValidations.length
+    const isTerminated = challenge.terminated || false
 
     return `
-      <div class="challenge-card ${isCompleted ? 'completed' : ''} ${isAlreadyValidated ? 'already-validated' : ''} ${!challenge.published && jeSuisBoutiqueManager && modeEdition ? 'unpublished' : ''}" style="position: relative;">
+      <div class="challenge-card ${isCompleted ? 'completed' : ''} ${isTerminated ? 'terminated' : ''} ${!challenge.published && jeSuisBoutiqueManager && modeEdition ? 'unpublished' : ''}" style="position: relative;">
         ${jeSuisBoutiqueManager && modeEdition ? `
           <button class="btn-menu-3pts" onclick="ouvrirMenuChallenge(${challenge.id})" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">⋮</button>
         ` : ''}
@@ -2305,22 +2306,25 @@ function displayChallenges(difficulty, challenges) {
         <p class="challenge-description">${challenge.description}</p>
         <div class="challenge-footer">
           <div>
-            ${isAlreadyValidated ? `
-              <div class="challenge-status completed">✅ Défi terminé !</div>
-              <div class="challenge-completed-by">
-                <svg viewBox="0 0 24 24"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" /></svg>
-                Validé par ${allValidations[0].user_email.split('@')[0].split('.').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ')}
-              </div>
+            ${isCompleted ? `
+              <div class="challenge-status completed">✅ Défi réussi !</div>
             ` : `
               <div class="challenge-status">En attente de validation</div>
             `}
+            ${validatedByCount > 0 ? `
+              <div class="challenge-completed-by">
+                <svg viewBox="0 0 24 24"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" /></svg>
+                Validé par: ${allValidations.map(v => v.user_email.split('@')[0].split('.').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ')).join(', ')}
+              </div>
+            ` : ''}
           </div>
           <div>
-            ${jeSuisAdmin && !isAlreadyValidated ? `
+            ${jeSuisAdmin && !isTerminated ? `
               <button class="btn-validate-challenge" onclick="openValidateModal(${challenge.id}, '${challenge.titre}', ${challenge.points})">
                 ✓ Valider pour un utilisateur
               </button>
             ` : ''}
+            ${isTerminated ? '<div class="challenge-status" style="color: #999; font-size: 14px;">🔒 Défi terminé</div>' : ''}
           </div>
         </div>
       </div>
@@ -2824,6 +2828,27 @@ document.querySelector('#btn-modifier-challenge')?.addEventListener('click', () 
   document.body.style.overflow = ''
   alert('🚧 Fonction de modification à venir')
   // TODO: Implémenter la modification
+})
+
+// Marquer challenge comme terminé
+document.querySelector('#btn-terminer-challenge')?.addEventListener('click', async () => {
+  const challengeId = parseInt(document.querySelector('#menu-challenge-id').value)
+  document.querySelector('#modal-menu-challenge').classList.add('hidden')
+  document.body.style.overflow = ''
+  
+  try {
+    const { error } = await supabase
+      .from('challenges')
+      .update({ terminated: true })
+      .eq('id', challengeId)
+    
+    if (error) throw error
+    console.log('✅ Challenge marqué comme terminé')
+    await loadChallenges()
+  } catch (error) {
+    console.error('Erreur:', error)
+    alert('❌ Erreur lors de la mise à jour')
+  }
 })
 
 // Supprimer challenge depuis le menu
