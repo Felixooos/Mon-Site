@@ -904,7 +904,9 @@ async function displayWelcomeScreen(userEmail) {
     }
     
     // Calculer le total des gains et le solde réel pour chaque étudiant
-    allUsers = (etudiants || []).map(etudiant => {
+    allUsers = (etudiants || [])
+      .filter(etudiant => !etudiant.is_admin) // Exclure les admins du classement
+      .map(etudiant => {
       const userTransactions = (transactions || []).filter(t => t.destinataire_email === etudiant.email)
       const totalGains = userTransactions
         .filter(t => t.montant > 0)
