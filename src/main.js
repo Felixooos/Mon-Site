@@ -652,11 +652,11 @@ document.querySelector('#btn-send-otp').addEventListener('click', async () => {
     }
 
     // Vérifier que l'email est d'une école autorisée
-    const domainesAutorises = ['centralelille.fr', 'iteem.centralelille.fr', 'enscl.centralelille.fr']
+    const domainesAutorises = ['centralelille.fr', 'iteem.centralelille.fr', 'enscl.centralelille.fr', 'centrale.centralelille.fr']
     const domainEmail = email.split('@')[1]
     
     if (!domainEmail || !domainesAutorises.includes(domainEmail)) {
-      afficherMessageNFC('', 'Email non autorisé', 'Tu dois utiliser ton email étudiant : centralelille.fr, iteem.centralelille.fr ou enscl.centralelille.fr', '#f39c12');
+      afficherMessageNFC('', 'Email non autorisé', 'Tu dois utiliser ton email étudiant : centralelille.fr, iteem.centralelille.fr, enscl.centralelille.fr ou centrale.centralelille.fr', '#f39c12');
       return
     }
 
