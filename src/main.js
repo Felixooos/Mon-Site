@@ -2320,7 +2320,7 @@ function displayChallenges(difficulty, challenges) {
           </div>
           <div>
             ${jeSuisAdmin && !isTerminated ? `
-              <button class="btn-validate-challenge" onclick="openValidateModal(${challenge.id}, '${challenge.titre}', ${challenge.points})">
+              <button class="btn-validate-challenge" onclick="openValidateModal(${challenge.id}, '${challenge.titre.replace(/'/g, "\\'")}', ${challenge.points})">
                 ✓ Valider pour un utilisateur
               </button>
             ` : ''}
