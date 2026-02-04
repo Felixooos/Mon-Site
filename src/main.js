@@ -2127,7 +2127,7 @@ async function scannerTag(code, emailUser) {
     .single();
 
   if (dejaScanne) {
-    afficherMessageNFC('', 'Déjà scanné', `Tu as déjà scanné le tag "${code}" ! Pas de triche !`, '#f39c12');
+    afficherMessageNFC('', 'Déjà scanné', 'Tu as déjà scanné ce tag ! Pas de triche !', '#f39c12');
     return;
   }
 
