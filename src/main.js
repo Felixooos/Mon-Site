@@ -1719,12 +1719,18 @@ async function chargerMesAchats() {
     const date = new Date(achat.created_at)
     const dateStr = date.toLocaleDateString('fr-FR')
     const heureStr = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+    
+    // Gérer le cas où l'objet a été supprimé de la boutique
+    const nomObjet = objet ? objet.nom : 'Objet supprimé'
+    const prixObjet = achat.prix_paye || (objet ? objet.prix : 0)
+    const imageUrl = objet ? objet.image_url : null
+    
     html += `
       <div style="background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%); padding: 20px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid #e74c3c; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease; cursor: pointer; overflow: hidden;" onmouseover="this.style.transform='translateX(5px)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'">
         <div style="display: flex; gap: 15px; justify-content: space-between;">
           <!-- Colonne gauche : infos textuelles -->
           <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
-            <h4 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 18px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${objet.nom}</h4>
+            <h4 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 18px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${nomObjet}</h4>
             <p style="margin: 0 0 3px 0; font-size: 14px; color: #666;">Quantité : 1</p>
             <p style="margin: 0 0 3px 0; font-size: 14px; color: #666;">Événement : Achat boutique</p>
             <p style="margin: 0; font-size: 13px; color: #999;">📅 ${dateStr} à ${heureStr}</p>
@@ -1733,11 +1739,11 @@ async function chargerMesAchats() {
           <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px; min-width: 90px;">
             <!-- Prix en haut -->
             <div style="display: flex; align-items: center; gap: 6px;">
-              <p style="margin: 0; font-size: 28px; font-weight: bold; color: #e74c3c; line-height: 1; text-shadow: 0 2px 4px rgba(231,76,60,0.2); white-space: nowrap;">-${achat.prix_paye}</p>
+              <p style="margin: 0; font-size: 28px; font-weight: bold; color: #e74c3c; line-height: 1; text-shadow: 0 2px 4px rgba(231,76,60,0.2); white-space: nowrap;">-${prixObjet}</p>
               <img src="/Wbuck.png" style="width: 28px; height: 28px;" />
             </div>
             <!-- Photo en bas -->
-            <div style="width: 85px; height: 85px; background: ${objet.image_url ? `url('${objet.image_url}')` : '#ddd'}; background-size: cover; background-position: center; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">${!objet.image_url ? '📦' : ''}</div>
+            <div style="width: 85px; height: 85px; background: ${imageUrl ? `url('${imageUrl}')` : '#ddd'}; background-size: cover; background-position: center; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">${!imageUrl ? '📦' : ''}</div>
           </div>
         </div>
       </div>
@@ -1748,11 +1754,15 @@ async function chargerMesAchats() {
 }
 
 async function chargerMesGains() {
+  console.log('🔍 Chargement des gains pour:', currentUserEmail)
+  
   const { data: gains, error } = await supabase
     .from('transactions')
     .select('id, montant, raison, created_at')
     .eq('destinataire_email', currentUserEmail)
     .order('created_at', { ascending: false })
+  
+  console.log('📊 Gains trouvés:', gains?.length, gains)
   
   if (error) {
     console.error('Erreur chargement gains:', error)
