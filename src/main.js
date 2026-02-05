@@ -1670,13 +1670,22 @@ document.querySelector('#btn-confirm-achat-final').addEventListener('click', asy
     .update({ quantite: objet.quantite - 1 })
     .eq('id', objetEnCoursAchat.id)
   
-  // Enregistrer l'achat
+  // Récupérer l'image de l'objet avant de l'enregistrer
+  const { data: objetComplet } = await supabase
+    .from('objets_boutique')
+    .select('image_url')
+    .eq('id', objetEnCoursAchat.id)
+    .single()
+
+  // Enregistrer l'achat avec toutes les infos de l'objet
   const { error } = await supabase
     .from('achats')
     .insert({
       acheteur_email: currentUserEmail,
       objet_id: objetEnCoursAchat.id,
-      prix_paye: objetEnCoursAchat.prix
+      prix_paye: objetEnCoursAchat.prix,
+      nom_objet: objetEnCoursAchat.nom,
+      image_objet: objetComplet?.image_url
     })
   
   if (error) {
@@ -1694,10 +1703,7 @@ document.querySelector('#btn-confirm-achat-final').addEventListener('click', asy
 async function chargerMesAchats() {
   const { data: achats, error } = await supabase
     .from('achats')
-    .select(`
-      *,
-      objets_boutique (nom, prix, image_url)
-    `)
+    .select('*')
     .eq('acheteur_email', currentUserEmail)
     .order('created_at', { ascending: false })
   
@@ -1715,15 +1721,14 @@ async function chargerMesAchats() {
   
   let html = ''
   achats.forEach(achat => {
-    const objet = achat.objets_boutique
     const date = new Date(achat.created_at)
     const dateStr = date.toLocaleDateString('fr-FR')
     const heureStr = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
     
-    // Gérer le cas où l'objet a été supprimé de la boutique
-    const nomObjet = objet ? objet.nom : 'Objet supprimé'
-    const prixObjet = achat.prix_paye || (objet ? objet.prix : 0)
-    const imageUrl = objet ? objet.image_url : null
+    // Utiliser les données sauvegardées au moment de l'achat
+    const nomObjet = achat.nom_objet || 'Objet supprimé'
+    const prixObjet = achat.prix_paye || 0
+    const imageUrl = achat.image_objet || null
     
     html += `
       <div style="background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%); padding: 20px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid #e74c3c; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease; cursor: pointer; overflow: hidden;" onmouseover="this.style.transform='translateX(5px)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'">
