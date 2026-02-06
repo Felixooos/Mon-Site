@@ -1424,10 +1424,8 @@ async function chargerObjetsBoutique() {
     const prixLabel = isTombola ? 'Prix du ticket' : 'Prix'
     html += `<p style="font-size: ${isTombola ? '14px' : '28px'}; font-weight: bold; color: #e74c3c; margin: 8px 0; display: flex; align-items: center; justify-content: center; gap: 8px;">${isTombola ? prixLabel + ' : ' : ''}${objet.prix} <img src="/Wbuck.png" style="width: ${isTombola ? '20px' : '28px'}; height: ${isTombola ? '20px' : '28px'};" /></p>`
     
-    // Stock / Participants
-    if (isTombola) {
-      html += `<p style="font-size: 14px; margin: 8px 0; color: #666;">Participants : ${objet.quantite}</p>`
-    } else {
+    // Stock (uniquement pour les objets normaux, pas pour les tombolas)
+    if (!isTombola) {
       html += `<p style="font-size: 14px; margin: 8px 0; color: ${estEpuise ? '#e74c3c' : '#666'};">${estEpuise ? 'Épuisé' : `Quantité : ${objet.quantite}`}</p>`
     }
     
@@ -1570,6 +1568,23 @@ inputPhoto.addEventListener('change', (e) => {
   }
 })
 
+// Gestion de la checkbox Mode Tombola
+const tombolaCheckbox = document.querySelector('#objet-tombola')
+const quantiteContainer = document.querySelector('#quantite-container')
+const quantiteInput = document.querySelector('#objet-quantite')
+
+tombolaCheckbox?.addEventListener('change', (e) => {
+  if (e.target.checked) {
+    // Mode tombola activé : cacher la quantité et la mettre à 0
+    quantiteContainer.style.display = 'none'
+    quantiteInput.value = '0'
+  } else {
+    // Mode normal : afficher la quantité et la remettre à 1
+    quantiteContainer.style.display = 'block'
+    quantiteInput.value = '1'
+  }
+})
+
 function afficherPreview(file) {
   const reader = new FileReader()
   reader.onload = (e) => {
@@ -1588,7 +1603,11 @@ function ouvrirModalAjout(type = null) {
   document.querySelector('#objet-image').value = ''
   document.querySelector('#objet-photo').value = ''
   document.querySelector('#objet-id-edit').value = ''
+  document.querySelector('#objet-tombola').checked = false
   previewDiv.style.display = 'none'
+  
+  // Afficher le champ quantité (mode normal par défaut)
+  quantiteContainer.style.display = 'block'
   
   // Sélectionner la taille "petit" par défaut
   document.querySelectorAll('.btn-taille').forEach(b => {
@@ -1953,14 +1972,18 @@ document.querySelector('#btn-cancel-objet').addEventListener('click', () => {
 document.querySelector('#btn-confirm-objet').addEventListener('click', async () => {
   const nom = document.querySelector('#objet-nom').value.trim()
   const prix = parseInt(document.querySelector('#objet-prix').value)
-  const quantite = parseInt(document.querySelector('#objet-quantite').value) || 1
+  let quantite = parseInt(document.querySelector('#objet-quantite').value) || 1
   const imageUrl = document.querySelector('#objet-image').value.trim()
   const photoFile = document.querySelector('#objet-photo').files[0]
   const taille = document.querySelector('#objet-taille').value
   const isTombola = document.querySelector('#objet-tombola')?.checked || false
   const objetIdEdit = document.querySelector('#objet-id-edit').value
   
-  // Pour les tombolas, quantité peut être 0 (nombre de participants initial)
+  // Pour les tombolas, forcer la quantité à 0 (nombre de participants initial)
+  if (isTombola) {
+    quantite = 0
+  }
+  
   // Pour les objets normaux, quantité doit être >= 1
   const quantiteMin = isTombola ? 0 : 1
   
@@ -2053,9 +2076,17 @@ document.querySelector('#btn-menu-modifier').addEventListener('click', () => {
   document.querySelector('#objet-prix').value = objetEnCoursMenu.prix
   document.querySelector('#objet-quantite').value = objetEnCoursMenu.quantite
   document.querySelector('#objet-image').value = objetEnCoursMenu.image_url || ''
-  document.querySelector('#objet-tombola').checked = objetEnCoursMenu.is_tombola || false
+  const isTombola = objetEnCoursMenu.is_tombola || false
+  document.querySelector('#objet-tombola').checked = isTombola
   document.querySelector('#objet-id-edit').value = objetEnCoursMenu.id
   previewDiv.style.display = 'none'
+  
+  // Gérer l'affichage du champ quantité selon le mode
+  if (isTombola) {
+    quantiteContainer.style.display = 'none'
+  } else {
+    quantiteContainer.style.display = 'block'
+  }
   
   // Sélectionner la bonne taille
   const taille = objetEnCoursMenu.taille || 'petit'

@@ -4,8 +4,8 @@ import { join, extname, basename } from 'path';
 import { existsSync } from 'fs';
 
 // Configuration
-const INPUT_DIR = 'C:\\Users\\felix\\OneDrive\\Documente\\liste\\Boutique\\Mercredi4';
-const OUTPUT_DIR = 'C:\\Users\\felix\\OneDrive\\Documente\\liste\\Boutique\\Mercredi4\\compresse';
+const INPUT_DIR = 'C:\\Users\\felix\\OneDrive\\Documente\\liste\\Boutique\\Vendredi6';
+const OUTPUT_DIR = 'C:\\Users\\felix\\OneDrive\\Documente\\liste\\Boutique\\Vendredi6\\compresse';
 const MAX_WIDTH = 800;
 const QUALITY = 80;
 
