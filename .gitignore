@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Security - fichiers contenant des clés sensibles
+admin_creation.js
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

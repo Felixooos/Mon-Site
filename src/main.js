@@ -1360,6 +1360,8 @@ async function chargerObjetsBoutique() {
   objets.forEach(objet => {
     const estEpuise = objet.quantite <= 0
     const taille = objet.taille || 'petit'
+    const isTombola = objet.is_tombola || false
+    const tombolaTerminee = objet.tombola_terminee || false
     
     // Définir le nombre de colonnes occupées (grille de 6)
     let gridColumn = ''
@@ -1376,7 +1378,7 @@ async function chargerObjetsBoutique() {
       padding: 15px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.1);
       position: relative;
-      border: 2px solid ${estEpuise ? '#ddd' : '#e74c3c'};
+      border: 2px solid ${estEpuise ? '#ddd' : (isTombola ? '#f39c12' : '#e74c3c')};
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -1388,6 +1390,13 @@ async function chargerObjetsBoutique() {
     `
     
     let html = ''
+    
+    // Badge Tombola en haut à gauche
+    if (isTombola) {
+      const badgeText = tombolaTerminee ? '🏆 TERMINÉE' : '🎰 TOMBOLA'
+      const badgeColor = tombolaTerminee ? '#27ae60' : '#f39c12'
+      html += `<div style="position: absolute; top: 10px; left: 10px; background: ${badgeColor}; color: white; padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 12px; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">${badgeText}</div>`
+    }
     
     // Menu 3 points si gestionnaire en mode édition
     if (jeSuisBoutiqueManager && modeEdition) {
@@ -1412,13 +1421,21 @@ async function chargerObjetsBoutique() {
     html += `<h3 style="margin: 10px 0; font-size: ${fontSize}; color: #333;">${objet.nom}</h3>`
     
     // Prix
-    html += `<p style="font-size: 28px; font-weight: bold; color: #e74c3c; margin: 8px 0; display: flex; align-items: center; justify-content: center; gap: 8px;">${objet.prix} <img src="/Wbuck.png" style="width: 28px; height: 28px;" /></p>`
+    const prixLabel = isTombola ? 'Prix du ticket' : 'Prix'
+    html += `<p style="font-size: ${isTombola ? '14px' : '28px'}; font-weight: bold; color: #e74c3c; margin: 8px 0; display: flex; align-items: center; justify-content: center; gap: 8px;">${isTombola ? prixLabel + ' : ' : ''}${objet.prix} <img src="/Wbuck.png" style="width: ${isTombola ? '20px' : '28px'}; height: ${isTombola ? '20px' : '28px'};" /></p>`
     
-    // Stock
-    html += `<p style="font-size: 14px; margin: 8px 0; color: ${estEpuise ? '#e74c3c' : '#666'};">${estEpuise ? 'Épuisé' : `Quantité : ${objet.quantite}`}</p>`
+    // Stock / Participants
+    if (isTombola) {
+      html += `<p style="font-size: 14px; margin: 8px 0; color: #666;">Participants : ${objet.quantite}</p>`
+    } else {
+      html += `<p style="font-size: 14px; margin: 8px 0; color: ${estEpuise ? '#e74c3c' : '#666'};">${estEpuise ? 'Épuisé' : `Quantité : ${objet.quantite}`}</p>`
+    }
     
     // Bouton acheter
-    html += `<button class="btn-acheter" data-id="${objet.id}" data-nom="${objet.nom}" data-prix="${objet.prix}" style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: ${estEpuise ? 'not-allowed' : 'pointer'}; background: ${estEpuise ? '#ddd' : '#e74c3c'}; color: white; font-size: 16px; margin-top: 8px;" ${estEpuise ? 'disabled' : ''}>Acheter</button>`
+    const btnDisabled = (!isTombola && estEpuise) || (isTombola && tombolaTerminee)
+    const btnText = isTombola ? (tombolaTerminee ? 'Tombola terminée' : 'Acheter un ticket') : 'Acheter'
+    const btnColor = isTombola ? '#f39c12' : '#e74c3c'
+    html += `<button class="btn-acheter" data-id="${objet.id}" data-nom="${objet.nom}" data-prix="${objet.prix}" data-is-tombola="${isTombola}" style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: ${btnDisabled ? 'not-allowed' : 'pointer'}; background: ${btnDisabled ? '#ddd' : btnColor}; color: white; font-size: 16px; margin-top: 8px;" ${btnDisabled ? 'disabled' : ''}>${btnText}</button>`
     
     html += `</div>`
     
@@ -1429,6 +1446,8 @@ async function chargerObjetsBoutique() {
     div.dataset.objetImage = objet.image_url || ''
     div.dataset.objetQuantite = objet.quantite
     div.dataset.objetTaille = taille
+    div.dataset.objetTombola = isTombola
+    div.dataset.objetTombolaTerminee = tombolaTerminee
     grid.appendChild(div)
   })
   
@@ -1439,7 +1458,8 @@ async function chargerObjetsBoutique() {
       const id = parseInt(btn.dataset.id)
       const nom = btn.dataset.nom
       const prix = parseInt(btn.dataset.prix)
-      confirmerAchat(id, nom, prix)
+      const isTombola = btn.dataset.isTombola === 'true'
+      confirmerAchat(id, nom, prix, isTombola)
     })
   })
   
@@ -1454,8 +1474,10 @@ async function chargerObjetsBoutique() {
       const imageUrl = container.dataset.objetImage
       const quantite = parseInt(container.dataset.objetQuantite)
       const taille = container.dataset.objetTaille
+      const isTombola = container.dataset.objetTombola === 'true'
+      const tombolaTerminee = container.dataset.objetTombolaTerminee === 'true'
       
-      ouvrirMenuObjet(id, nom, prix, imageUrl, taille, quantite)
+      ouvrirMenuObjet(id, nom, prix, imageUrl, taille, quantite, isTombola, tombolaTerminee)
     })
   })
 }
@@ -1586,9 +1608,18 @@ function ouvrirModalAjout(type = null) {
 // Ouvrir menu 3 points pour un objet
 let objetEnCoursMenu = null
 
-window.ouvrirMenuObjet = function(id, nom, prix, imageUrl, taille, quantite) {
-  objetEnCoursMenu = { id, nom, prix, image_url: imageUrl, taille, quantite }
+window.ouvrirMenuObjet = function(id, nom, prix, imageUrl, taille, quantite, isTombola = false, tombolaTerminee = false) {
+  objetEnCoursMenu = { id, nom, prix, image_url: imageUrl, taille, quantite, is_tombola: isTombola, tombola_terminee: tombolaTerminee }
   document.querySelector('#menu-objet-nom').textContent = nom
+  
+  // Afficher le bouton "Tirer le gagnant" uniquement si c'est une tombola non terminée
+  const btnTirerGagnant = document.querySelector('#btn-menu-tirer-gagnant')
+  if (isTombola && !tombolaTerminee) {
+    btnTirerGagnant.style.display = 'block'
+  } else {
+    btnTirerGagnant.style.display = 'none'
+  }
+  
   document.querySelector('#menu-objet').classList.remove('hidden')
   document.body.style.overflow = 'hidden'
 }
@@ -1616,12 +1647,20 @@ async function supprimerObjet(objetId, type) {
 }
 
 // Fonction globale pour confirmer achat
-window.confirmerAchat = async function(objetId, objetNom, objetPrix) {
-  objetEnCoursAchat = { id: objetId, nom: objetNom, prix: objetPrix }
+window.confirmerAchat = async function(objetId, objetNom, objetPrix, isTombola = false) {
+  objetEnCoursAchat = { id: objetId, nom: objetNom, prix: objetPrix, is_tombola: isTombola }
   
   // Récupérer le solde réel calculé depuis allUsers
   const currentUser = allUsers.find(u => u.email === currentUserEmail)
   const soldeReel = currentUser ? currentUser.solde_reel : 0
+  
+  // Adapter le message selon si c'est une tombola ou non
+  const modalTitle = document.querySelector('#modal-confirmer-achat h3')
+  if (isTombola) {
+    modalTitle.textContent = '🎰 Acheter un ticket'
+  } else {
+    modalTitle.textContent = '🛍️ Confirmer l’achat'
+  }
   
   document.querySelector('#achat-objet-nom').textContent = objetNom
   document.querySelector('#achat-objet-prix').textContent = objetPrix
@@ -1649,14 +1688,17 @@ document.querySelector('#btn-confirm-achat-final').addEventListener('click', asy
     return
   }
   
-  // Vérifier la quantité disponible
+  // Récupérer l'objet complet
   const { data: objet } = await supabase
     .from('objets_boutique')
-    .select('quantite')
+    .select('quantite, is_tombola, image_url')
     .eq('id', objetEnCoursAchat.id)
     .single()
   
-  if (objet.quantite <= 0) {
+  const isTombola = objet.is_tombola || false
+  
+  // Pour les objets normaux, vérifier qu'il reste du stock
+  if (!isTombola && objet.quantite <= 0) {
     alert('Cet objet est épuisé !')
     document.querySelector('#modal-confirmer-achat').classList.add('hidden')
     objetEnCoursAchat = null
@@ -1664,18 +1706,20 @@ document.querySelector('#btn-confirm-achat-final').addEventListener('click', asy
     return
   }
   
-  // Décrémenter la quantité
-  await supabase
-    .from('objets_boutique')
-    .update({ quantite: objet.quantite - 1 })
-    .eq('id', objetEnCoursAchat.id)
-  
-  // Récupérer l'image de l'objet avant de l'enregistrer
-  const { data: objetComplet } = await supabase
-    .from('objets_boutique')
-    .select('image_url')
-    .eq('id', objetEnCoursAchat.id)
-    .single()
+  // Mettre à jour la quantité selon le type d'objet
+  if (isTombola) {
+    // Pour une tombola : incrémenter le nombre de participants
+    await supabase
+      .from('objets_boutique')
+      .update({ quantite: objet.quantite + 1 })
+      .eq('id', objetEnCoursAchat.id)
+  } else {
+    // Pour un objet normal : décrémenter la quantité
+    await supabase
+      .from('objets_boutique')
+      .update({ quantite: objet.quantite - 1 })
+      .eq('id', objetEnCoursAchat.id)
+  }
 
   // Enregistrer l'achat avec toutes les infos de l'objet
   const { error } = await supabase
@@ -1685,7 +1729,7 @@ document.querySelector('#btn-confirm-achat-final').addEventListener('click', asy
       objet_id: objetEnCoursAchat.id,
       prix_paye: objetEnCoursAchat.prix,
       nom_objet: objetEnCoursAchat.nom,
-      image_objet: objetComplet?.image_url
+      image_objet: objet?.image_url
     })
   
   if (error) {
@@ -1729,26 +1773,45 @@ async function chargerMesAchats() {
     const nomObjet = achat.nom_objet || 'Objet supprimé'
     const prixObjet = achat.prix_paye || 0
     const imageUrl = achat.image_objet || null
+    const estGagnant = achat.est_gagnant
+    
+    // Déterminer si c'est une tombola et le résultat
+    let tombolaBadge = ''
+    let borderColor = '#e74c3c'
+    let gradient = 'linear-gradient(135deg, #ffffff 0%, #fff5f5 100%)'
+    let evenementText = 'Achat boutique'
+    
+    if (estGagnant === true) {
+      tombolaBadge = '<span style="background: #27ae60; color: white; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: bold; margin-left: 8px;">🏆 GAGNANT</span>'
+      borderColor = '#27ae60'
+      gradient = 'linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%)'
+      evenementText = 'Tombola (GAGNANT !)'
+    } else if (estGagnant === false) {
+      tombolaBadge = '<span style="background: #95a5a6; color: white; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: bold; margin-left: 8px;">🎰 Non gagnant</span>'
+      borderColor = '#95a5a6'
+      gradient = 'linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%)'
+      evenementText = 'Tombola (non gagnant)'
+    }
     
     html += `
-      <div style="background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%); padding: 20px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid #e74c3c; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease; cursor: pointer; overflow: hidden;" onmouseover="this.style.transform='translateX(5px)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'">
+      <div style="background: ${gradient}; padding: 20px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid ${borderColor}; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease; cursor: pointer; overflow: hidden;" onmouseover="this.style.transform='translateX(5px)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'">
         <div style="display: flex; gap: 15px; justify-content: space-between;">
           <!-- Colonne gauche : infos textuelles -->
           <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
-            <h4 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 18px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${nomObjet}</h4>
+            <h4 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 18px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center;">${nomObjet}${tombolaBadge}</h4>
             <p style="margin: 0 0 3px 0; font-size: 14px; color: #666;">Quantité : 1</p>
-            <p style="margin: 0 0 3px 0; font-size: 14px; color: #666;">Événement : Achat boutique</p>
+            <p style="margin: 0 0 3px 0; font-size: 14px; color: #666;">Événement : ${evenementText}</p>
             <p style="margin: 0; font-size: 13px; color: #999;">📅 ${dateStr} à ${heureStr}</p>
           </div>
           <!-- Colonne droite : prix en haut, photo en bas -->
           <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px; min-width: 90px;">
             <!-- Prix en haut -->
             <div style="display: flex; align-items: center; gap: 6px;">
-              <p style="margin: 0; font-size: 28px; font-weight: bold; color: #e74c3c; line-height: 1; text-shadow: 0 2px 4px rgba(231,76,60,0.2); white-space: nowrap;">-${prixObjet}</p>
+              <p style="margin: 0; font-size: 28px; font-weight: bold; color: ${borderColor}; line-height: 1; text-shadow: 0 2px 4px rgba(0,0,0,0.2); white-space: nowrap;">-${prixObjet}</p>
               <img src="/Wbuck.png" style="width: 28px; height: 28px;" />
             </div>
             <!-- Photo en bas -->
-            <div style="width: 85px; height: 85px; background: ${imageUrl ? `url('${imageUrl}')` : '#ddd'}; background-size: cover; background-position: center; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">${!imageUrl ? '📦' : ''}</div>
+            <div style="width: 85px; height: 85px; background: ${imageUrl ? `url('${imageUrl}')` : '#ddd'}; background-size: cover; background-position: center; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">${!imageUrl ? (estGagnant === true ? '🏆' : estGagnant === false ? '🎰' : '📦') : ''}</div>
           </div>
         </div>
       </div>
@@ -1894,9 +1957,14 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
   const imageUrl = document.querySelector('#objet-image').value.trim()
   const photoFile = document.querySelector('#objet-photo').files[0]
   const taille = document.querySelector('#objet-taille').value
+  const isTombola = document.querySelector('#objet-tombola')?.checked || false
   const objetIdEdit = document.querySelector('#objet-id-edit').value
   
-  if (!nom || !prix || prix <= 0 || quantite < 1) {
+  // Pour les tombolas, quantité peut être 0 (nombre de participants initial)
+  // Pour les objets normaux, quantité doit être >= 1
+  const quantiteMin = isTombola ? 0 : 1
+  
+  if (!nom || !prix || prix <= 0 || quantite < quantiteMin) {
     afficherMessageNFC('', 'Champs manquants', 'Veuillez remplir tous les champs obligatoires', '#f39c12');
     return
   }
@@ -1923,6 +1991,7 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
         quantite,
         image_url: finalImageUrl || null,
         taille,
+        is_tombola: isTombola,
         is_published: false
       })
       .eq('id', parseInt(objetIdEdit))
@@ -1944,12 +2013,13 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
         quantite,
         image_url: finalImageUrl || null,
         taille,
+        is_tombola: isTombola,
         is_published: false
       })
     
     if (error) {
-      afficherMessageNFC('', 'Erreur', 'Erreur lors de l\'ajout', '#e74c3c');
-      console.error(error)
+      console.error('Erreur complète:', error)
+      afficherMessageNFC('', 'Erreur', `Erreur lors de l'ajout: ${error.message || JSON.stringify(error)}`, '#e74c3c');
       return
     }
     
@@ -1983,6 +2053,7 @@ document.querySelector('#btn-menu-modifier').addEventListener('click', () => {
   document.querySelector('#objet-prix').value = objetEnCoursMenu.prix
   document.querySelector('#objet-quantite').value = objetEnCoursMenu.quantite
   document.querySelector('#objet-image').value = objetEnCoursMenu.image_url || ''
+  document.querySelector('#objet-tombola').checked = objetEnCoursMenu.is_tombola || false
   document.querySelector('#objet-id-edit').value = objetEnCoursMenu.id
   previewDiv.style.display = 'none'
   
@@ -2026,6 +2097,117 @@ document.querySelector('#btn-menu-supprimer').addEventListener('click', async ()
   document.body.style.overflow = ''
   objetEnCoursMenu = null
   await chargerObjetsBoutique()
+})
+
+// Bouton pour tirer le gagnant d'une tombola
+document.querySelector('#btn-menu-tirer-gagnant').addEventListener('click', async () => {
+  if (!objetEnCoursMenu) return
+  
+  // Vérifier que c'est bien une tombola
+  if (!objetEnCoursMenu.is_tombola) {
+    afficherMessageNFC('⚠️', 'Erreur', 'Cet objet n\'est pas une tombola', '#e74c3c')
+    return
+  }
+  
+  // Vérifier qu'elle n'est pas déjà terminée
+  if (objetEnCoursMenu.tombola_terminee) {
+    afficherMessageNFC('⚠️', 'Déjà terminée', 'Le tirage au sort a déjà été effectué pour cette tombola', '#f39c12')
+    return
+  }
+  
+  // Demander confirmation
+  if (!confirm(`⚠️ ATTENTION !\n\nVous allez tirer au sort le gagnant pour : ${objetEnCoursMenu.nom}\n\nCette action est IRRÉVERSIBLE.\n\nVoulez-vous continuer ?`)) {
+    return
+  }
+  
+  try {
+    // Appeler la fonction SQL pour tirer le gagnant
+    const { data, error } = await supabase
+      .rpc('tirer_gagnant_tombola', {
+        objet_id_param: objetEnCoursMenu.id
+      })
+    
+    if (error) {
+      console.error('Erreur tirage:', error)
+      afficherMessageNFC('❌', 'Erreur', error.message || 'Erreur lors du tirage au sort', '#e74c3c')
+      return
+    }
+    
+    // Afficher le résultat
+    if (data && data.length > 0) {
+      const resultat = data[0]
+      document.querySelector('#gagnant-email').textContent = resultat.gagnant_email
+      document.querySelector('#nombre-participants').textContent = `${resultat.nombre_participants} participant${resultat.nombre_participants > 1 ? 's' : ''} au total`
+      
+      // Fermer le menu et ouvrir la modal de résultat
+      document.querySelector('#menu-objet').classList.add('hidden')
+      document.querySelector('#modal-resultat-tombola').classList.remove('hidden')
+      document.body.style.overflow = 'hidden'
+      
+      // Recharger la boutique pour mettre à jour l'affichage
+      await chargerObjetsBoutique()
+    }
+  } catch (err) {
+    console.error('Erreur complète:', err)
+    afficherMessageNFC('❌', 'Erreur', 'Une erreur inattendue s\'est produite', '#e74c3c')
+  }
+})
+
+// Fermer la modal de résultat tombola
+document.querySelector('#btn-close-resultat-tombola')?.addEventListener('click', () => {
+  document.querySelector('#modal-resultat-tombola').classList.add('hidden')
+  document.body.style.overflow = ''
+  objetEnCoursMenu = null
+})
+
+// Event listener pour tirer le gagnant d'une tombola
+document.querySelector('#btn-menu-tirer-gagnant').addEventListener('click', async () => {
+  if (!objetEnCoursMenu) return
+  if (!jeSuisBoutiqueManager || !modeEdition) {
+    alert('❌ Vous devez être gestionnaire en mode édition')
+    return
+  }
+  
+  // Confirmation
+  if (!confirm(`Voulez-vous vraiment tirer le gagnant pour "${objetEnCoursMenu.nom}" ? Cette action est irréversible.`)) {
+    return
+  }
+  
+  try {
+    // Appeler la fonction PostgreSQL qui tire un gagnant au hasard
+    const { data, error } = await supabase.rpc('tirer_gagnant_tombola', {
+      objet_id_param: objetEnCoursMenu.id
+    })
+    
+    if (error) throw error
+    
+    // Afficher le résultat
+    const resultat = data[0]
+    document.querySelector('#gagnant-email').textContent = resultat.gagnant_email
+    document.querySelector('#nombre-participants').textContent = `${resultat.nombre_participants} participant(s) au total`
+    
+    // Fermer le menu et afficher la modal de résultat
+    document.querySelector('#menu-objet').classList.add('hidden')
+    document.querySelector('#modal-resultat-tombola').classList.remove('hidden')
+    document.body.style.overflow = 'hidden'
+    
+    objetEnCoursMenu = null
+    
+    // Recharger la boutique pour mettre à jour l'affichage
+    setTimeout(async () => {
+      await chargerObjetsBoutique()
+    }, 500)
+    
+  } catch (error) {
+    console.error('Erreur lors du tirage au sort:', error)
+    alert(`Erreur : ${error.message}`)
+  }
+})
+
+// Event listener pour fermer la modal de résultat tombola
+document.querySelector('#btn-close-resultat-tombola').addEventListener('click', () => {
+  document.querySelector('#modal-resultat-tombola').classList.add('hidden')
+  document.body.style.overflow = ''
 })
 
 // Event listeners pour modal-modifier-objet
