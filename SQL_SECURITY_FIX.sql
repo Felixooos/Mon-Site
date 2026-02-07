@@ -4,6 +4,12 @@
 -- Ce script protège la table etudiants contre les modifications non autorisées
 -- notamment pour empêcher les utilisateurs de se donner les droits admin
 
+-- 0. Supprimer les anciennes politiques si elles existent
+DROP POLICY IF EXISTS "Tout le monde peut lire les étudiants" ON etudiants;
+DROP POLICY IF EXISTS "Les utilisateurs peuvent créer leur profil" ON etudiants;
+DROP POLICY IF EXISTS "Les utilisateurs peuvent modifier leur profil (sans privilèges)" ON etudiants;
+DROP POLICY IF EXISTS "Interdire suppression étudiants" ON etudiants;
+
 -- 1. Activer Row Level Security sur la table etudiants
 ALTER TABLE etudiants ENABLE ROW LEVEL SECURITY;
 
@@ -45,6 +51,12 @@ CREATE POLICY "Interdire suppression étudiants" ON etudiants
 -- ==========================================
 -- Protège la table transactions contre les fausses transactions
 
+-- 0. Supprimer les anciennes politiques si elles existent
+DROP POLICY IF EXISTS "Tout le monde peut lire les transactions" ON transactions;
+DROP POLICY IF EXISTS "Création transactions contrôlée" ON transactions;
+DROP POLICY IF EXISTS "Interdire modification transactions" ON transactions;
+DROP POLICY IF EXISTS "Seuls admins peuvent supprimer transactions" ON transactions;
+
 -- 1. Activer Row Level Security sur la table transactions
 ALTER TABLE transactions ENABLE ROW LEVEL SECURITY;
 
@@ -54,30 +66,22 @@ CREATE POLICY "Tout le monde peut lire les transactions" ON transactions
   FOR SELECT
   USING (true);
 
--- 3. INSERTION : Les utilisateurs peuvent uniquement créer des transactions
--- où ils sont l'expéditeur (ET ils doivent avoir le solde suffisant)
--- Les admins (vérifiés côté serveur) peuvent créer des transactions pour autrui
+-- 3. INSERTION : Seuls les admins peuvent créer des transactions (cadeaux de points)
+-- Les transactions système (NFC, achats) doivent utiliser service_role
 CREATE POLICY "Création transactions contrôlée" ON transactions
   FOR INSERT
   WITH CHECK (
-    -- Option 1 : Transaction normale où l'utilisateur est l'expéditeur
+    -- Option 1 : Transaction admin (cadeau de points) - vérifier que l'admin est légitime
     (
-      auth.jwt() ->> 'email' = emetteur_email
-      AND emetteur_email IS NOT NULL
+      admin_email IS NOT NULL
       AND destinataire_email IS NOT NULL
-      AND emetteur_email != destinataire_email
-    )
-    -- Option 2 : Transaction admin (cadeau de points) - vérifier que l'admin est légitime
-    OR (
-      emetteur_email IS NULL
-      AND admin_email IS NOT NULL
       AND EXISTS (
         SELECT 1 FROM etudiants 
         WHERE email = auth.jwt() ->> 'email' 
         AND is_admin = true
       )
     )
-    -- Option 3 : Transaction système (NFC, etc.) - BLOQUÉE pour les utilisateurs normaux
+    -- Option 2 : Transaction système (NFC, achats boutique) - BLOQUÉE pour tous
     -- Ces transactions doivent être créées via service_role uniquement
     OR (
       admin_email = 'SYSTEM_NFC'
@@ -102,6 +106,269 @@ CREATE POLICY "Seuls admins peuvent supprimer transactions" ON transactions
   );
 
 -- ==========================================
+-- SÉCURISATION TABLE ACHATS
+-- ==========================================
+-- Protège la table achats contre les fausses validations d'achat
+
+-- 1. Supprimer les anciennes politiques si elles existent
+DROP POLICY IF EXISTS "Tout le monde peut lire les achats" ON achats;
+DROP POLICY IF EXISTS "Les utilisateurs voient leurs propres achats" ON achats;
+DROP POLICY IF EXISTS "Les utilisateurs peuvent acheter" ON achats;
+DROP POLICY IF EXISTS "Seuls gestionnaires peuvent créer achats" ON achats;
+DROP POLICY IF EXISTS "Seuls gestionnaires peuvent modifier achats" ON achats;
+DROP POLICY IF EXISTS "Seuls gestionnaires peuvent supprimer achats" ON achats;
+DROP POLICY IF EXISTS "Seuls admins peuvent valider achats" ON achats;
+DROP POLICY IF EXISTS "Interdire modification achats" ON achats;
+DROP POLICY IF EXISTS "Interdire suppression achats" ON achats;
+
+-- 2. Activer Row Level Security sur la table achats
+ALTER TABLE achats ENABLE ROW LEVEL SECURITY;
+
+-- 3. LECTURE : Tout le monde peut voir les achats
+CREATE POLICY "Tout le monde peut lire les achats" ON achats
+  FOR SELECT
+  USING (true);
+
+-- 4. INSERTION : Seuls les gestionnaires boutique peuvent créer des achats
+CREATE POLICY "Seuls gestionnaires peuvent créer achats" ON achats
+  FOR INSERT
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM etudiants 
+      WHERE email = auth.jwt() ->> 'email' 
+      AND is_boutique_manager = true
+    )
+  );
+
+-- 5. MISE À JOUR : Seuls les gestionnaires boutique peuvent modifier les achats
+CREATE POLICY "Seuls gestionnaires peuvent modifier achats" ON achats
+  FOR UPDATE
+  USING (
+    EXISTS (
+      SELECT 1 FROM etudiants 
+      WHERE email = auth.jwt() ->> 'email' 
+      AND is_boutique_manager = true
+    )
+  );
+
+-- 6. SUPPRESSION : Seuls les gestionnaires boutique peuvent supprimer des achats
+CREATE POLICY "Seuls gestionnaires peuvent supprimer achats" ON achats
+  FOR DELETE
+  USING (
+    EXISTS (
+      SELECT 1 FROM etudiants 
+      WHERE email = auth.jwt() ->> 'email' 
+      AND is_boutique_manager = true
+    )
+  );
+
+-- ==========================================
+-- SÉCURISATION TABLE NFC_TAGS
+-- ==========================================
+-- Protège la table nfc_tags contre la création de faux tags
+
+-- 1. Supprimer les anciennes politiques si elles existent
+DROP POLICY IF EXISTS "Tout le monde peut lire les tags NFC" ON nfc_tags;
+DROP POLICY IF EXISTS "Seuls admins peuvent créer tags NFC" ON nfc_tags;
+DROP POLICY IF EXISTS "Seuls admins peuvent modifier tags NFC" ON nfc_tags;
+DROP POLICY IF EXISTS "Seuls admins peuvent supprimer tags NFC" ON nfc_tags;
+
+-- 2. Activer Row Level Security sur la table nfc_tags
+ALTER TABLE nfc_tags ENABLE ROW LEVEL SECURITY;
+
+-- 3. LECTURE : Tout le monde peut voir les tags NFC
+CREATE POLICY "Tout le monde peut lire les tags NFC" ON nfc_tags
+  FOR SELECT
+  USING (true);
+
+-- 4. INSERTION : Seuls les admins peuvent créer des tags NFC
+CREATE POLICY "Seuls admins peuvent créer tags NFC" ON nfc_tags
+  FOR INSERT
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM etudiants 
+      WHERE email = auth.jwt() ->> 'email' 
+      AND is_admin = true
+    )
+  );
+
+-- 5. MISE À JOUR : Seuls les admins peuvent modifier les tags NFC
+CREATE POLICY "Seuls admins peuvent modifier tags NFC" ON nfc_tags
+  FOR UPDATE
+  USING (
+    EXISTS (
+      SELECT 1 FROM etudiants 
+      WHERE email = auth.jwt() ->> 'email' 
+      AND is_admin = true
+    )
+  );
+
+-- 6. SUPPRESSION : Seuls les admins peuvent supprimer des tags NFC
+CREATE POLICY "Seuls admins peuvent supprimer tags NFC" ON nfc_tags
+  FOR DELETE
+  USING (
+    EXISTS (
+      SELECT 1 FROM etudiants 
+      WHERE email = auth.jwt() ->> 'email' 
+      AND is_admin = true
+    )
+  );
+
+-- ==========================================
+-- SÉCURISATION TABLE OBJETS_BOUTIQUE
+-- ==========================================
+-- Protège la table objets_boutique contre les modifications non autorisées
+
+-- 1. Supprimer les anciennes politiques si elles existent
+DROP POLICY IF EXISTS "Tout le monde peut lire les objets boutique" ON objets_boutique;
+DROP POLICY IF EXISTS "Tout le monde peut voir les objets" ON objets_boutique;
+DROP POLICY IF EXISTS "Seuls gestionnaires peuvent créer objets" ON objets_boutique;
+DROP POLICY IF EXISTS "Seuls les gestionnaires peuvent ajouter des objets" ON objets_boutique;
+DROP POLICY IF EXISTS "Seuls gestionnaires peuvent modifier objets" ON objets_boutique;
+DROP POLICY IF EXISTS "Seuls les gestionnaires peuvent modifier des objets" ON objets_boutique;
+DROP POLICY IF EXISTS "Seuls gestionnaires peuvent supprimer objets" ON objets_boutique;
+DROP POLICY IF EXISTS "Seuls les gestionnaires peuvent supprimer des objets" ON objets_boutique;
+
+-- 2. Activer Row Level Security sur la table objets_boutique
+ALTER TABLE objets_boutique ENABLE ROW LEVEL SECURITY;
+
+-- 3. LECTURE : Tout le monde peut voir les objets de la boutique
+CREATE POLICY "Tout le monde peut lire les objets boutique" ON objets_boutique
+  FOR SELECT
+  USING (true);
+
+-- 4. INSERTION : Seuls les gestionnaires boutique peuvent créer des objets
+CREATE POLICY "Seuls gestionnaires peuvent créer objets" ON objets_boutique
+  FOR INSERT
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM etudiants 
+      WHERE email = auth.jwt() ->> 'email' 
+      AND is_boutique_manager = true
+    )
+  );
+
+-- 5. MISE À JOUR : Seuls les gestionnaires boutique peuvent modifier les objets
+CREATE POLICY "Seuls gestionnaires peuvent modifier objets" ON objets_boutique
+  FOR UPDATE
+  USING (
+    EXISTS (
+      SELECT 1 FROM etudiants 
+      WHERE email = auth.jwt() ->> 'email' 
+      AND is_boutique_manager = true
+    )
+  );
+
+-- 6. SUPPRESSION : Seuls les gestionnaires boutique peuvent supprimer des objets
+CREATE POLICY "Seuls gestionnaires peuvent supprimer objets" ON objets_boutique
+  FOR DELETE
+  USING (
+    EXISTS (
+      SELECT 1 FROM etudiants 
+      WHERE email = auth.jwt() ->> 'email' 
+      AND is_boutique_manager = true
+    )
+  );
+
+-- ==========================================
+-- SÉCURISATION TABLE CHALLENGES
+-- ==========================================
+-- Protège la table challenges contre les modifications non autorisées
+
+-- 1. Supprimer les anciennes politiques si elles existent
+DROP POLICY IF EXISTS "Tout le monde peut lire les challenges" ON challenges;
+DROP POLICY IF EXISTS "Seuls admins peuvent créer challenges" ON challenges;
+DROP POLICY IF EXISTS "Seuls admins peuvent modifier challenges" ON challenges;
+DROP POLICY IF EXISTS "Seuls admins peuvent supprimer challenges" ON challenges;
+
+-- 2. Activer Row Level Security sur la table challenges
+ALTER TABLE challenges ENABLE ROW LEVEL SECURITY;
+
+-- 3. LECTURE : Tout le monde peut voir les challenges publiés
+CREATE POLICY "Tout le monde peut lire les challenges" ON challenges
+  FOR SELECT
+  USING (true);
+
+-- 4. INSERTION : Seuls les admins peuvent créer des challenges
+CREATE POLICY "Seuls admins peuvent créer challenges" ON challenges
+  FOR INSERT
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM etudiants 
+      WHERE email = auth.jwt() ->> 'email' 
+      AND is_admin = true
+    )
+  );
+
+-- 5. MISE À JOUR : Seuls les admins peuvent modifier les challenges
+CREATE POLICY "Seuls admins peuvent modifier challenges" ON challenges
+  FOR UPDATE
+  USING (
+    EXISTS (
+      SELECT 1 FROM etudiants 
+      WHERE email = auth.jwt() ->> 'email' 
+      AND is_admin = true
+    )
+  );
+
+-- 6. SUPPRESSION : Seuls les admins peuvent supprimer des challenges
+CREATE POLICY "Seuls admins peuvent supprimer challenges" ON challenges
+  FOR DELETE
+  USING (
+    EXISTS (
+      SELECT 1 FROM etudiants 
+      WHERE email = auth.jwt() ->> 'email' 
+      AND is_admin = true
+    )
+  );
+
+-- ==========================================
+-- SÉCURISATION TABLE CHALLENGE_VALIDATIONS
+-- ==========================================
+-- Protège la table challenge_validations contre les fausses validations
+
+-- 1. Supprimer les anciennes politiques si elles existent
+DROP POLICY IF EXISTS "Tout le monde peut lire les validations" ON challenge_validations;
+DROP POLICY IF EXISTS "Seuls admins peuvent créer validations" ON challenge_validations;
+DROP POLICY IF EXISTS "Interdire modification validations" ON challenge_validations;
+DROP POLICY IF EXISTS "Seuls admins peuvent supprimer validations" ON challenge_validations;
+
+-- 2. Activer Row Level Security sur la table challenge_validations
+ALTER TABLE challenge_validations ENABLE ROW LEVEL SECURITY;
+
+-- 3. LECTURE : Tout le monde peut voir les validations
+CREATE POLICY "Tout le monde peut lire les validations" ON challenge_validations
+  FOR SELECT
+  USING (true);
+
+-- 4. INSERTION : Seuls les admins peuvent créer des validations
+CREATE POLICY "Seuls admins peuvent créer validations" ON challenge_validations
+  FOR INSERT
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM etudiants 
+      WHERE email = auth.jwt() ->> 'email' 
+      AND is_admin = true
+    )
+  );
+
+-- 5. MISE À JOUR : Personne ne peut modifier une validation une fois créée
+CREATE POLICY "Interdire modification validations" ON challenge_validations
+  FOR UPDATE
+  USING (false);
+
+-- 6. SUPPRESSION : Seuls les admins peuvent supprimer des validations
+CREATE POLICY "Seuls admins peuvent supprimer validations" ON challenge_validations
+  FOR DELETE
+  USING (
+    EXISTS (
+      SELECT 1 FROM etudiants 
+      WHERE email = auth.jwt() ->> 'email' 
+      AND is_admin = true
+    )
+  );
+
+-- ==========================================
 -- NOTES IMPORTANTES
 -- ==========================================
 -- ⚠️ Après avoir exécuté ce script dans Supabase :
@@ -109,3 +376,5 @@ CREATE POLICY "Seuls admins peuvent supprimer transactions" ON transactions
 -- 2. Pour donner les droits admin, utilisez la console Supabase ou un script avec service_role
 -- 3. Le fichier admin_creation.js utilise déjà service_role, donc il fonctionnera toujours
 -- 4. La clé service_role dans admin_creation.js NE DOIT JAMAIS être exposée côté client
+-- 5. TOUTES les tables sont maintenant sécurisées avec Row Level Security (RLS)
+-- 6. Les actions sensibles nécessitent maintenant d'être admin ou gestionnaire boutique

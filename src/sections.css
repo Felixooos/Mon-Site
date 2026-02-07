@@ -981,6 +981,14 @@ body.video-modal-open #solde-header {
   height: 100%;
 }
 
+.vinyle-img {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
 .vinyle-placeholder {
   font-size: 120px;
   animation: vinyleFloat 3.8s ease-in-out infinite;
