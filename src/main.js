@@ -1171,14 +1171,14 @@ document.querySelector('#btn-cancel-admin').addEventListener('click', () => {
   document.body.style.overflow = ''
 })
 
-// Bouton Valider
-document.querySelector('#btn-confirm-admin').addEventListener('click', async () => {
+// Bouton Ajouter Points (Transaction - compte dans le classement)
+document.querySelector('#btn-add-points').addEventListener('click', async () => {
   const montant = parseInt(document.querySelector('#admin-amount').value)
   const raison = document.querySelector('#admin-reason').value.trim()
 
-  // Vérifier que le montant est un nombre valide (peut être négatif) et qu'il y a une raison
-  if (isNaN(montant) || montant === 0 || !raison) {
-    alert('❌ Veuillez entrer un montant valide (positif ou négatif) et une raison')
+  // Vérifier que le montant est positif et qu'il y a une raison
+  if (isNaN(montant) || montant <= 0 || !raison) {
+    alert('❌ Veuillez entrer un montant positif et une raison')
     return
   }
 
@@ -1197,12 +1197,6 @@ document.querySelector('#btn-confirm-admin').addEventListener('click', async () 
     }
 
     const nouveauSolde = (userData.solde || 0) + montant
-
-    // Vérifier que le nouveau solde ne sera pas négatif
-    if (nouveauSolde < 0) {
-      alert(`❌ Impossible : le solde deviendrait négatif (${nouveauSolde} Wbucks)`)
-      return
-    }
 
     // 2. Mettre à jour le solde
     const { error: updateError } = await supabase
@@ -1241,6 +1235,81 @@ document.querySelector('#btn-confirm-admin').addEventListener('click', async () 
     }
     
     console.log("Transaction enregistrée avec succès")
+    
+    // 4. Rafraîchir la page
+    location.reload()
+  } catch (err) {
+    console.error("Erreur complète:", err)
+    alert('❌ Une erreur inattendue s\'est produite')
+  }
+})
+
+// Bouton Retirer Points (Achat - ne compte PAS dans le classement)
+document.querySelector('#btn-remove-points').addEventListener('click', async () => {
+  const montant = parseInt(document.querySelector('#admin-amount').value)
+  const raison = document.querySelector('#admin-reason').value.trim()
+
+  // Vérifier que le montant est positif et qu'il y a une raison
+  if (isNaN(montant) || montant <= 0 || !raison) {
+    alert('❌ Veuillez entrer un montant positif à retirer et une raison')
+    return
+  }
+
+  try {
+    // 1. Récupérer le solde actuel de l'utilisateur
+    const { data: userData, error: fetchError } = await supabase
+      .from('etudiants')
+      .select('solde')
+      .eq('email', cibleEmail)
+      .single()
+
+    if (fetchError) {
+      console.error("Erreur récupération solde:", fetchError)
+      alert('❌ Erreur lors de la récupération du solde')
+      return
+    }
+
+    const nouveauSolde = (userData.solde || 0) - montant
+
+    // Vérifier que le nouveau solde ne sera pas négatif
+    if (nouveauSolde < 0) {
+      alert(`❌ Impossible : le solde deviendrait négatif (${nouveauSolde} Wbucks)`)
+      return
+    }
+
+    // 2. Mettre à jour le solde
+    const { error: updateError } = await supabase
+      .from('etudiants')
+      .update({ solde: nouveauSolde })
+      .eq('email', cibleEmail)
+
+    if (updateError) {
+      console.error("Erreur mise à jour solde:", updateError)
+      alert('❌ Erreur lors de la mise à jour du solde')
+      return
+    }
+
+    // 3. Créer un "achat" (retrait administratif)
+    const achatData = {
+      acheteur_email: cibleEmail,
+      nom: `⚠️ Retrait Admin: ${raison}`,
+      prix_paye: montant,
+      date_achat: new Date().toISOString()
+    }
+    
+    console.log("Insertion achat (retrait):", achatData)
+    
+    const { error: errorAchat } = await supabase
+      .from('achats')
+      .insert([achatData])
+
+    if (errorAchat) {
+      console.error("Erreur log achat:", errorAchat)
+      alert('❌ Erreur lors de l\'enregistrement du retrait')
+      return
+    }
+    
+    console.log("Retrait enregistré avec succès")
     
     // 4. Rafraîchir la page
     location.reload()

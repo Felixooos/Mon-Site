@@ -1313,17 +1313,18 @@
       <div id="admin-modal" class="modal hidden">
         <div class="modal-content">
           <h3>Zone Admin</h3>
-          <p>Ajouter des points à : <span id="admin-target-user" style="font-weight:bold; color:#e63946;"></span></p>
+          <p>Gérer les points de : <span id="admin-target-user" style="font-weight:bold; color:#e63946;"></span></p>
           
-          <label>Montant (ex: 50 ou -10)</label>
+          <label>Montant</label>
           <input type="number" id="admin-amount" placeholder="50">
           
           <label>Raison (Obligatoire)</label>
           <input type="text" id="admin-reason" placeholder="Victoire au Quizz...">
           
-          <div class="modal-buttons">
+          <div class="modal-buttons" style="display: flex; gap: 10px;">
             <button id="btn-cancel-admin" style="background:#999; flex: 1;">Annuler</button>
-            <button id="btn-confirm-admin" style="background:#2a9d8f; flex: 1;">Valider</button>
+            <button id="btn-add-points" style="background:#2a9d8f; flex: 1;">➕ Ajouter Points</button>
+            <button id="btn-remove-points" style="background:#e63946; flex: 1;">➖ Retirer Points</button>
           </div>
         </div>
       </div>
