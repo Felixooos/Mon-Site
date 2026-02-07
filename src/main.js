@@ -1176,37 +1176,78 @@ document.querySelector('#btn-confirm-admin').addEventListener('click', async () 
   const montant = parseInt(document.querySelector('#admin-amount').value)
   const raison = document.querySelector('#admin-reason').value.trim()
 
-  if (!montant || !raison) {
+  // Vérifier que le montant est un nombre valide (peut être négatif) et qu'il y a une raison
+  if (isNaN(montant) || montant === 0 || !raison) {
+    alert('❌ Veuillez entrer un montant valide (positif ou négatif) et une raison')
     return
   }
 
-  // Enregistrement de la transaction
-  const transactionData = {
-    destinataire_email: cibleEmail,
-    montant: montant,
-    raison: raison
-  }
-  
-  // Ajouter admin_email seulement si défini
-  if (emailAdmin) {
-    transactionData.admin_email = emailAdmin
-  }
-  
-  console.log("Insertion transaction:", transactionData)
-  
-  const { error: errorTransac } = await supabase
-    .from('transactions')
-    .insert([transactionData])
+  try {
+    // 1. Récupérer le solde actuel de l'utilisateur
+    const { data: userData, error: fetchError } = await supabase
+      .from('etudiants')
+      .select('solde')
+      .eq('email', cibleEmail)
+      .single()
 
-  if (errorTransac) {
-    console.error("Erreur log transaction:", errorTransac)
-    return
+    if (fetchError) {
+      console.error("Erreur récupération solde:", fetchError)
+      alert('❌ Erreur lors de la récupération du solde')
+      return
+    }
+
+    const nouveauSolde = (userData.solde || 0) + montant
+
+    // Vérifier que le nouveau solde ne sera pas négatif
+    if (nouveauSolde < 0) {
+      alert(`❌ Impossible : le solde deviendrait négatif (${nouveauSolde} Wbucks)`)
+      return
+    }
+
+    // 2. Mettre à jour le solde
+    const { error: updateError } = await supabase
+      .from('etudiants')
+      .update({ solde: nouveauSolde })
+      .eq('email', cibleEmail)
+
+    if (updateError) {
+      console.error("Erreur mise à jour solde:", updateError)
+      alert('❌ Erreur lors de la mise à jour du solde')
+      return
+    }
+
+    // 3. Enregistrer la transaction
+    const transactionData = {
+      destinataire_email: cibleEmail,
+      montant: montant,
+      raison: raison
+    }
+    
+    // Ajouter admin_email seulement si défini
+    if (emailAdmin) {
+      transactionData.admin_email = emailAdmin
+    }
+    
+    console.log("Insertion transaction:", transactionData)
+    
+    const { error: errorTransac } = await supabase
+      .from('transactions')
+      .insert([transactionData])
+
+    if (errorTransac) {
+      console.error("Erreur log transaction:", errorTransac)
+      alert('❌ Erreur lors de l\'enregistrement de la transaction')
+      return
+    }
+    
+    console.log("Transaction enregistrée avec succès")
+    
+    // 4. Rafraîchir la page
+    location.reload()
+  } catch (err) {
+    console.error("Erreur complète:", err)
+    alert('❌ Une erreur inattendue s\'est produite')
   }
-  
-  console.log("Transaction enregistrée avec succès")
-  
-  // Rafraîchir la page
-  location.reload()
 })
 
 // ==================== ONGLETS CLASSEMENT/BOUTIQUE ====================
