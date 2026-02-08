@@ -1834,21 +1834,9 @@ document.querySelector('#btn-confirm-achat-final').addEventListener('click', asy
     await chargerObjetsBoutique()
     return
   }
-  
-  // Mettre à jour la quantité selon le type d'objet
-  if (isTombola) {
-    // Pour une tombola : incrémenter le nombre de participants
-    await supabase
-      .from('objets_boutique')
-      .update({ quantite: objet.quantite + 1 })
-      .eq('id', objetEnCoursAchat.id)
-  } else {
-    // Pour un objet normal : décrémenter la quantité
-    await supabase
-      .from('objets_boutique')
-      .update({ quantite: objet.quantite - 1 })
-      .eq('id', objetEnCoursAchat.id)
-  }
+
+  // La quantité sera mise à jour automatiquement par le trigger SQL
+  // (pas besoin de le faire manuellement côté client)
 
   // Enregistrer l'achat avec toutes les infos de l'objet
   const { error } = await supabase

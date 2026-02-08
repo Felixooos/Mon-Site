@@ -114,6 +114,7 @@ CREATE POLICY "Seuls admins peuvent supprimer transactions" ON transactions
 DROP POLICY IF EXISTS "Tout le monde peut lire les achats" ON achats;
 DROP POLICY IF EXISTS "Les utilisateurs voient leurs propres achats" ON achats;
 DROP POLICY IF EXISTS "Les utilisateurs peuvent acheter" ON achats;
+DROP POLICY IF EXISTS "Les utilisateurs peuvent créer leurs achats" ON achats;
 DROP POLICY IF EXISTS "Seuls gestionnaires peuvent créer achats" ON achats;
 DROP POLICY IF EXISTS "Seuls gestionnaires peuvent modifier achats" ON achats;
 DROP POLICY IF EXISTS "Seuls gestionnaires peuvent supprimer achats" ON achats;
@@ -129,11 +130,15 @@ CREATE POLICY "Tout le monde peut lire les achats" ON achats
   FOR SELECT
   USING (true);
 
--- 4. INSERTION : Seuls les gestionnaires boutique peuvent créer des achats
-CREATE POLICY "Seuls gestionnaires peuvent créer achats" ON achats
+-- 4. INSERTION : Les utilisateurs peuvent acheter pour eux-mêmes
+-- Les gestionnaires boutique peuvent créer des achats pour n'importe qui (ex: retrait admin)
+CREATE POLICY "Les utilisateurs peuvent créer leurs achats" ON achats
   FOR INSERT
   WITH CHECK (
-    EXISTS (
+    -- Soit c'est son propre achat
+    acheteur_email = auth.jwt() ->> 'email'
+    -- Soit c'est un gestionnaire boutique (pour retraits admin)
+    OR EXISTS (
       SELECT 1 FROM etudiants 
       WHERE email = auth.jwt() ->> 'email' 
       AND is_boutique_manager = true
@@ -369,6 +374,58 @@ CREATE POLICY "Seuls admins peuvent supprimer validations" ON challenge_validati
   );
 
 -- ==========================================
+-- TRIGGER : GESTION AUTOMATIQUE DES QUANTITÉS
+-- ==========================================
+-- Ce trigger met à jour automatiquement la quantité dans objets_boutique
+-- quand un achat est créé, évitant ainsi les problèmes de RLS
+
+-- 1. Créer la fonction trigger
+CREATE OR REPLACE FUNCTION update_quantite_apres_achat()
+RETURNS TRIGGER AS $$
+DECLARE
+  objet_record RECORD;
+BEGIN
+  -- Si l'achat n'a pas d'objet_id (ex: retrait admin), ne rien faire
+  IF NEW.objet_id IS NULL THEN
+    RETURN NEW;
+  END IF;
+  
+  -- Récupérer l'objet acheté
+  SELECT * INTO objet_record
+  FROM objets_boutique
+  WHERE id = NEW.objet_id;
+  
+  -- Si l'objet n'existe pas, ne rien faire
+  IF objet_record IS NULL THEN
+    RETURN NEW;
+  END IF;
+  
+  -- Si c'est une tombola, incrémenter le nombre de participants
+  IF objet_record.is_tombola = true THEN
+    UPDATE objets_boutique
+    SET quantite = quantite + 1
+    WHERE id = NEW.objet_id;
+  -- Si c'est un objet normal, décrémenter la quantité
+  ELSE
+    UPDATE objets_boutique
+    SET quantite = quantite - 1
+    WHERE id = NEW.objet_id;
+  END IF;
+  
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 2. Supprimer l'ancien trigger s'il existe
+DROP TRIGGER IF EXISTS trigger_update_quantite ON achats;
+
+-- 3. Créer le trigger
+CREATE TRIGGER trigger_update_quantite
+  AFTER INSERT ON achats
+  FOR EACH ROW
+  EXECUTE FUNCTION update_quantite_apres_achat();
+
+-- ==========================================
 -- NOTES IMPORTANTES
 -- ==========================================
 -- ⚠️ Après avoir exécuté ce script dans Supabase :
@@ -378,3 +435,4 @@ CREATE POLICY "Seuls admins peuvent supprimer validations" ON challenge_validati
 -- 4. La clé service_role dans admin_creation.js NE DOIT JAMAIS être exposée côté client
 -- 5. TOUTES les tables sont maintenant sécurisées avec Row Level Security (RLS)
 -- 6. Les actions sensibles nécessitent maintenant d'être admin ou gestionnaire boutique
+-- 7. Les quantités d'objets sont maintenant gérées automatiquement par trigger SQL
