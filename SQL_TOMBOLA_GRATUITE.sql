@@ -19,11 +19,18 @@ ADD COLUMN IF NOT EXISTS max_par_personne INTEGER DEFAULT NULL;
 ALTER TABLE objets_boutique 
 ADD COLUMN IF NOT EXISTS tombola_terminee BOOLEAN DEFAULT FALSE;
 
--- 5. Ajouter le champ est_gagnant à la table achats pour les tombolas avec tirage
+-- 5. Ajouter les champs dans la table achats pour sauvegarder le type d'achat
+ALTER TABLE achats 
+ADD COLUMN IF NOT EXISTS is_gratuit BOOLEAN DEFAULT FALSE;
+
+ALTER TABLE achats 
+ADD COLUMN IF NOT EXISTS is_tombola BOOLEAN DEFAULT FALSE;
+
+-- 6. Ajouter le champ est_gagnant à la table achats pour les tombolas avec tirage
 ALTER TABLE achats 
 ADD COLUMN IF NOT EXISTS est_gagnant BOOLEAN DEFAULT NULL;
 
--- 6. Ajouter le champ date_tirage pour savoir quand le tirage a eu lieu
+-- 7. Ajouter le champ date_tirage pour savoir quand le tirage a eu lieu
 ALTER TABLE achats 
 ADD COLUMN IF NOT EXISTS date_tirage TIMESTAMP DEFAULT NULL;
 

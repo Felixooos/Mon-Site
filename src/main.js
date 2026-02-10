@@ -1950,7 +1950,9 @@ document.querySelector('#btn-confirm-achat-final').addEventListener('click', asy
       objet_id: objetEnCoursAchat.id,
       prix_paye: objetEnCoursAchat.prix,
       nom_objet: objetEnCoursAchat.nom,
-      image_objet: objet?.image_url
+      image_objet: objet?.image_url,
+      is_gratuit: objetEnCoursAchat.is_gratuit || false,
+      is_tombola: objetEnCoursAchat.is_tombola || false
     })
   
   if (error) {

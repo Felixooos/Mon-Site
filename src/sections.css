@@ -152,24 +152,28 @@ body.video-modal-open #solde-header {
 
 .video-modal-close {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(0, 0, 0, 0.7);
-  border: none;
+  top: 15px;
+  right: 15px;
+  background: rgba(231, 76, 60, 0.95);
+  border: 2px solid white;
   color: white;
-  font-size: 36px;
+  font-size: 42px;
+  font-weight: bold;
   cursor: pointer;
   padding: 0;
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
+  width: 55px;
+  height: 55px;
+  line-height: 50px;
   border-radius: 50%;
   z-index: 10000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease;
 }
 
 .video-modal-close:hover {
-  background: rgba(231, 76, 60, 0.9);
-  color: white;
+  background: rgba(192, 57, 43, 1);
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.7);
 }
 
 .video-modal-poster {
@@ -261,6 +265,15 @@ body.video-modal-open #solde-header {
     width: 95%;
   }
   
+  .video-modal-close {
+    width: 60px;
+    height: 60px;
+    font-size: 48px;
+    line-height: 55px;
+    top: 10px;
+    right: 10px;
+  }
+  
   .video-modal-play-icon {
     width: 80px;
     height: 80px;
@@ -272,6 +285,23 @@ body.video-modal-open #solde-header {
   
   .video-modal-iframe {
     width: 95%;
+  }
+}
+
+/* Bouton fermeture photo pôle */
+#btn-close-pole-photo:hover {
+  background: rgba(192, 57, 43, 1) !important;
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7) !important;
+}
+
+@media (max-width: 768px) {
+  #btn-close-pole-photo {
+    width: 65px !important;
+    height: 65px !important;
+    font-size: 48px !important;
+    top: 10px !important;
+    right: 10px !important;
   }
 }
 
