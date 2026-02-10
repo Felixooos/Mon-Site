@@ -1,4 +1,4 @@
-import './style.css'
+﻿import './style.css'
 import './sections.css'
 import { supabase } from './supabaseClient'
 
@@ -1472,6 +1472,7 @@ async function chargerObjetsBoutique() {
     const taille = objet.taille || 'petit'
     const isTombola = objet.is_tombola || false
     const tombolaTerminee = objet.tombola_terminee || false
+    const isGratuit = objet.is_gratuit || false
     
     // Définir le nombre de colonnes occupées (grille de 6)
     let gridColumn = ''
@@ -1488,7 +1489,7 @@ async function chargerObjetsBoutique() {
       padding: 15px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.1);
       position: relative;
-      border: 2px solid ${estEpuise ? '#ddd' : (isTombola ? '#f39c12' : '#e74c3c')};
+      border: 2px solid ${estEpuise ? '#ddd' : (isGratuit ? '#00b8d4' : (isTombola ? '#f39c12' : '#e74c3c'))};
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -1501,11 +1502,21 @@ async function chargerObjetsBoutique() {
     
     let html = ''
     
-    // Badge Tombola en haut à gauche
-    if (isTombola) {
-      const badgeText = tombolaTerminee ? '🏆 TERMINÉE' : '🎰 TOMBOLA'
-      const badgeColor = tombolaTerminee ? '#27ae60' : '#f39c12'
-      html += `<div style="position: absolute; top: 10px; left: 10px; background: ${badgeColor}; color: white; padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 12px; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">${badgeText}</div>`
+    // Badges en haut à gauche
+    if (isTombola || isGratuit) {
+      html += `<div style="position: absolute; top: 10px; left: 10px; display: flex; flex-direction: column; gap: 5px; z-index: 10;">`
+      
+      if (isTombola) {
+        const badgeText = tombolaTerminee ? '🏆 TERMINÉE' : '🎰 TOMBOLA'
+        const badgeColor = tombolaTerminee ? '#27ae60' : '#f39c12'
+        html += `<div style="background: ${badgeColor}; color: white; padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">${badgeText}</div>`
+      }
+      
+      if (isGratuit) {
+        html += `<div style="background: #00b8d4; color: white; padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">🎁 GRATUIT</div>`
+      }
+      
+      html += `</div>`
     }
     
     // Menu 3 points si gestionnaire en mode édition
@@ -1531,8 +1542,12 @@ async function chargerObjetsBoutique() {
     html += `<h3 style="margin: 10px 0; font-size: ${fontSize}; color: #333;">${objet.nom}</h3>`
     
     // Prix
-    const prixLabel = isTombola ? 'Prix du ticket' : 'Prix'
-    html += `<p style="font-size: ${isTombola ? '14px' : '28px'}; font-weight: bold; color: #e74c3c; margin: 8px 0; display: flex; align-items: center; justify-content: center; gap: 8px;">${isTombola ? prixLabel + ' : ' : ''}${objet.prix} <img src="/Wbuck.png" style="width: ${isTombola ? '20px' : '28px'}; height: ${isTombola ? '20px' : '28px'};" /></p>`
+    if (isGratuit) {
+      html += `<p style="font-size: 20px; font-weight: bold; color: #00b8d4; margin: 8px 0; text-align: center;">GRATUIT</p>`
+    } else {
+      const prixLabel = isTombola ? 'Prix du ticket' : 'Prix'
+      html += `<p style="font-size: ${isTombola ? '14px' : '28px'}; font-weight: bold; color: #e74c3c; margin: 8px 0; display: flex; align-items: center; justify-content: center; gap: 8px;">${isTombola ? prixLabel + ' : ' : ''}${objet.prix} <img src="/Wbuck.png" style="width: ${isTombola ? '20px' : '28px'}; height: ${isTombola ? '20px' : '28px'};" /></p>`
+    }
     
     // Stock (uniquement pour les objets normaux, pas pour les tombolas)
     if (!isTombola) {
@@ -1541,9 +1556,20 @@ async function chargerObjetsBoutique() {
     
     // Bouton acheter
     const btnDisabled = (!isTombola && estEpuise) || (isTombola && tombolaTerminee)
-    const btnText = isTombola ? (tombolaTerminee ? 'Tombola terminée' : 'Acheter un ticket') : 'Acheter'
-    const btnColor = isTombola ? '#f39c12' : '#e74c3c'
-    html += `<button class="btn-acheter" data-id="${objet.id}" data-nom="${objet.nom}" data-prix="${objet.prix}" data-is-tombola="${isTombola}" style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: ${btnDisabled ? 'not-allowed' : 'pointer'}; background: ${btnDisabled ? '#ddd' : btnColor}; color: white; font-size: 16px; margin-top: 8px;" ${btnDisabled ? 'disabled' : ''}>${btnText}</button>`
+    let btnText = 'Acheter'
+    if (isTombola) {
+      if (tombolaTerminee) {
+        btnText = 'Tombola terminée'
+      } else if (isGratuit) {
+        btnText = '🎁 Participer GRATUITEMENT'
+      } else {
+        btnText = 'Acheter un ticket'
+      }
+    } else if (isGratuit) {
+      btnText = '🎁 Obtenir GRATUITEMENT'
+    }
+    const btnColor = isGratuit ? '#00b8d4' : (isTombola ? '#f39c12' : '#e74c3c')
+    html += `<button class="btn-acheter" data-id="${objet.id}" data-nom="${objet.nom}" data-prix="${objet.prix}" data-is-tombola="${isTombola}" data-is-gratuit="${isGratuit}" style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: ${btnDisabled ? 'not-allowed' : 'pointer'}; background: ${btnDisabled ? '#ddd' : btnColor}; color: white; font-size: 16px; margin-top: 8px;" ${btnDisabled ? 'disabled' : ''}>${btnText}</button>`
     
     html += `</div>`
     
@@ -1555,6 +1581,7 @@ async function chargerObjetsBoutique() {
     div.dataset.objetQuantite = objet.quantite
     div.dataset.objetTaille = taille
     div.dataset.objetTombola = isTombola
+    div.dataset.objetGratuit = isGratuit
     div.dataset.objetTombolaTerminee = tombolaTerminee
     grid.appendChild(div)
   })
@@ -1567,7 +1594,8 @@ async function chargerObjetsBoutique() {
       const nom = btn.dataset.nom
       const prix = parseInt(btn.dataset.prix)
       const isTombola = btn.dataset.isTombola === 'true'
-      confirmerAchat(id, nom, prix, isTombola)
+      const isGratuit = btn.dataset.isGratuit === 'true'
+      confirmerAchat(id, nom, prix, isTombola, isGratuit)
     })
   })
   
@@ -1682,16 +1710,45 @@ inputPhoto.addEventListener('change', (e) => {
 const tombolaCheckbox = document.querySelector('#objet-tombola')
 const quantiteContainer = document.querySelector('#quantite-container')
 const quantiteInput = document.querySelector('#objet-quantite')
+const gratuitCheckbox = document.querySelector('#objet-gratuit')
+const labelGratuit = document.querySelector('#label-gratuit')
+const prixInput = document.querySelector('#objet-prix')
 
 tombolaCheckbox?.addEventListener('change', (e) => {
   if (e.target.checked) {
     // Mode tombola activé : cacher la quantité et la mettre à 0
     quantiteContainer.style.display = 'none'
     quantiteInput.value = '0'
+    
+    // Activer la checkbox gratuit
+    gratuitCheckbox.disabled = false
+    labelGratuit.style.opacity = '1'
+    labelGratuit.style.pointerEvents = 'auto'
   } else {
     // Mode normal : afficher la quantité et la remettre à 1
     quantiteContainer.style.display = 'block'
     quantiteInput.value = '1'
+    
+    // Désactiver et décocher la checkbox gratuit
+    gratuitCheckbox.disabled = true
+    gratuitCheckbox.checked = false
+    labelGratuit.style.opacity = '0.5'
+    labelGratuit.style.pointerEvents = 'none'
+    prixInput.disabled = false
+  }
+})
+
+// Gestion de la checkbox Gratuit
+gratuitCheckbox?.addEventListener('change', (e) => {
+  if (e.target.checked) {
+    // Gratuit activé : mettre le prix à 0 et désactiver le champ
+    prixInput.value = '0'
+    prixInput.disabled = true
+    quantiteInput.value = '1000' // Grande quantité pour les gratuits
+  } else {
+    // Gratuit désactivé : réactiver le champ prix
+    prixInput.disabled = false
+    quantiteInput.value = '0'
   }
 })
 
@@ -1714,7 +1771,14 @@ function ouvrirModalAjout(type = null) {
   document.querySelector('#objet-photo').value = ''
   document.querySelector('#objet-id-edit').value = ''
   document.querySelector('#objet-tombola').checked = false
+  document.querySelector('#objet-gratuit').checked = false
   previewDiv.style.display = 'none'
+  
+  // Réinitialiser les états des checkboxes
+  document.querySelector('#objet-prix').disabled = false
+  document.querySelector('#objet-gratuit').disabled = true
+  document.querySelector('#label-gratuit').style.opacity = '0.5'
+  document.querySelector('#label-gratuit').style.pointerEvents = 'none'
   
   // Afficher le champ quantité (mode normal par défaut)
   quantiteContainer.style.display = 'block'
@@ -1776,8 +1840,40 @@ async function supprimerObjet(objetId, type) {
 }
 
 // Fonction globale pour confirmer achat
-window.confirmerAchat = async function(objetId, objetNom, objetPrix, isTombola = false) {
-  objetEnCoursAchat = { id: objetId, nom: objetNom, prix: objetPrix, is_tombola: isTombola }
+window.confirmerAchat = async function(objetId, objetNom, objetPrix, isTombola = false, isGratuit = false) {
+  // Vérifier si l'utilisateur a déjà acheté cet objet (pour les objets avec limite)
+  const { data: objetData } = await supabase
+    .from('objets_boutique')
+    .select('max_par_personne, is_gratuit')
+    .eq('id', objetId)
+    .single()
+  
+  if (objetData && objetData.max_par_personne) {
+    const { data: achatsExistants } = await supabase
+      .from('achats')
+      .select('id')
+      .eq('acheteur_email', currentUserEmail)
+      .eq('objet_id', objetId)
+    
+    if (achatsExistants && achatsExistants.length >= objetData.max_par_personne) {
+      if (isGratuit) {
+        alert('Vous avez déjà participé à cette tombola gratuite ! Limite : 1 par personne.')
+      } else {
+        alert(`Vous avez déjà acheté cet objet ! Limite : ${objetData.max_par_personne} par personne.`)
+      }
+      return
+    }
+  }
+  
+  const prixFinal = isGratuit ? 0 : objetPrix
+  
+  objetEnCoursAchat = { 
+    id: objetId, 
+    nom: objetNom, 
+    prix: prixFinal, 
+    is_tombola: isTombola,
+    is_gratuit: isGratuit
+  }
   
   // Récupérer le solde réel calculé depuis allUsers
   const currentUser = allUsers.find(u => u.email === currentUserEmail)
@@ -1785,14 +1881,18 @@ window.confirmerAchat = async function(objetId, objetNom, objetPrix, isTombola =
   
   // Adapter le message selon si c'est une tombola ou non
   const modalTitle = document.querySelector('#modal-confirmer-achat h3')
-  if (isTombola) {
+  if (isTombola && isGratuit) {
+    modalTitle.textContent = '🎁 Participer gratuitement'
+  } else if (isTombola) {
     modalTitle.textContent = '🎰 Acheter un ticket'
+  } else if (isGratuit) {
+    modalTitle.textContent = '🎁 Obtenir gratuitement'
   } else {
-    modalTitle.textContent = '🛍️ Confirmer l’achat'
+    modalTitle.textContent = '🛍️ Confirmer l\'achat'
   }
   
   document.querySelector('#achat-objet-nom').textContent = objetNom
-  document.querySelector('#achat-objet-prix').textContent = objetPrix
+  document.querySelector('#achat-objet-prix').textContent = isGratuit ? '0 (GRATUIT)' : prixFinal
   document.querySelector('#achat-solde-actuel').textContent = soldeReel
   
   document.querySelector('#modal-confirmer-achat').classList.remove('hidden')
@@ -1808,13 +1908,17 @@ document.querySelector('#btn-cancel-achat').addEventListener('click', () => {
 document.querySelector('#btn-confirm-achat-final').addEventListener('click', async () => {
   if (!objetEnCoursAchat) return
   
-  // Vérifier le solde réel
-  const currentUser = allUsers.find(u => u.email === currentUserEmail)
-  const soldeReel = currentUser ? currentUser.solde_reel : 0
+  const isGratuit = objetEnCoursAchat.is_gratuit || false
   
-  if (soldeReel < objetEnCoursAchat.prix) {
-    alert('Solde insuffisant !')
-    return
+  // Vérifier le solde réel (sauf si gratuit)
+  if (!isGratuit) {
+    const currentUser = allUsers.find(u => u.email === currentUserEmail)
+    const soldeReel = currentUser ? currentUser.solde_reel : 0
+    
+    if (soldeReel < objetEnCoursAchat.prix) {
+      alert('Solde insuffisant !')
+      return
+    }
   }
   
   // Récupérer l'objet complet
@@ -1837,7 +1941,7 @@ document.querySelector('#btn-confirm-achat-final').addEventListener('click', asy
 
   // La quantité sera mise à jour automatiquement par le trigger SQL
   // (pas besoin de le faire manuellement côté client)
-
+  
   // Enregistrer l'achat avec toutes les infos de l'objet
   const { error } = await supabase
     .from('achats')
@@ -2069,13 +2173,19 @@ document.querySelector('#btn-cancel-objet').addEventListener('click', () => {
 
 document.querySelector('#btn-confirm-objet').addEventListener('click', async () => {
   const nom = document.querySelector('#objet-nom').value.trim()
-  const prix = parseInt(document.querySelector('#objet-prix').value)
+  let prix = parseInt(document.querySelector('#objet-prix').value)
   let quantite = parseInt(document.querySelector('#objet-quantite').value) || 1
   const imageUrl = document.querySelector('#objet-image').value.trim()
   const photoFile = document.querySelector('#objet-photo').files[0]
   const taille = document.querySelector('#objet-taille').value
   const isTombola = document.querySelector('#objet-tombola')?.checked || false
+  const isGratuit = document.querySelector('#objet-gratuit')?.checked || false
   const objetIdEdit = document.querySelector('#objet-id-edit').value
+  
+  // Si gratuit, forcer le prix à 0
+  if (isGratuit) {
+    prix = 0
+  }
   
   // Pour les tombolas, forcer la quantité à 0 (nombre de participants initial)
   if (isTombola) {
@@ -2085,7 +2195,7 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
   // Pour les objets normaux, quantité doit être >= 1
   const quantiteMin = isTombola ? 0 : 1
   
-  if (!nom || !prix || prix <= 0 || quantite < quantiteMin) {
+  if (!nom || prix < 0 || quantite < quantiteMin) {
     afficherMessageNFC('', 'Champs manquants', 'Veuillez remplir tous les champs obligatoires', '#f39c12');
     return
   }
@@ -2102,19 +2212,24 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
     }
   }
   
+  // Préparer les données de l'objet
+  const objetData = {
+    nom,
+    prix,
+    quantite,
+    image_url: finalImageUrl || null,
+    taille,
+    is_tombola: isTombola,
+    is_gratuit: isGratuit,
+    max_par_personne: isGratuit ? 1 : null,
+    is_published: false
+  }
+  
   // Si modification
   if (objetIdEdit) {
     const { error } = await supabase
       .from('objets_boutique')
-      .update({
-        nom,
-        prix,
-        quantite,
-        image_url: finalImageUrl || null,
-        taille,
-        is_tombola: isTombola,
-        is_published: false
-      })
+      .update(objetData)
       .eq('id', parseInt(objetIdEdit))
     
     if (error) {
@@ -2128,15 +2243,7 @@ document.querySelector('#btn-confirm-objet').addEventListener('click', async () 
     // Sinon ajout
     const { error } = await supabase
       .from('objets_boutique')
-      .insert({
-        nom,
-        prix,
-        quantite,
-        image_url: finalImageUrl || null,
-        taille,
-        is_tombola: isTombola,
-        is_published: false
-      })
+      .insert(objetData)
     
     if (error) {
       console.error('Erreur complète:', error)
